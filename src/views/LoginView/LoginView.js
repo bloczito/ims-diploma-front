@@ -2,7 +2,7 @@ import { Grid, withStyles, Button } from "@material-ui/core";
 import { useForm } from "react-hook-form";
 import { TextInput } from "../../components";
 import { connect } from "react-redux";
-import {userActions} from "../../_actions";
+import {usersActions} from "../../_actions";
 
 
 const styles = {
@@ -26,7 +26,7 @@ const LoginView = ({ classes, dispatch }) => {
         console.log(data)
         const { username, password } = data;
         if (username && password) {
-            dispatch(userActions.login(username, password));
+            dispatch(usersActions.login(username, password));
         }
 
     }

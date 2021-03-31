@@ -1,7 +1,8 @@
 import { authHeader } from "../_helpers";
 
 export const userService = {
-    login
+    login,
+    logout
 }
 
 const URL = "http://localhost:8080"
@@ -17,10 +18,12 @@ function login(username, password) {
         .then(handleResponse)
         .then(token => {
             localStorage.setItem("token", JSON.stringify(token.jwt));
-            return token;
+            return token.jwt;
         });
+}
 
-
+function logout() {
+    localStorage.removeItem("token");
 }
 
 

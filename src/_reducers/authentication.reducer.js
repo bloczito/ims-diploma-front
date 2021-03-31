@@ -3,9 +3,10 @@ import { userConstants } from "../_constants";
 let token = JSON.parse(localStorage.getItem("token"));
 const initialState = token ? { loggedIn: true, token } : {};
 
-console.log("ASDASDASD", initialState);
 
 export function authentication(state = initialState, action) {
+    console.log("ASDASDASd", action.user)
+
     switch (action.type) {
         case userConstants.LOGIN_REQUEST:
             return {
@@ -18,6 +19,8 @@ export function authentication(state = initialState, action) {
                 token: action.token
             };
         case userConstants.LOGIN_FAILURE:
+            return {};
+        case userConstants.LOGOUT:
             return {};
         default:
             return state;

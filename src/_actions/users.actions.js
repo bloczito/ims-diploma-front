@@ -1,9 +1,10 @@
-import {userConstants} from "../_constants";
-import {userService} from "../_service";
-import {history} from "../_helpers/history";
+import { userConstants } from "../_constants";
+import { userService } from "../_service";
+import { history } from "../_helpers/history";
 
-export const userActions = {
-    login
+export const usersActions = {
+    login,
+    logout
 }
 
 function login(username, password) {
@@ -24,6 +25,11 @@ function login(username, password) {
     };
 
     function request(user) { return { type: userConstants.LOGIN_REQUEST, user } }
-    function success(user) { return { type: userConstants.LOGIN_SUCCESS, user } }
+    function success(token) { return { type: userConstants.LOGIN_SUCCESS, token } }
     function failure(error) { return { type: userConstants.LOGIN_FAILURE, error } }
+}
+
+function logout() {
+    userService.logout();
+    return { type: userConstants.LOGOUT }
 }
