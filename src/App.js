@@ -1,25 +1,28 @@
 import './App.css';
-import LoginView from "./views/LoginView/LoginView";
+import { LoginView, OrdersView } from "./views";
 import Navbar from "./components/Navbar/Navbar";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 import {
     Route,
     Switch,
     BrowserRouter as Router
 } from "react-router-dom";
 
+
+
 function App({ token }) {
 
     return (
         <div className="App">
-            {!token ? <LoginView /> :
+            { !token ? <LoginView/> :
                 <>
                     <Router>
-                        <Navbar />
-                        <p>ZALOGOWANY BYKU</p>
-                        <Route path="/orders">Zamówienia</Route>
-                        <Route path="/products">Produkty</Route>
-                        <Route path="/clients">Klienci</Route>
+                        <Navbar/>
+                        <Switch>
+                            <Route path="/orders"  component={OrdersView}/>
+                            <Route path="/products">Produkty</Route>
+                            <Route path="/clients">Klienci</Route>
+                        </Switch>
                     </Router>
 
                 </>

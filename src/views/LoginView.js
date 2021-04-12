@@ -1,8 +1,8 @@
-import { Grid, withStyles, Button } from "@material-ui/core";
+import { Grid, withStyles, Button, Typography} from "@material-ui/core";
 import { useForm } from "react-hook-form";
-import { TextInput } from "../../components";
+import { TextInput, PasswordInput } from "../components";
 import { connect } from "react-redux";
-import {usersActions} from "../../_actions";
+import {userActions} from "../_actions";
 
 
 const styles = {
@@ -15,6 +15,9 @@ const styles = {
     },
     formContainer: {
         marginTop: "100px"
+    },
+    asd: {
+        backgroundColor: "black"
     }
 };
 
@@ -26,7 +29,7 @@ const LoginView = ({ classes, dispatch }) => {
         console.log(data)
         const { username, password } = data;
         if (username && password) {
-            dispatch(usersActions.login(username, password));
+            dispatch(userActions.login(username, password));
         }
 
     }
@@ -34,7 +37,9 @@ const LoginView = ({ classes, dispatch }) => {
     return (
         <>
             <div className={ classes.formContainer }>
-                <h2>Logowanie</h2>
+                <Typography variant="h4">
+                    Logowanie
+                </Typography>
 
                 <form onSubmit={ handleSubmit(onSubmit) }>
                     <Grid
@@ -51,9 +56,9 @@ const LoginView = ({ classes, dispatch }) => {
                             label="Nazwa użytkownika"
                             classes={ classes.formField }
                         />
-                        <TextInput
+                        <PasswordInput
                             name="password"
-                            control={ control }
+                            control={control}
                             label="Hasło"
                             classes={ classes.formField }
                         />

@@ -19,7 +19,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { usersActions } from "../../_actions";
+import { userActions } from "../../_actions";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const Navbar = ({ dispatch }) => {
+const Navbar = ({ dispatch, username }) => {
     const classes = useStyles();
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -61,7 +61,6 @@ const Navbar = ({ dispatch }) => {
     };
 
     const handleUserMenuOpen = event => {
-        console.log(event);
         setUserMenu(event.currentTarget);
     }
 
@@ -71,7 +70,7 @@ const Navbar = ({ dispatch }) => {
 
     const handleLogoutClick = () => {
         handleUserMenuClose();
-        dispatch(usersActions.logout());
+        dispatch(userActions.logout());
     }
 
     const list = () => (
@@ -148,14 +147,13 @@ const Navbar = ({ dispatch }) => {
                                     <Button color="inherit"> Klienci </Button>
                                 </Link>
 
-                                <IconButton
-                                    color="inherit"
+                                <Button
+                                    style={{fontWeight: "bold", color: "yellow"}}
                                     aria-controls="user-menu"
                                     aria-haspopup="true"
                                     onClick={ handleUserMenuOpen }
-                                >
-                                    <AccountCircleIcon/>
-                                </IconButton>
+                                    endIcon={<AccountCircleIcon/>}
+                                > {username} </Button>
                                 <Menu
                                     id="user-menu"
                                     anchorEl={ userMenu }
@@ -175,7 +173,10 @@ const Navbar = ({ dispatch }) => {
 }
 
 function mapStateToProps(state) {
-    return {};
+    const {username} = state.authentication;
+    return {
+        username
+    };
 }
 
 export default connect(mapStateToProps)(Navbar);
