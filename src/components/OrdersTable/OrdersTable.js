@@ -69,7 +69,7 @@ const getTableBody = (orders, page, rowsPerPage) => (
 
 
 
-const TablePaginationActions = ({ count, page, rowsPerPage, onChangePage }) => {
+export const TablePaginationActions = ({ count, page, rowsPerPage, onChangePage }) => {
 
     const handleFirstPageButtonClick = (event) => {
         onChangePage(event, 0);
@@ -90,16 +90,19 @@ const TablePaginationActions = ({ count, page, rowsPerPage, onChangePage }) => {
     return (
         <div className={styles.pagination}>
             <IconButton
+                className={styles.button}
                 onClick={handleFirstPageButtonClick}
                 disabled={page === 0}
                 aria-label="first page"
             >
                 <FirstPageIcon />
             </IconButton>
-            <IconButton onClick={handleBackButtonClick} disabled={page === 0} aria-label="previous page">
+            <IconButton
+                className={styles.button} onClick={handleBackButtonClick} disabled={page === 0} aria-label="previous page">
                 <KeyboardArrowLeft />
             </IconButton>
             <IconButton
+                className={styles.button}
                 onClick={handleNextButtonClick}
                 disabled={page >= Math.ceil(count / rowsPerPage) - 1}
                 aria-label="next page"
@@ -107,6 +110,7 @@ const TablePaginationActions = ({ count, page, rowsPerPage, onChangePage }) => {
                 <KeyboardArrowRight />
             </IconButton>
             <IconButton
+                className={styles.button}
                 onClick={handleLastPageButtonClick}
                 disabled={page >= Math.ceil(count / rowsPerPage) - 1}
                 aria-label="last page"
@@ -143,7 +147,7 @@ const OrdersTable = ({orders, page, rowsPerPage, handleChangePage, handleChangeR
     return (
         <>
             <TableContainer component={Paper} className={styles.wrapper}>
-                <Table className={styles.table} aria-label="orders table" stickyHeader>
+                <Table  aria-label="orders table" stickyHeader>
                     {getTableHeader()}
                     {getTableBody(orders, page, rowsPerPage)}
                     {getTableFooter(rowsPerPage, page, handleChangePage, handleChangeRowsPerPage, totalElements)}

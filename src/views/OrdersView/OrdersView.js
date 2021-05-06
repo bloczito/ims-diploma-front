@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { orderService } from "../../_service";
-import { Button, CircularProgress, Container, Grid, Typography } from "@material-ui/core";
+import { Button, CircularProgress, Container, Grid, TablePagination, Typography } from "@material-ui/core";
 import OrdersTable from "../../components/OrdersTable/OrdersTable";
 import NewOrderModal from "../../components/NewOrderModal/NewOrderModal";
+import {TablePaginationActions} from "../../components/OrdersTable/OrdersTable";
 import styles from "./OrdersView.module.scss"
 
 
@@ -51,6 +52,8 @@ export const OrdersView = () => {
         setIsModalOpen(false);
     }
 
+    const getRowsInfo = ({from, to, count}) => `${from} - ${to} z ${count}`
+
 
     return (
         <>
@@ -58,7 +61,7 @@ export const OrdersView = () => {
                 <CircularProgress />
                 ) : (
                     <Container className={styles.wrapper}>
-                        <Grid container alignContent="center" direction="row">
+                        <Grid container alignContent="space-between" direction="row">
                             <Grid item md={4}>
                                 <Button variant="contained"
                                         color="primary"
@@ -72,8 +75,21 @@ export const OrdersView = () => {
                                     Zamówienia
                                 </Typography>
                             </Grid>
+                            <Grid item md={4}  justify="flex-end">
+                                <TablePagination
+                                    style={{padding: 0}}
+                                    rowsPerPageOptions={[5, 10, 15, 20,]}
+                                    count={totalElements}
+                                    rowsPerPage={rowsPerPage}
+                                    labelRowsPerPage="Ilość na stronie"
+                                    labelDisplayedRows={getRowsInfo}
+                                    page={page}
+                                    onChangePage={handleChangePage}
+                                    onChangeRowsPerPage={handleChangeRowsPerPage}
+                                    ActionsComponent={ TablePaginationActions }
+                                />
+                            </Grid>
                         </Grid>
-
 
                         <Grid container>
                             <Grid item md>
