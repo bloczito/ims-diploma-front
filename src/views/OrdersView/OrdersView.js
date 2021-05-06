@@ -20,8 +20,6 @@ export const OrdersView = () => {
     useEffect(async () => {
         const initialData = await orderService.getPaginated(page, rowsPerPage);
 
-        console.log("DUDUDU", initialData);
-
         setRowsPerPage(initialData.size)
         setTotalElements(initialData.totalElements)
         setTotalPages(initialData.totalPages)
@@ -52,8 +50,6 @@ export const OrdersView = () => {
         setIsModalOpen(false);
     }
 
-    const getRowsInfo = ({from, to, count}) => `${from} - ${to} z ${count}`
-
 
     return (
         <>
@@ -82,7 +78,7 @@ export const OrdersView = () => {
                                     count={totalElements}
                                     rowsPerPage={rowsPerPage}
                                     labelRowsPerPage="Ilość na stronie"
-                                    labelDisplayedRows={getRowsInfo}
+                                    labelDisplayedRows={({from, to, count}) => `${from} - ${to} z ${count}`}
                                     page={page}
                                     onChangePage={handleChangePage}
                                     onChangeRowsPerPage={handleChangeRowsPerPage}
