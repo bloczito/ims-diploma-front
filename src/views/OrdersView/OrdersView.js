@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { orderService } from "../../_service";
 import { Button, CircularProgress, Container, Grid, TablePagination, Typography } from "@material-ui/core";
-import OrdersTable from "../../components/OrdersTable/OrdersTable";
+import OrdersTable, { TablePaginationComponent } from "../../components/OrdersTable/OrdersTable";
 import NewOrderModal from "../../components/NewOrderModal/NewOrderModal";
 import {TablePaginationActions} from "../../components/OrdersTable/OrdersTable";
 import styles from "./OrdersView.module.scss"
@@ -72,17 +72,12 @@ export const OrdersView = () => {
                                 </Typography>
                             </Grid>
                             <Grid item md={4}  justify="flex-end">
-                                <TablePagination
-                                    style={{padding: 0}}
-                                    rowsPerPageOptions={[5, 10, 15, 20,]}
-                                    count={totalElements}
+                                <TablePaginationComponent
+                                    totalElements={totalElements}
                                     rowsPerPage={rowsPerPage}
-                                    labelRowsPerPage="Ilość na stronie"
-                                    labelDisplayedRows={({from, to, count}) => `${from} - ${to} z ${count}`}
-                                    page={page}
-                                    onChangePage={handleChangePage}
-                                    onChangeRowsPerPage={handleChangeRowsPerPage}
-                                    ActionsComponent={ TablePaginationActions }
+                                    pageNr={page}
+                                    handleChangePage={handleChangePage}
+                                    handleChangeRowsPerPage={handleChangeRowsPerPage}
                                 />
                             </Grid>
                         </Grid>

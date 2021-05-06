@@ -1,5 +1,6 @@
 import React from "react";
 import {
+    Grid,
     IconButton,
     Paper,
     Table,
@@ -121,22 +122,31 @@ export const TablePaginationActions = ({ count, page, rowsPerPage, onChangePage 
     );
 }
 
-function getTableFooter(rowsPerPage, page, handleChangePage, handleChangeRowsPerPage, count) {
+export const TablePaginationComponent = ({totalElements, rowsPerPage, pageNr, handleChangePage, handleChangeRowsPerPage}) => (
+    <TablePagination
+        rowsPerPageOptions={[5, 10, 15, 20,]}
+        count={totalElements}
+        rowsPerPage={rowsPerPage}
+        labelRowsPerPage="Ilość na stronie"
+        labelDisplayedRows={({from, to, count}) => `${from} - ${to} z ${count}`}
+        page={pageNr}
+        onChangePage={handleChangePage}
+        onChangeRowsPerPage={handleChangeRowsPerPage}
+        ActionsComponent={ TablePaginationActions }
+    />
+)
+
+
+function getTableFooter(rowsPerPage, page, handleChangePage, handleChangeRowsPerPage, totalElements) {
     return (
         <TableFooter>
             <TableRow>
-                <TablePagination
-                    rowsPerPageOptions={[5, 10, 15, 20, {label: "All", value: -1}]}
-                    count={count}
+                <TablePaginationComponent
+                    totalElements={totalElements}
                     rowsPerPage={rowsPerPage}
-                    page={page}
-                    SelectProps={{
-                        inputProps: { "aria-label": "rows per page" },
-                        native: true,
-                    }}
-                    onChangePage={handleChangePage}
-                    onChangeRowsPerPage={handleChangeRowsPerPage}
-                    ActionsComponent={TablePaginationActions}
+                    pageNr={page}
+                    handleChangePage={handleChangePage}
+                    handleChangeRowsPerPage={handleChangeRowsPerPage}
                 />
             </TableRow>
         </TableFooter>
