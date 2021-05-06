@@ -7,14 +7,21 @@ import {
     TableContainer,
     TableFooter,
     TableHead, TablePagination,
-    TableRow
+    TableRow, Typography
 } from "@material-ui/core";
 import styles from "./OrdersTable.module.scss";
 import FirstPageIcon from "@material-ui/icons/FirstPage";
 import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
 import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 import LastPageIcon from "@material-ui/icons/LastPage";
+import { makeStyles } from "@material-ui/core/styles";
 
+
+const headerStyles = makeStyles((theme) => ({
+    header: {
+        fontWeight: "bold"
+    }
+}));
 
 
 const columnDefs = [
@@ -28,19 +35,27 @@ const columnDefs = [
 ];
 
 const getTableHeader = () => {
+    const classes = headerStyles();
+
     return (
         <TableHead>
             <TableRow>
-                {columnDefs.map(e => <TableCell key={e}>{e}</TableCell>)}
+                {columnDefs.map(e =>
+                    <TableCell key={e}>
+                        <Typography className={classes.header}>
+                            {e}
+                        </Typography>
+                    </TableCell>)}
             </TableRow>
         </TableHead>
     )
 }
 
-const getTableBody = (orders, page, rowsPerPage) => {
-    return (orders > 0
+const getTableBody = (orders, page, rowsPerPage) => (
+    orders > 0
         ? orders.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-        : orders).map(order => (
+        : orders
+    ).map(order => (
         <TableRow key={order.id} hover>
             <TableCell>{order.orderNumber}</TableCell>
             <TableCell>{order.orderDate}</TableCell>
@@ -51,7 +66,8 @@ const getTableBody = (orders, page, rowsPerPage) => {
             <TableCell>{order.company.name}</TableCell>
         </TableRow>
     ));
-}
+
+
 
 const TablePaginationActions = ({ count, page, rowsPerPage, onChangePage }) => {
 
@@ -101,13 +117,13 @@ const TablePaginationActions = ({ count, page, rowsPerPage, onChangePage }) => {
     );
 }
 
-function getTableFooter(rowsPerPage, page, handleChangePage, handleChangeRowsPerPage) {
+function getTableFooter(rowsPerPage, page, handleChangePage, handleChangeRowsPerPage, count) {
     return (
         <TableFooter>
             <TableRow>
                 <TablePagination
                     rowsPerPageOptions={[5, 10, 15, 20, {label: "All", value: -1}]}
-
+                    count={count}
                     rowsPerPage={rowsPerPage}
                     page={page}
                     SelectProps={{
@@ -123,21 +139,18 @@ function getTableFooter(rowsPerPage, page, handleChangePage, handleChangeRowsPer
     );
 }
 
-const OrdersTable = ({orders, page, rowsPerPage, handleChangePage, handleChangeRowsPerPage}) => {
-
+const OrdersTable = ({orders, page, rowsPerPage, handleChangePage, handleChangeRowsPerPage, totalElements}) => {
     return (
         <>
-            <TableContainer component={Paper}>
-                <Table className={styles.table} aria-label="orders table">
+            <TableContainer component={Paper} className={styles.wrapper}>
+                <Table className={styles.table} aria-label="orders table" stickyHeader>
                     {getTableHeader()}
-                    {getTableBody(rowsPerPage, page, orders)}
-                    {getTableFooter(rowsPerPage, page, handleChangePage, handleChangeRowsPerPage)}
+                    {getTableBody(orders, page, rowsPerPage)}
+                    {getTableFooter(rowsPerPage, page, handleChangePage, handleChangeRowsPerPage, totalElements)}
                 </Table>
             </TableContainer>
         </>
     )
-
-
 }
 
 

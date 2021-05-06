@@ -7,7 +7,7 @@ import {
     IconButton,
 } from "@material-ui/core";
 
-export const PasswordInput = ({label, classes, control, name, id}) => {
+export const PasswordInput = ({label, classes, control, name, id, value, onChange}) => {
     const [passwordVisibility, setPasswordVisibility] = useState(false);
 
     const togglePasswordVisibility = () => {
@@ -38,6 +38,8 @@ export const PasswordInput = ({label, classes, control, name, id}) => {
                             </InputAdornment>
                         )
                     }}
+                    value={value}
+                    onChange={onChange}
                 />
             }
             control={control}

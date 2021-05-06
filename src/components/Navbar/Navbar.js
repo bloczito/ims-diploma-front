@@ -13,7 +13,7 @@ import {
     Typography,
     Container,
     Menu,
-    MenuItem,
+    MenuItem, Paper,
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
@@ -108,8 +108,8 @@ const Navbar = ({ dispatch, username }) => {
     );
 
     return (
-        <div className={ classes.root }>
-            <AppBar position="static">
+
+            <AppBar position="static" elevation={0}>
                 <Container maxWidth="lg">
                     <Toolbar>
                         <Typography align="left" variant="h6" className={ classes.title }>
@@ -168,7 +168,6 @@ const Navbar = ({ dispatch, username }) => {
                     </Toolbar>
                 </Container>
             </AppBar>
-        </div>
     );
 }
 

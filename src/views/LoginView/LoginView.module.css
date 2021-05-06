@@ -1,0 +1,16 @@
+.wrapper {
+  margin-top: 100px;
+}
+
+.form {
+  margin-top: 20px;
+}
+
+.formField {
+    min-width: 250px;
+    margin-bottom: 15px;
+}
+
+.title {
+  margin: auto;
+}

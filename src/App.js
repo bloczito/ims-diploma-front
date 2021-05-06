@@ -1,6 +1,8 @@
 import './App.css';
+import { StylesProvider } from "@material-ui/core/styles"
 import { LoginView, OrdersView } from "./views";
 import Navbar from "./components/Navbar/Navbar";
+import TestView from "./components/TestView/TestView"
 import { connect } from "react-redux";
 import {
     Route,
@@ -10,10 +12,11 @@ import {
 
 
 
+
 function App({ token }) {
 
     return (
-        <div className="App">
+        <StylesProvider injectFirst>
             { !token ? <LoginView/> :
                 <>
                     <Router>
@@ -22,15 +25,14 @@ function App({ token }) {
                             <Route path="/orders"  component={OrdersView}/>
                             <Route path="/products">Produkty</Route>
                             <Route path="/clients">Klienci</Route>
+                            <Route path="/test" component={TestView}/>
                         </Switch>
                     </Router>
 
                 </>
 
             }
-
-
-        </div>
+        </StylesProvider>
     );
 }
 
