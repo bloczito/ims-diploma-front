@@ -1,6 +1,8 @@
 import './App.css';
 import { StylesProvider } from "@material-ui/core/styles"
-import { LoginView, OrdersView } from "./views";
+import LoginView from "./views/LoginView/LoginView";
+import OrdersView from "./views/OrdersView/OrdersView"
+
 import Navbar from "./components/Navbar/Navbar";
 import TestView from "./components/TestView/TestView"
 import { connect } from "react-redux";

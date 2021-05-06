@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { orderService } from "../../_service";
-import { Button, CircularProgress, Container, Grid, TablePagination, Typography } from "@material-ui/core";
-import OrdersTable, { TablePaginationComponent } from "../../components/OrdersTable/OrdersTable";
+import { Button, CircularProgress, Container, Grid, Typography } from "@material-ui/core";
+import OrdersTable  from "../../components/OrdersTable/OrdersTable";
 import NewOrderModal from "../../components/NewOrderModal/NewOrderModal";
-import {TablePaginationActions} from "../../components/OrdersTable/OrdersTable";
+import TablePagination from "../../components/TablePagination/TablePagination";
 import styles from "./OrdersView.module.scss"
 
 
-export const OrdersView = () => {
+const OrdersView = () => {
 
     const [orders, setOrders] = useState([]);
     const [page, setPage] = useState(0);
@@ -72,7 +72,7 @@ export const OrdersView = () => {
                                 </Typography>
                             </Grid>
                             <Grid item md={4}  justify="flex-end">
-                                <TablePaginationComponent
+                                <TablePagination
                                     totalElements={totalElements}
                                     rowsPerPage={rowsPerPage}
                                     pageNr={page}
@@ -122,4 +122,4 @@ function mapStateToProps(state) {
 
 
 // export default connect(mapStateToProps)(OrdersView);
-
+export default OrdersView;

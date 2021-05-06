@@ -1,28 +1,18 @@
 import React from "react";
+import PropTypes, { number } from "prop-types";
 import {
-    Grid,
-    IconButton,
     Paper,
     Table,
     TableCell,
     TableContainer,
     TableFooter,
-    TableHead, TablePagination,
+    TableHead,
     TableRow, Typography
 } from "@material-ui/core";
 import styles from "./OrdersTable.module.scss";
-import FirstPageIcon from "@material-ui/icons/FirstPage";
-import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
-import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
-import LastPageIcon from "@material-ui/icons/LastPage";
-import { makeStyles } from "@material-ui/core/styles";
 
 
-const headerStyles = makeStyles((theme) => ({
-    header: {
-        fontWeight: "bold"
-    }
-}));
+import TablePagination from "../TablePagination/TablePagination"
 
 
 const columnDefs = [
@@ -35,22 +25,19 @@ const columnDefs = [
     "Firma",
 ];
 
-const getTableHeader = () => {
-    const classes = headerStyles();
-
-    return (
+const getTableHeader = () => (
         <TableHead>
             <TableRow>
                 {columnDefs.map(e =>
                     <TableCell key={e}>
-                        <Typography className={classes.header}>
+                        <Typography className={styles.header}>
                             {e}
                         </Typography>
                     </TableCell>)}
             </TableRow>
         </TableHead>
     )
-}
+
 
 const getTableBody = (orders, page, rowsPerPage) => (
     orders > 0
@@ -69,79 +56,10 @@ const getTableBody = (orders, page, rowsPerPage) => (
     ));
 
 
-
-export const TablePaginationActions = ({ count, page, rowsPerPage, onChangePage }) => {
-
-    const handleFirstPageButtonClick = (event) => {
-        onChangePage(event, 0);
-    };
-
-    const handleBackButtonClick = (event) => {
-        onChangePage(event, page - 1);
-    };
-
-    const handleNextButtonClick = (event) => {
-        onChangePage(event, page + 1);
-    };
-
-    const handleLastPageButtonClick = (event) => {
-        onChangePage(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
-    };
-
-    return (
-        <div className={styles.pagination}>
-            <IconButton
-                className={styles.button}
-                onClick={handleFirstPageButtonClick}
-                disabled={page === 0}
-                aria-label="first page"
-            >
-                <FirstPageIcon />
-            </IconButton>
-            <IconButton
-                className={styles.button} onClick={handleBackButtonClick} disabled={page === 0} aria-label="previous page">
-                <KeyboardArrowLeft />
-            </IconButton>
-            <IconButton
-                className={styles.button}
-                onClick={handleNextButtonClick}
-                disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-                aria-label="next page"
-            >
-                <KeyboardArrowRight />
-            </IconButton>
-            <IconButton
-                className={styles.button}
-                onClick={handleLastPageButtonClick}
-                disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-                aria-label="last page"
-            >
-                <LastPageIcon />
-            </IconButton>
-        </div>
-    );
-}
-
-export const TablePaginationComponent = ({totalElements, rowsPerPage, pageNr, handleChangePage, handleChangeRowsPerPage}) => (
-    <TablePagination
-        rowsPerPageOptions={[5, 10, 15, 20,]}
-        count={totalElements}
-        rowsPerPage={rowsPerPage}
-        labelRowsPerPage="Ilość na stronie"
-        labelDisplayedRows={({from, to, count}) => `${from} - ${to} z ${count}`}
-        page={pageNr}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
-        ActionsComponent={ TablePaginationActions }
-    />
-)
-
-
-function getTableFooter(rowsPerPage, page, handleChangePage, handleChangeRowsPerPage, totalElements) {
-    return (
+const getTableFooter = (rowsPerPage, page, handleChangePage, handleChangeRowsPerPage, totalElements) => (
         <TableFooter>
             <TableRow>
-                <TablePaginationComponent
+                <TablePagination
                     totalElements={totalElements}
                     rowsPerPage={rowsPerPage}
                     pageNr={page}
@@ -151,7 +69,7 @@ function getTableFooter(rowsPerPage, page, handleChangePage, handleChangeRowsPer
             </TableRow>
         </TableFooter>
     );
-}
+
 
 const OrdersTable = ({orders, page, rowsPerPage, handleChangePage, handleChangeRowsPerPage, totalElements}) => {
     return (
@@ -165,6 +83,28 @@ const OrdersTable = ({orders, page, rowsPerPage, handleChangePage, handleChangeR
             </TableContainer>
         </>
     )
+}
+
+OrdersTable.propTypes = {
+    orders: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number,
+        orderNumber: PropTypes.string,
+        orderDate: PropTypes.string,
+        deadline: PropTypes.string,
+        customer: PropTypes.shape({name: PropTypes.string}),
+        priority: PropTypes.string,
+        status: PropTypes.string,
+        company: PropTypes.shape({name: PropTypes.string})
+    })),
+    page: number.isRequired,
+    rowsPerPage: number.isRequired,
+    handleChangePage: PropTypes.func.isRequired,
+    handleChangeRowsPerPage: PropTypes.func.isRequired,
+    totalElements: PropTypes.number.isRequired
+}
+
+OrdersTable.defaultProps ={
+    orders: [],
 }
 
 
