@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { orderService } from "../../_service";
 import { Button, CircularProgress, Container, Grid, Typography } from "@material-ui/core";
+import {utils} from "../../_helpers";
 import OrdersTable  from "../../components/OrdersTable/OrdersTable";
 import NewOrderModal from "../../components/NewOrderModal/NewOrderModal";
 import TablePagination from "../../components/TablePagination/TablePagination";
@@ -17,15 +18,22 @@ const OrdersView = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    useEffect(async () => {
-        const initialData = await orderService.getPaginated(page, rowsPerPage);
+    const loadData = async () => {
+       await utils.withinGuard(setIsLoading, async () => {
+           const initialData = await orderService.getPaginated(page, rowsPerPage);
 
-        setRowsPerPage(initialData.size)
-        setTotalElements(initialData.totalElements)
-        setTotalPages(initialData.totalPages)
-        setOrders(initialData.content);
-        setIsLoading(false);
+           console.log(initialData)
 
+           setRowsPerPage(initialData.size)
+           setTotalElements(initialData.totalElements)
+           setTotalPages(initialData.totalPages)
+           setOrders(initialData.content);
+       });
+    }
+
+
+    useEffect(() => {
+        loadData()
     }, [page, rowsPerPage])
 
     const handleChangePage = (event, newPage) => {

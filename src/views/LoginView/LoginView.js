@@ -1,4 +1,4 @@
-import { Grid, withStyles, Button, Typography, TextField, Box } from "@material-ui/core";
+import { Grid, Button, Typography, TextField, Box } from "@material-ui/core";
 import { useForm } from "react-hook-form";
 import { PasswordInput } from "../../components";
 import { connect } from "react-redux";
@@ -8,7 +8,7 @@ import { useState } from "react";
 
 const LoginView = ({ dispatch }) => {
 
-    const {register, control, handleSubmit, error } = useForm();
+    const {register, control, handleSubmit } = useForm();
 
     const [username, setUsername] = useState(null);
     const [password, setPassword] = useState(null);

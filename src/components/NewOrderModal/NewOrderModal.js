@@ -73,7 +73,6 @@ const NewOrderModal = ({ open, closeFn, handleNewOrderSubmit}) => {
                                            inputRef={register}
                                 />
                             </Grid>
-
                         </Grid>
 
                         <Grid container spacing={2}>
@@ -86,7 +85,7 @@ const NewOrderModal = ({ open, closeFn, handleNewOrderSubmit}) => {
                                 >
                                     {customers.length &&
                                         customers.map(customer => (
-                                            <MenuItem value={customer.id}>{ customer.name }</MenuItem>
+                                            <MenuItem key={customer.id} value={customer.id}>{ customer.name }</MenuItem>
                                         ))
                                     }
                                 </DefaultSelect>
@@ -100,7 +99,7 @@ const NewOrderModal = ({ open, closeFn, handleNewOrderSubmit}) => {
                                 >
                                     {companies.length &&
                                             companies.map(company => (
-                                                <MenuItem value={company.id}>{ company.name }</MenuItem>
+                                                <MenuItem key={company.id} value={company.id}>{ company.name }</MenuItem>
                                             ))
                                     }
                                 </DefaultSelect>
