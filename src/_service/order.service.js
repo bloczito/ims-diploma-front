@@ -9,7 +9,7 @@ export const orderService = {
 
 function getAll() {
     return axiosClient
-        .get("/orders", )
+        .get("/orders")
         .then(res => {
             return res.data;
         });

@@ -13,7 +13,7 @@ import {
     Typography,
     Container,
     Menu,
-    MenuItem, Paper,
+    MenuItem,
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
