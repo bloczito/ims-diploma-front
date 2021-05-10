@@ -95,7 +95,6 @@ const NewOrderModal = ({ open, closeFn, handleNewOrderSubmit}) => {
                                     label="Firma"
                                     control={control}
                                     name="company"
-                                    value={12}
                                 >
                                     {companies.length &&
                                             companies.map(company => (

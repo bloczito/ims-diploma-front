@@ -21,28 +21,11 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { userActions } from "../../_actions";
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        flexGrow: 1
-    },
-    menuButton: {
-        marginRight: theme.spacing(2)
-    },
-    title: {
-        flexGrow: 1
-    },
-    linkButton: {
-        textDecoration: "none",
-        color: "white"
-    },
-    linkDraw: {
-        textDecoration: "none",
-        color: "black"
-    }
-}));
+import styles from "./Navbar.module.scss"
+
+
 
 const Navbar = ({ dispatch, username }) => {
-    const classes = useStyles();
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
     const [drawer, setDrawer] = useState(false);
@@ -80,22 +63,22 @@ const Navbar = ({ dispatch, username }) => {
             onKeyDown={ toggleDrawer(false) }
         >
             <List>
-                <Link to="/orders" className={ classes.linkDraw }>
+                <Link to="/orders" className={ styles.drawerLink }>
                     <ListItem button key={ "orders" }>
                         <ListItemText primary={ "Zamówienia" }/>
                     </ListItem>
                 </Link>
-                <Link to="/products" className={ classes.linkDraw }>
+                <Link to="/products" className={ styles.drawerLink }>
                     <ListItem button key={ "products" }>
-                        <ListItemText primary={ "Produkty" }/>
+                        <ListItemText primary={ "Produkty" } />
                     </ListItem>
                 </Link>
-                <Link to="clients" className={ classes.linkDraw }>
+                <Link to="clients" className={ styles.drawerLink }>
                     <ListItem button key={ "clients" }>
                         <ListItemText primary={ "Klienci" }/>
                     </ListItem>
                 </Link>
-                <Link to="/account" className={ classes.linkDraw }>
+                <Link to="/account" className={ styles.drawerLink }>
                     <ListItem button key={ "account" }>
                         <ListItemIcon>
                             <AccountCircleIcon/>
@@ -109,17 +92,17 @@ const Navbar = ({ dispatch, username }) => {
 
     return (
 
-            <AppBar position="static" elevation={0}>
+            <AppBar position="static" elevation={3} className={styles.wrapper}>
                 <Container maxWidth="lg">
-                    <Toolbar>
-                        <Typography align="left" variant="h6" className={ classes.title }>
+                    <Toolbar >
+                        <Typography align="left" variant="h6" className={ styles.logo }>
                             IMS
                         </Typography>
                         { isMobile ? (
                             <React.Fragment key="sideNav">
                                 <IconButton
                                     edge="start"
-                                    className={ classes.menuButton }
+                                    className={ styles.menuButton }
                                     color="inherit"
                                     aria-label="menu"
                                     onClick={ toggleDrawer(true) }
@@ -137,13 +120,15 @@ const Navbar = ({ dispatch, username }) => {
                             </React.Fragment>
                         ) : (
                             <>
-                                <Link to="/orders" className={ classes.linkButton }>
-                                    <Button type="button" color="inherit"> Zamówienia </Button>
+                                <Link to="/orders" className={ styles.navbarLink }>
+                                    <Button type="button" variant={"text"} color="inherit">
+                                            Zamówienia
+                                    </Button>
                                 </Link>
-                                <Link to="/products" className={ classes.linkButton }>
+                                <Link to="/products" className={ styles.navbarLink }>
                                     <Button color="inherit"> Produkty </Button>
                                 </Link>
-                                <Link to="/clients" className={ classes.linkButton }>
+                                <Link to="/clients" className={ styles.navbarLink }>
                                     <Button color="inherit"> Klienci </Button>
                                 </Link>
 

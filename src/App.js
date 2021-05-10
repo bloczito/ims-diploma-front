@@ -3,6 +3,7 @@ import { StylesProvider } from "@material-ui/core/styles"
 import LoginView from "./views/LoginView/LoginView";
 import OrdersView from "./views/OrdersView/OrdersView"
 import ProductsView from "./views/ProductsView/ProductsView";
+import CustomersView from "./views/CustomersView/CustomersView";
 
 import Navbar from "./components/Navbar/Navbar";
 import TestView from "./components/TestView/TestView"
@@ -27,7 +28,7 @@ function App({ token }) {
                         <Switch>
                             <Route path="/orders"  component={OrdersView}/>
                             <Route path="/products" component={ProductsView}/>
-                            <Route path="/clients">Klienci</Route>
+                            <Route path="/clients" component={CustomersView}/>
                             <Route path="/test" component={TestView}/>
                         </Switch>
                     </Router>

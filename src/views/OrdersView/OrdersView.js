@@ -79,14 +79,16 @@ const OrdersView = () => {
                                     Zamówienia
                                 </Typography>
                             </Grid>
-                            <Grid item md={4}  justify="flex-end">
-                                <TablePagination
-                                    totalElements={totalElements}
-                                    rowsPerPage={rowsPerPage}
-                                    pageNr={page}
-                                    handleChangePage={handleChangePage}
-                                    handleChangeRowsPerPage={handleChangeRowsPerPage}
-                                />
+                            <Grid item md={4} >
+                                <Grid container justify="flex-end">
+                                    <TablePagination
+                                        totalElements={totalElements}
+                                        rowsPerPage={rowsPerPage}
+                                        pageNr={page}
+                                        handleChangePage={handleChangePage}
+                                        handleChangeRowsPerPage={handleChangeRowsPerPage}
+                                    />
+                                </Grid>
                             </Grid>
                         </Grid>
 

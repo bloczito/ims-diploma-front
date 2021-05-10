@@ -30,6 +30,7 @@ const ProductsTableBody = ({products, page, rowsPerPage}) => (
 
 ProductsTableBody.propTypes = {
     products: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number,
         code: PropTypes.number,
         name: PropTypes.string,
         height: PropTypes.number,
@@ -42,7 +43,7 @@ ProductsTableBody.propTypes = {
 }
 
 
-const ProductsTable = ({products, page, rowsPerPage, totalElements, handleChangePage, handleChangeRowsPerPage}) => (
+const ProductsTable = ({products, page, rowsPerPage}) => (
     <TableContainer component={Paper}>
         <Table stickyHeader>
             <TableHead>
@@ -64,6 +65,7 @@ const ProductsTable = ({products, page, rowsPerPage, totalElements, handleChange
 
 ProductsTable.propTypes = {
     products: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number,
         code: PropTypes.number,
         name: PropTypes.string,
         height: PropTypes.number,
@@ -73,9 +75,6 @@ ProductsTable.propTypes = {
     })),
     page: number.isRequired,
     rowsPerPage: number.isRequired,
-    handleChangePage: PropTypes.func.isRequired,
-    handleChangeRowsPerPage: PropTypes.func.isRequired,
-    totalElements: PropTypes.number.isRequired
 }
 
 ProductsTable.defaultProps = {

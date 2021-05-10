@@ -21,7 +21,6 @@ const DialogHeader = ({children, closeFn}) => (
 
 
 DialogHeader.propTypes = {
-    children: PropTypes.string,
     closeFn: PropTypes.func,
 }
 

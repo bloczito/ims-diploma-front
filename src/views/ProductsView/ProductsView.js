@@ -19,7 +19,7 @@ const ProductsView = () => {
     const [totalElements, setTotalElements] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [refreshProducts, setRefreshProducts] = useState(false);
+    const [reloadValue, setReloadValue] = useState(0);
 
     const loadProductsData = async () => {
         await utils.withinGuard(setIsLoading, async () => {
@@ -36,7 +36,7 @@ const ProductsView = () => {
 
     useEffect(() => {
         loadProductsData();
-    }, [page, rowsPerPage, refreshProducts])
+    }, [page, rowsPerPage, reloadValue])
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -47,7 +47,7 @@ const ProductsView = () => {
         setPage(0);
     };
 
-    const reloadProducts = () => setRefreshProducts(prevState => setRefreshProducts(!prevState));
+    const reloadProducts = () => setReloadValue(prevState => prevState + 1);
 
 
     const handleNewProductSubmit = formData => {
@@ -58,12 +58,12 @@ const ProductsView = () => {
 
     }
 
-    const handleModalClos = () => setIsModalOpen(false);
+    const handleModalClose = () => setIsModalOpen(false);
 
     return (
         <>
             <OverlaySpinner isActive={isLoading}/>
-            <Container className={styles.wrapper}>
+            <Container>
                 <Grid container alignContent="space-between" direction="row">
                     <Grid item md={4}>
                         <Button variant="contained"
@@ -110,7 +110,7 @@ const ProductsView = () => {
             <NewProductModal
                 handleNewProductSubmit={handleNewProductSubmit}
                 isOpen={isModalOpen}
-                handleModalClose={handleModalClos}
+                handleModalClose={handleModalClose}
             />
         </>
     )

@@ -17,7 +17,7 @@ import DialogHeader from "../DialogHeader/DialogHeader";
 
 const NewProductModal = ({isOpen, handleNewProductSubmit, handleModalClose}) => {
 
-    const {register, control, handleSubmit} = useForm();
+    const {register, handleSubmit} = useForm();
 
 
     return (
