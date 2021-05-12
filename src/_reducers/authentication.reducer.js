@@ -4,7 +4,8 @@ let user = JSON.parse(localStorage.getItem("user"));
 const initialState = user ? {
     loggedIn: true,
     token: user.token,
-    username: user.username
+    username: user.username,
+    roles: user.roles,
 } : {};
 
 
@@ -20,7 +21,8 @@ export function authentication(state = initialState, action) {
             return {
                 loggedIn: true,
                 token: action.user.token,
-                username: action.user.username
+                username: action.user.username,
+                roles: action.user.roles,
             };
         case userConstants.LOGIN_FAILURE:
             return {};

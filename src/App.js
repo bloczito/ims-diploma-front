@@ -17,7 +17,9 @@ import {
 
 
 
-function App({ token }) {
+function App({ token, username, roles }) {
+
+    console.log("APKA", username, roles);
 
     return (
         <StylesProvider injectFirst>
@@ -41,10 +43,10 @@ function App({ token }) {
 }
 
 function mapStateToProps(state) {
-    const { token } = state.authentication;
+    const { token, roles, username } = state.authentication;
 
     return {
-        token
+        token, roles, username
     }
 }
 

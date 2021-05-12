@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import {
     AppBar,
@@ -16,6 +16,7 @@ import {
     MenuItem,
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
+import SettingsIcon from '@material-ui/icons/Settings';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
@@ -132,12 +133,21 @@ const Navbar = ({ dispatch, username }) => {
                                     <Button color="inherit"> Klienci </Button>
                                 </Link>
 
+                                <Link to="/admin_panel" className={styles.navbarLink}>
+                                    <Button
+                                        color="inherit"
+                                        startIcon={<SettingsIcon/>}
+                                    >
+                                        Panel administracyjny
+                                    </Button>
+                                </Link>
+
                                 <Button
                                     style={{fontWeight: "bold", color: "yellow"}}
                                     aria-controls="user-menu"
                                     aria-haspopup="true"
                                     onClick={ handleUserMenuOpen }
-                                    endIcon={<AccountCircleIcon/>}
+                                    startIcon={<AccountCircleIcon/>}
                                 > {username} </Button>
                                 <Menu
                                     id="user-menu"
@@ -157,9 +167,9 @@ const Navbar = ({ dispatch, username }) => {
 }
 
 function mapStateToProps(state) {
-    const {username} = state.authentication;
+    const {username, roles} = state.authentication;
     return {
-        username
+        username, roles
     };
 }
 

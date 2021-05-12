@@ -5,3 +5,8 @@ export const userConstants = {
 
     LOGOUT: 'USERS_LOGOUT',
 }
+
+export const userRoles = {
+    ROLE_ADMIN: "ROLE_ADMIN",
+    ROLE_USER: "ROLE_USER",
+}
