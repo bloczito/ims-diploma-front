@@ -63,7 +63,7 @@ const OrdersView = () => {
             company: {id: 6},
             customer: {id: 7},
         }
-        orderService.addNewOrder(newOrder);
+        // orderService.addNewOrder(newOrder);
         setIsModalOpen(false);
     }
 

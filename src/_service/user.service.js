@@ -2,7 +2,8 @@ import { axiosClient } from "../_helpers";
 
 export const userService = {
     login,
-    logout
+    logout,
+    getAll,
 }
 
 
@@ -18,4 +19,10 @@ function login(username, password) {
 
 function logout() {
     localStorage.removeItem("user");
+}
+
+function getAll() {
+    return axiosClient
+        .get("/users/all")
+        .then(res => res.data)
 }
