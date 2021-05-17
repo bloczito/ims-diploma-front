@@ -8,11 +8,36 @@ import styles from "./AdminPanelView.module.scss";
 
 import NewUserModal from "../../components/NewUserModal/NewUserModal";
 import NewRoleModal from "../../components/NewRoleModal/NewRoleModal";
+import DefaultTable from "../../components/DefaultTable/DefaultTable";
 
-const tabs = {
-    USERS_TAB: "USERS_TAB",
-    ROLES_TAB: "ROLES_TAB",
-}
+const rolesColumnsDefs = ["Nazwa", "Info"];
+
+const usersColumnsDefs = [
+    "Nazwa użytkownika",
+    "Imię",
+    "Nazwisko",
+    "Skrót",
+    "Email",
+    "Telefon",
+    "Stanowisko",
+    "Uprawnienia",
+]
+
+
+const mapRolesToRows = (roles) =>
+    roles.map(role => ([role.name, role.info]));
+
+
+const mapUsersToRows = (users) =>
+    users.map(user => ([
+        user.username,
+        user.firstName,
+        user.lastName,
+        user.shortcut,
+        user.email,
+        user.phone,
+        user.job,
+    ]))
 
 const TabPanel = (props) => {
     const { children, value, index, ...other } = props;
@@ -26,7 +51,7 @@ const TabPanel = (props) => {
             {...other}
         >
             {value === index && (
-                <Box p={3}>
+                <Box pt={3}>
                     <Typography>{children}</Typography>
                 </Box>
             )}
@@ -98,14 +123,11 @@ const AdminPanelView = () => {
                 </AppBar>
 
                 <TabPanel value={activeTab} index={0}>
-                    <ul>
-                        {users.map(user => <li key={user.id}>{user.firstName}</li>)}
-                    </ul>
+                    {/*<UsersTable users={users} />*/}
+                    <DefaultTable rows={mapUsersToRows(users)} headerCells={usersColumnsDefs} />
                 </TabPanel>
                 <TabPanel value={activeTab} index={1}>
-                    <ul>
-                        {roles.map(role => <li key={role.id}>{role.name}</li>)}
-                    </ul>
+                    <DefaultTable rows={mapRolesToRows(roles)} headerCells={rolesColumnsDefs} />
                 </TabPanel>
             </Container>
 
