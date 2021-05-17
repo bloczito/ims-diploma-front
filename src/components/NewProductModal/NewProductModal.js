@@ -13,6 +13,7 @@ import {
 
 import styles from "./NewProductModal.module.scss"
 import DialogHeader from "../DialogHeader/DialogHeader";
+import DialogFooter from "../DialogFooter/DialogFooter";
 
 
 const NewProductModal = ({isOpen, handleNewProductSubmit, handleModalClose}) => {
@@ -27,7 +28,7 @@ const NewProductModal = ({isOpen, handleNewProductSubmit, handleModalClose}) => 
             onClose={handleModalClose}
             fullWidth
         >
-            <form onSubmit={handleSubmit(handleNewProductSubmit)} autoComplete={false}>
+            <form onSubmit={handleSubmit(handleNewProductSubmit)} autoComplete="off">
                 <DialogHeader closeFn={handleModalClose}>
                     Dodaj nowy produkt
                 </DialogHeader>
@@ -154,11 +155,11 @@ const NewProductModal = ({isOpen, handleNewProductSubmit, handleModalClose}) => 
                     </Grid>
 
                 </DialogContent>
-                <DialogActions>
-                    <Button variant="contained" color="primary" onClick={handleNewProductSubmit} type="submit">
-                       Dodaj
-                    </Button>
-                </DialogActions>
+
+                <DialogFooter
+                    cancelFn={handleModalClose}
+                    submitFn={handleNewProductSubmit}
+                />
             </form>
         </Dialog>
     )

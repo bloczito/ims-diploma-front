@@ -16,6 +16,7 @@ import styles from "./NewCustomerModal.scss";
 import PhoneIcon from "@material-ui/icons/Phone";
 import EmailIcon from '@material-ui/icons/AlternateEmail';
 import DefaultSelect from "../DefaultSelect/DefaultSelect";
+import DialogFooter from "../DialogFooter/DialogFooter";
 
 
 const countries = [
@@ -145,11 +146,10 @@ const NewCustomerModal = ({isOpen, handleModalClose, handleNewCustomerSubmit}) =
                     </Grid>
 
                 </DialogContent>
-                <DialogActions>
-                    <Button variant="contained" color="primary" onClick={handleNewCustomerSubmit} type="submit">
-                        Dodaj
-                    </Button>
-                </DialogActions>
+                <DialogFooter
+                    cancelFn={handleModalClose}
+                    submitFn={handleNewCustomerSubmit}
+                />
             </form>
         </Dialog>
     )

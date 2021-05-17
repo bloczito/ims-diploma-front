@@ -13,6 +13,7 @@ import styles from "./NewOrderModal.module.scss"
 import { useForm } from "react-hook-form";
 import DefaultSelect from "../DefaultSelect/DefaultSelect";
 import {customerService, companyService} from "../../_service";
+import DialogFooter from "../DialogFooter/DialogFooter";
 
 const NewOrderModal = ({ open, closeFn, handleNewOrderSubmit}) => {
 
@@ -107,11 +108,10 @@ const NewOrderModal = ({ open, closeFn, handleNewOrderSubmit}) => {
                     </form>
                 </Grid>
             </DialogContent>
-            <DialogActions>
-                <button type="submit" form="new-order-form">
-                    Submit
-                </button>
-            </DialogActions>
+            <DialogFooter
+                cancelFn={closeFn}
+                submitFn={handleNewOrderSubmit}
+            />
         </Dialog>
 
     )
