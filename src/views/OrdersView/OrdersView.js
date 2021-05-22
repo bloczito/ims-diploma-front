@@ -1,11 +1,36 @@
 import React, { useState, useEffect } from "react";
-import { orderService } from "../../_service";
 import { Button, CircularProgress, Container, Grid, Typography } from "@material-ui/core";
-import {utils} from "../../_helpers";
-import OrdersTable  from "../../components/OrdersTable/OrdersTable";
+
+import { orderService } from "../../_service";
 import NewOrderModal from "../../components/NewOrderModal/NewOrderModal";
 import TablePagination from "../../components/TablePagination/TablePagination";
 import styles from "./OrdersView.module.scss"
+import DefaultTable from "../../components/DefaultTable/DefaultTable";
+
+
+const COLUMN_DEFS = [
+    "Numer umowy",
+    "Data umowy",
+    "Termin",
+    "Klient",
+    "Priorytet",
+    "Status",
+    "Firma",
+]
+
+const mapOrdersToRows = orders =>
+    orders.map(order => ({
+        id: order.id,
+        cells: [
+            order.orderNumber,
+            order.orderDate,
+            order.deadline,
+            order.customer.name,
+            order.priority,
+            order.status,
+            order.company.name,
+        ]
+    }))
 
 
 const OrdersView = () => {
@@ -103,13 +128,10 @@ const OrdersView = () => {
 
                         <Grid container>
                             <Grid item md>
-                                <OrdersTable
-                                    orders={orders}
-                                    page={page}
-                                    rowsPerPage={rowsPerPage}
-                                    handleChangePage={handleChangePage}
-                                    handleChangeRowsPerPage={handleChangeRowsPerPage}
-                                    totalElements={totalElements}
+                                <DefaultTable
+                                    route="/orders"
+                                    rows={mapOrdersToRows(orders)}
+                                    headerCells={COLUMN_DEFS}
                                 />
                             </Grid>
                         </Grid>

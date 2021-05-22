@@ -1,5 +1,6 @@
 import { axiosClient } from "../_helpers";
 
+const rootPath = "/orders";
 
 export const orderService = {
     getAll,
@@ -9,7 +10,7 @@ export const orderService = {
 
 function getAll() {
     return axiosClient
-        .get("/orders")
+        .get(`${rootPath}/all`)
         .then(res => {
             return res.data;
         });
@@ -21,7 +22,7 @@ function getPaginated(page, size) {
     if (size) pageable.size = size;
 
     return axiosClient
-        .get("/orders", {
+        .get(rootPath, {
             params: pageable
         })
         .then(res => {
@@ -31,7 +32,13 @@ function getPaginated(page, size) {
 }
 
 function addNewOrder(newOrder) {
-    return axiosClient.post("/orders", newOrder)
+    return axiosClient.post(rootPath, newOrder)
+}
+
+function getById(id) {
+    return axiosClient
+        .get(`${rootPath}/${id}`)
+        .then(res => res.data);
 }
 
 

@@ -8,6 +8,26 @@ import { Button, Container, Grid, Typography } from "@material-ui/core";
 import TablePagination from "../../components/TablePagination/TablePagination";
 import CustomersTable from "../../components/CustomersTable/CustomersTable";
 import NewCustomerModal from "../../components/NewCustomerModal/NewCustomerModal";
+import DefaultTable from "../../components/DefaultTable/DefaultTable";
+
+
+const COLUMN_DEFS = [
+    "Nazwa",
+    "Nip",
+    "Telefon",
+    "Email",
+];
+
+const mapCustomersToRows = customers =>
+    customers.map(customer => ({
+        id: customer.id,
+        cells: [
+            customer.name,
+            customer.nip,
+            customer.phone,
+            customer.email,
+        ]
+    }))
 
 const CustomersView = () => {
 
@@ -93,10 +113,16 @@ const CustomersView = () => {
                 </Grid>
 
                 <Grid container>
-                    <CustomersTable
-                        rowsPerPage={rowsPerPage}
-                        page={page}
-                        customers={customers} />
+                    {/*<CustomersTable*/}
+                    {/*    rowsPerPage={rowsPerPage}*/}
+                    {/*    page={page}*/}
+                    {/*    customers={customers} />*/}
+                    <DefaultTable
+                        headerCells={COLUMN_DEFS}
+                        rows={mapCustomersToRows(customers)}
+                        route="/customers"
+                    />
+
                 </Grid>
             </Container>
 

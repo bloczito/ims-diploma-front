@@ -8,7 +8,26 @@ import OverlaySpinner from "../../components/OverlaySpinner/OverlaySpinner";
 import styles from "./ProductsView.module.scss";
 import NewProductModal from "../../components/NewProductModal/NewProductModal";
 import { utils } from "../../_helpers";
+import DefaultTable from "../../components/DefaultTable/DefaultTable";
 
+
+const COLUMN_DEFS = [
+    "Kod produktu",
+    "Nazwa",
+    "Wymiary",
+    "Cena",
+];
+
+const mapProductsToRows = products =>
+    products.map(product => ({
+        id: product.id,
+        cells: [
+            product.code,
+            product.name,
+            `${product.width} x ${product.height} x ${product.depth} cm`,
+            product.basePrice,
+        ]
+    }));
 
 const ProductsView = () => {
 
@@ -93,14 +112,11 @@ const ProductsView = () => {
 
                 <Grid container>
                     <Grid item md>
-                        <ProductsTable
-                            products={products}
-                            page={page}
-                            rowsPerPage={rowsPerPage}
-                            handleChangePage={handleChangePage}
-                            handleChangeRowsPerPage={handleChangeRowsPerPage}
-                            totalElements={totalElements}
-                        />
+                      <DefaultTable
+                          route="/products"
+                          headerCells={COLUMN_DEFS}
+                          rows={mapProductsToRows(products)}
+                      />
                     </Grid>
                 </Grid>
 
