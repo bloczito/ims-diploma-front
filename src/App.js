@@ -5,6 +5,7 @@ import OrdersView from "./views/OrdersView/OrdersView"
 import ProductsView from "./views/ProductsView/ProductsView";
 import CustomersView from "./views/CustomersView/CustomersView";
 import AdminPanelView from "./views/AdminPanelView/AdminPanelView";
+import OrderView from "./views/OrderView/OrderView";
 
 import Navbar from "./components/Navbar/Navbar";
 import TestView from "./components/TestView/TestView"
@@ -29,9 +30,12 @@ function App({ token, username, roles }) {
                     <Router>
                         <Navbar/>
                         <Switch>
+                            <Route path="/orders/:id"  component={OrderView}/>
                             <Route path="/orders"  component={OrdersView}/>
+                            <Route path="/products/:id" component={ProductsView}/>
                             <Route path="/products" component={ProductsView}/>
-                            <Route path="/clients" component={CustomersView}/>
+                            <Route path="/customers/:id" component={CustomersView}/>
+                            <Route path="/customers" component={CustomersView}/>
                             <Route path="/admin_panel" component={AdminPanelView}/>
                             <Route path="/test" component={TestView}/>
                         </Switch>

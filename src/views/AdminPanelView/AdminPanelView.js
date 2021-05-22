@@ -25,19 +25,28 @@ const usersColumnsDefs = [
 
 
 const mapRolesToRows = (roles) =>
-    roles.map(role => ([role.name, role.info]));
+    roles.map(role => ({
+        id: role.id,
+        cells: [
+            role.name,
+            role.info,
+        ]
+    }));
 
 
 const mapUsersToRows = (users) =>
-    users.map(user => ([
-        user.username,
-        user.firstName,
-        user.lastName,
-        user.shortcut,
-        user.email,
-        user.phone,
-        user.job,
-    ]))
+    users.map(user => ({
+        id: user.id,
+        cells: [
+            user.username,
+            user.firstName,
+            user.lastName,
+            user.shortcut,
+            user.email,
+            user.phone,
+            user.job,
+        ]
+    }))
 
 const TabPanel = (props) => {
     const { children, value, index, ...other } = props;
@@ -124,10 +133,18 @@ const AdminPanelView = () => {
 
                 <TabPanel value={activeTab} index={0}>
                     {/*<UsersTable users={users} />*/}
-                    <DefaultTable rows={mapUsersToRows(users)} headerCells={usersColumnsDefs} />
+                    <DefaultTable
+                        route="/users"
+                        rows={mapUsersToRows(users)}
+                        headerCells={usersColumnsDefs}
+                    />
                 </TabPanel>
                 <TabPanel value={activeTab} index={1}>
-                    <DefaultTable rows={mapRolesToRows(roles)} headerCells={rolesColumnsDefs} />
+                    <DefaultTable
+                        route="/roles"
+                        rows={mapRolesToRows(roles)}
+                        headerCells={rolesColumnsDefs}
+                    />
                 </TabPanel>
             </Container>
 
