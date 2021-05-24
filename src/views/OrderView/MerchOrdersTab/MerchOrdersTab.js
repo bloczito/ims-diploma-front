@@ -32,8 +32,6 @@ const merchOrderInitialState = {
 const MerchOrdersTab = ({ order:  {merchOrders}, handleChange, formik, submitNewMerchOrder}) => {
 
     const [isAdding, setIsAdding] = useState(false);
-    const [newOrderComment, setNewOrderComment] = useState("");
-    const [newOrderElements, setNewOrderElements] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [queryResults, setQueryResults] = useState([]);
     const [newProduct, setNewProduct] = useState({

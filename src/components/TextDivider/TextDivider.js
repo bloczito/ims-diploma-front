@@ -6,7 +6,7 @@ import styles from "./TextDivider.module.scss"
 
 
 const TextDivider = ({label}) => (
-    <div className={styles.container}>
+    <div className={styles.wrapper}>
         {/* <div className="border" /> */}
         {/*<span className="content">*/}
 
@@ -16,7 +16,7 @@ const TextDivider = ({label}) => (
             </Typography>
         )}
 
-        <div className={styles.border} />
+        <div className={styles.line} />
     </div>
 )
 

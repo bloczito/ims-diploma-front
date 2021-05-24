@@ -24,14 +24,13 @@ import MerchOrdersTab from "./MerchOrdersTab/MerchOrdersTab";
 
 
 
-
-
 const OrderDetailsView = () => {
 
     const {id: orderId} = useParams();
     const [order, setOrder] = useState({});
     const [activeTab, setActiveTab] = useState(0);
-
+    const [statuses, setStatuses] = useState([]);
+    const [priorities, setPriorities] = useState([]);
 
     const formik = useFormik({
         initialValues: {...order, newProduct: null, newQuantity: null},
@@ -41,15 +40,17 @@ const OrderDetailsView = () => {
             saveOrder(values)
         },
         enableReinitialize: true,
+    });
 
-    })
+    console.log(formik.values);
 
 
     const loadOrder = async () => {
         const response = await orderService.getById(orderId);
 
-        console.log(response.resource)
-        setOrder(response.resource)
+        setOrder(response.resource.order);
+        setStatuses(response.resource.statuses);
+        setPriorities(response.resource.priorities);
     }
 
 
@@ -68,10 +69,10 @@ const OrderDetailsView = () => {
 
     }
 
-    async function saveOrder(order) {
+    function saveOrder(order) {
         console.log("RESPONSE", order);
-        const response = await orderService.updateOrder(order);
-        console.log("RESPONSE", response);
+        orderService.updateOrder(order)
+            .then(loadOrder);
     }
 
 
@@ -135,7 +136,11 @@ const OrderDetailsView = () => {
                         </AppBar>
 
                         <TabPanel activeTab={activeTab} index={0}>
-                            <InfoTab formik={formik}/>
+                            <InfoTab
+                                formik={formik}
+                                priorities={priorities}
+                                statuses={statuses}
+                            />
                         </TabPanel>
 
                         <TabPanel activeTab={activeTab} index={1}>

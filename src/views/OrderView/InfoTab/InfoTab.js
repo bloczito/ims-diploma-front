@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { Grid, MenuItem, TextField } from "@material-ui/core";
 import CustomSelect from "../../../components/CustomSelect/FormikSelect";
 import TextDivider from "../../../components/TextDivider/TextDivider";
+import { orderPriority, orderStatus } from "../../../_constants";
 
 
-const InfoTab = ({formik}) => {
+const InfoTab = ({formik, priorities, statuses}) => {
 
     return (
         <Grid container>
@@ -48,13 +49,17 @@ const InfoTab = ({formik}) => {
             <Grid container spacing={2}>
                 <Grid item xs={3}>
                     <CustomSelect
-                        label="Klient"
-                        name="customer.id"
+                        label="Priorytet"
+                        name="priority"
                         onChange={formik.handleChange}
-                        value={formik.values.customer?.id}
+                        value={formik.values?.priority}
                     >
-                        <MenuItem value={13}>ASDASD</MenuItem>
-                        <MenuItem value={30}>DUPA</MenuItem>
+                        {priorities.map(el => (
+                            <MenuItem key={el} value={el}>{orderPriority[el]}</MenuItem>
+                        ))
+
+                        }
+
                     </CustomSelect>
                 </Grid>
                 <Grid item xs={3}>
@@ -62,18 +67,46 @@ const InfoTab = ({formik}) => {
                         label="Status"
                         name="status"
                         onChange={formik.handleChange}
-                        value={formik.values.status}
+                        value={formik.values?.status}
                     >
-                        <MenuItem value={13}>ASDASD</MenuItem>
-                        <MenuItem value={30}>DUPA</MenuItem>
+                        {statuses.map(el => (
+                          <MenuItem key={el} value={el}>{orderStatus[el]}</MenuItem>
+                        ))}
                     </CustomSelect>
                 </Grid>
             </Grid>
 
-            <TextDivider label="Klient"/>
+            <TextDivider label="Dane Klienta"/>
+
             <Grid container spacing={2}>
                 <Grid item xs={3}>
+                    <TextField
+                        label="Nazwa"
+                        value={formik.values?.customer?.name}
+                        disabled
+                        fullWidth
+                        InputLabelProps={{shrink: formik.values?.customer?.name}}
+                    />
+                </Grid>
 
+                <Grid item xs={3}>
+                    <TextField
+                        label="Email"
+                        value={formik.values?.customer?.email}
+                        disabled
+                        fullWidth
+                        InputLabelProps={{shrink: formik.values?.customer?.email}}
+                    />
+                </Grid>
+
+                <Grid item xs={3}>
+                    <TextField
+                        label="Telefon"
+                        value={formik.values?.customer?.phone}
+                        disabled
+                        fullWidth
+                        InputLabelProps={{shrink: formik.values?.customer?.phone}}
+                    />
                 </Grid>
             </Grid>
 
@@ -85,7 +118,9 @@ InfoTab.propTypes = {
     formik: PropTypes.shape({
         handleChange: PropTypes.func,
         values: PropTypes.object,
-    }).isRequired
+    }).isRequired,
+    statuses: PropTypes.arrayOf(PropTypes.string).isRequired,
+    priorities: PropTypes.arrayOf(PropTypes.string).isRequired,
 }
 
 export default InfoTab;
