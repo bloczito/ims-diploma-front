@@ -15,13 +15,15 @@ import {
     Switch,
     BrowserRouter as Router
 } from "react-router-dom";
+import { Snackbar } from "@material-ui/core";
+import { Alert } from "@material-ui/lab";
+import { NOTIFICATION_TYPE } from "./_constants";
+import { notificationActions } from "./_actions";
 
 
 
 
-function App({ token, username, roles }) {
-
-    console.log("APKA", username, roles);
+function App({ token, isNotificationOpen, notificationMsg, notificationType, closeNotification}) {
 
     return (
         <StylesProvider injectFirst>
@@ -40,7 +42,19 @@ function App({ token, username, roles }) {
                             <Route path="/test" component={TestView}/>
                         </Switch>
                     </Router>
-
+                    <Snackbar
+                        open={isNotificationOpen}
+                        anchorOrigin={{horizontal: "left", vertical: "bottom"}}
+                        autoHideDuration={6000}
+                        onClose={closeNotification}
+                    >
+                        <Alert
+                            severity={notificationType === NOTIFICATION_TYPE.SUCCESS ? "success" : "error"}
+                            onClose={closeNotification}
+                        >
+                            {notificationMsg}
+                        </Alert>
+                    </Snackbar>
                 </>
 
             }
@@ -50,10 +64,18 @@ function App({ token, username, roles }) {
 
 function mapStateToProps(state) {
     const { token, roles, username } = state.authentication;
+    const {isNotificationOpen, notificationMsg, notificationType} = state.notification;
 
     return {
-        token, roles, username
+        token, roles, username, isNotificationOpen, notificationMsg, notificationType
     }
 }
 
-export default connect(mapStateToProps)(App);
+const mapDispatchToProps = dispatch => ({
+    closeNotification: () => dispatch(notificationActions.close())
+})
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(App);

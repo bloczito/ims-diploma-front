@@ -21,10 +21,11 @@ import moment from "moment";
 import TabPanel from "../../components/TabPanel/TabPanel";
 import InfoTab from "./InfoTab/InfoTab";
 import MerchOrdersTab from "./MerchOrdersTab/MerchOrdersTab";
+import {connect} from "react-redux";
+import { notificationActions } from "../../_actions";
 
 
-
-const OrderDetailsView = () => {
+const OrderDetailsView = ({showSuccess}) => {
 
     const {id: orderId} = useParams();
     const [order, setOrder] = useState({});
@@ -55,24 +56,23 @@ const OrderDetailsView = () => {
 
 
     useEffect(() => {
-        console.log(orderId);
         loadOrder();
-
     }, []);
 
 
     const submitNewMerchOrder = merchOrder => {
         merchOrder.merchOrderDate = moment().toISOString();
-        console.log("SUBMITING", merchOrder)
-
         formik.setFieldValue('merchOrders', [...formik.values.merchOrders, merchOrder])
-
     }
 
     function saveOrder(order) {
-        console.log("RESPONSE", order);
         orderService.updateOrder(order)
-            .then(loadOrder);
+            .then(res => {
+                if (res.success) {
+                    showSuccess("Pomyślnie zapisano zamówienie")
+                    loadOrder();
+                }
+            });
     }
 
 
@@ -160,9 +160,14 @@ const OrderDetailsView = () => {
     )
 }
 
+const mapDispatchToProps = dispatch => ({
+    showSuccess: (message) => dispatch(notificationActions.showSuccess(message))
+})
 
-
-export default OrderDetailsView;
+export default connect(
+    null,
+    mapDispatchToProps
+)(OrderDetailsView);
 
 
 
