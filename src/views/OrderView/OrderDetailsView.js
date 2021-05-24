@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import { orderService } from "../../_service";
+import { connect } from "react-redux";
 import {
     AppBar, Button,
     Card,
@@ -15,14 +15,14 @@ import {
 } from "@material-ui/core";
 import SaveIcon from '@material-ui/icons/Save';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { useFormik} from "formik";
+import { useFormik } from "formik";
 import moment from "moment";
 
+import { orderService } from "../../_service";
+import { notificationActions } from "../../_actions";
 import TabPanel from "../../components/TabPanel/TabPanel";
 import InfoTab from "./InfoTab/InfoTab";
 import MerchOrdersTab from "./MerchOrdersTab/MerchOrdersTab";
-import {connect} from "react-redux";
-import { notificationActions } from "../../_actions";
 
 
 const OrderDetailsView = ({showSuccess}) => {
@@ -42,8 +42,6 @@ const OrderDetailsView = ({showSuccess}) => {
         },
         enableReinitialize: true,
     });
-
-    console.log(formik.values);
 
 
     const loadOrder = async () => {
@@ -111,11 +109,12 @@ const OrderDetailsView = ({showSuccess}) => {
                         }
 
                     />
-                    <Divider />
+                    <Divider/>
                     <CardContent style={{paddingTop: 0}}>
 
-                        <AppBar position="relative" color="inherit" elevation={0} component={Paper} style={{boxShadow: "none"}} >
-                            <Tabs value={activeTab} onChange={((event, value) => setActiveTab(value))} >
+                        <AppBar position="relative" color="inherit" elevation={0} component={Paper}
+                                style={{boxShadow: "none"}}>
+                            <Tabs value={activeTab} onChange={((event, value) => setActiveTab(value))}>
                                 <Tab
                                     label="Informacje ogólne"
                                     tabIndex={0}
@@ -145,13 +144,11 @@ const OrderDetailsView = ({showSuccess}) => {
 
                         <TabPanel activeTab={activeTab} index={1}>
                             <MerchOrdersTab
-                                order={order}
-                                formik={formik}
+                                merchOrders={formik.values.merchOrders}
+                                handleChange={formik.handleChange}
                                 submitNewMerchOrder={submitNewMerchOrder}
                             />
                         </TabPanel>
-
-
                     </CardContent>
                 </form>
             </Card>

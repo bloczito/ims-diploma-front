@@ -18,15 +18,15 @@ import moment from "moment";
 import styles from "./MerchOrderCard.module.scss";
 
 
-const MerchOrderCard = ({merchOrder, commentName, commentValue, onChange}) => (
+const MerchOrderCard = ({merchOrder, commentName, onChange}) => (
     <Card className={styles.wrapper} variant="outlined">
         <CardHeader
             title={
                 <Grid container item alignItems="center">
                     {!merchOrder.id &&
-                        <Chip style={{marginRight: 5}}
+                        <Chip
                             label={
-                                <Typography style={{fontWeight: 'bold'}} >Nowe</Typography>
+                              <Typography style={{fontWeight: 'bold'}}>Nowe</Typography>
                             }
                             color="secondary"
                             size="small"
@@ -51,7 +51,7 @@ const MerchOrderCard = ({merchOrder, commentName, commentValue, onChange}) => (
         <CardContent>
             <Grid container spacing={2}>
                 <Grid item xs={8}>
-                    <Table size="small" >
+                    <Table size="small">
                         <TableBody>
                             {merchOrder.orderElements.map((element, index) => (
                                 <TableRow key={index} hover>
@@ -72,7 +72,7 @@ const MerchOrderCard = ({merchOrder, commentName, commentValue, onChange}) => (
                         // rows={merchOrder.orderElements.length * 1.5}
                         fullWidth
                         label="Komentarz"
-                        value={commentValue}
+                        value={merchOrder.comment}
                         onChange={onChange}
                     />
 
@@ -106,7 +106,6 @@ MerchOrderCard.propTypes = {
         }))
     }).isRequired,
     commentName: PropTypes.string.isRequired,
-    commentValue: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
 }
 
