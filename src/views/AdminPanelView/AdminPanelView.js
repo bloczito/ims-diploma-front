@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
 import { AppBar, Box, Button, Container, Grid, Paper, Tab, Tabs, Typography } from "@material-ui/core";
 import { roleService } from "../../_service/role.service";
 import { userService } from "../../_service";
@@ -9,6 +8,7 @@ import styles from "./AdminPanelView.module.scss";
 import NewUserModal from "../../components/NewUserModal/NewUserModal";
 import NewRoleModal from "../../components/NewRoleModal/NewRoleModal";
 import DefaultTable from "../../components/DefaultTable/DefaultTable";
+import TabPanel from "../../components/TabPanel/TabPanel";
 
 const rolesColumnsDefs = ["Nazwa", "Info"];
 
@@ -48,31 +48,31 @@ const mapUsersToRows = (users) =>
         ]
     }))
 
-const TabPanel = (props) => {
-    const { children, value, index, ...other } = props;
-
-    return (
-        <div
-            role="tabpanel"
-            hidden={value !== index}
-            id={`simple-tabpanel-${index}`}
-            aria-labelledby={`simple-tab-${index}`}
-            {...other}
-        >
-            {value === index && (
-                <Box pt={3}>
-                    <Typography>{children}</Typography>
-                </Box>
-            )}
-        </div>
-    );
-}
-
-TabPanel.propTypes = {
-    children: PropTypes.node,
-    index: PropTypes.any.isRequired,
-    value: PropTypes.any.isRequired,
-};
+// const TabPanel = (props) => {
+//     const { children, value, index, ...other } = props;
+//
+//     return (
+//         <div
+//             role="tabpanel"
+//             hidden={value !== index}
+//             id={`simple-tabpanel-${index}`}
+//             aria-labelledby={`simple-tab-${index}`}
+//             {...other}
+//         >
+//             {value === index && (
+//                 <Box pt={3}>
+//                     <Typography>{children}</Typography>
+//                 </Box>
+//             )}
+//         </div>
+//     );
+// }
+//
+// TabPanel.propTypes = {
+//     children: PropTypes.node,
+//     index: PropTypes.any.isRequired,
+//     value: PropTypes.any.isRequired,
+// };
 
 const AdminPanelView = () => {
 
@@ -91,7 +91,7 @@ const AdminPanelView = () => {
         setRoles(rolesResponse.resource);
     }
 
-    useEffect(async () => {
+    useEffect( () => {
        loadInitData();
 
     }, [reload]);
@@ -131,7 +131,7 @@ const AdminPanelView = () => {
                     </Tabs>
                 </AppBar>
 
-                <TabPanel value={activeTab} index={0}>
+                <TabPanel activeTab={activeTab} index={0}>
                     {/*<UsersTable users={users} />*/}
                     <DefaultTable
                         route="/users"
@@ -139,7 +139,7 @@ const AdminPanelView = () => {
                         headerCells={usersColumnsDefs}
                     />
                 </TabPanel>
-                <TabPanel value={activeTab} index={1}>
+                <TabPanel activeTab={activeTab} index={1}>
                     <DefaultTable
                         route="/roles"
                         rows={mapRolesToRows(roles)}

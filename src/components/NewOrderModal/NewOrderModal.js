@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import PropTypes  from "prop-types"
 import {
     Dialog,
-    DialogActions,
     DialogContent,
     DialogTitle,
     Grid,
@@ -82,7 +81,7 @@ const NewOrderModal = ({ open, closeFn, handleNewOrderSubmit}) => {
                                     label="Klient"
                                     control={control}
                                     name="customer"
-                                    value={12}
+                                    // value={12}
                                 >
                                     {customers.length &&
                                         customers.map(customer => (

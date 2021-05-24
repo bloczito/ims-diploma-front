@@ -1,12 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { useForm } from "react-hook-form";
-import { Button, Dialog, DialogActions, DialogContent, Grid, TextField } from "@material-ui/core";
+import { Dialog, DialogContent, Grid, TextField } from "@material-ui/core";
 import DialogHeader from "../DialogHeader/DialogHeader";
 
 import styles from "./NewRoleModal.module.scss";
 import DialogFooter from "../DialogFooter/DialogFooter";
-
 
 
 const NewRoleModal = ({isOpen, handleModalClose, handleNewRoleSubmit}) => {

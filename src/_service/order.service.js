@@ -6,6 +6,8 @@ export const orderService = {
     getAll,
     getPaginated,
     addNewOrder,
+    getById,
+    updateOrder
 }
 
 function getAll() {
@@ -38,6 +40,12 @@ function addNewOrder(newOrder) {
 function getById(id) {
     return axiosClient
         .get(`${rootPath}/${id}`)
+        .then(res => res.data);
+}
+
+function updateOrder(order) {
+    return axiosClient
+        .post(`${rootPath}/${order.id}`, order)
         .then(res => res.data);
 }
 

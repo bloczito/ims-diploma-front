@@ -149,18 +149,5 @@ const OrdersView = () => {
 }
 
 
-
-
-
-function mapStateToProps(state) {
-    const { loading, orders } = state.orders;
-
-    return {
-        loading,
-        orders
-    }
-}
-
-
 // export default connect(mapStateToProps)(OrdersView);
 export default OrdersView;

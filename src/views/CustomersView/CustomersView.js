@@ -3,10 +3,8 @@ import React, { useEffect, useState } from "react";
 import { customerService } from "../../_service";
 import { utils } from "../../_helpers";
 
-import styles from "./CustomersView.module.scss";
 import { Button, Container, Grid, Typography } from "@material-ui/core";
 import TablePagination from "../../components/TablePagination/TablePagination";
-import CustomersTable from "../../components/CustomersTable/CustomersTable";
 import NewCustomerModal from "../../components/NewCustomerModal/NewCustomerModal";
 import DefaultTable from "../../components/DefaultTable/DefaultTable";
 
@@ -53,7 +51,7 @@ const CustomersView = () => {
         })
     }
 
-    useEffect(async () => {
+    useEffect( () => {
         loadProductsData();
     }, [page, rowsPerPage, reloadValue])
 

@@ -13,7 +13,7 @@ import {
     Typography,
     Container,
     Menu,
-    MenuItem,
+    MenuItem, LinearProgress,
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import SettingsIcon from '@material-ui/icons/Settings';
@@ -91,7 +91,11 @@ const Navbar = ({ dispatch, username }) => {
         </div>
     );
 
+
     return (
+        <>
+            {/*<LinearProgress color="secondary" />*/}
+            <div style={{width: "100%", height: 4, backgroundColor: "#3f51b5"}}></div>
 
             <AppBar position="static" elevation={3} className={styles.wrapper}>
                 <Container maxWidth="lg">
@@ -123,7 +127,7 @@ const Navbar = ({ dispatch, username }) => {
                             <>
                                 <Link to="/orders" className={ styles.navbarLink }>
                                     <Button type="button" variant={"text"} color="inherit">
-                                            Zamówienia
+                                        Zamówienia
                                     </Button>
                                 </Link>
                                 <Link to="/products" className={ styles.navbarLink }>
@@ -134,11 +138,8 @@ const Navbar = ({ dispatch, username }) => {
                                 </Link>
 
                                 <Link to="/admin_panel" className={styles.navbarLink}>
-                                    <Button
-                                        color="inherit"
-                                        startIcon={<SettingsIcon/>}
-                                    >
-                                        Panel administracyjny
+                                    <Button color="inherit">
+                                        <SettingsIcon/>
                                     </Button>
                                 </Link>
 
@@ -163,6 +164,7 @@ const Navbar = ({ dispatch, username }) => {
                     </Toolbar>
                 </Container>
             </AppBar>
+        </>
     );
 }
 
