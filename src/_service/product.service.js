@@ -1,9 +1,12 @@
 import {axiosClient} from "../_helpers";
 
+const BASE_PATH = "/products"
+
 export const productService = {
     // getAll,
     getPaginated,
     addNewProduct,
+    getByQuery
 }
 
 // function getAll() {
@@ -21,7 +24,7 @@ function getPaginated(page, size) {
     if (size) pageable.size = size;
 
     return axiosClient
-        .get("/products", {
+        .get(BASE_PATH, {
             params: pageable
         })
         .then(res => {
@@ -30,5 +33,13 @@ function getPaginated(page, size) {
 }
 
 function addNewProduct(newProduct) {
-    return axiosClient.post("/products", newProduct);
+    return axiosClient.post(BASE_PATH, newProduct);
+}
+
+function getByQuery(query) {
+    return axiosClient
+        .get(`${BASE_PATH}/all`, {
+            params: { query }
+        })
+        .then(res => res.data);
 }

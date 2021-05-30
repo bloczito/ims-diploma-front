@@ -2,10 +2,8 @@ import React, { useEffect, useState } from "react";
 import { productService } from "../../_service";
 import { Button, Container, Grid, Typography } from "@material-ui/core";
 import TablePagination from "../../components/TablePagination/TablePagination";
-import ProductsTable from "../../components/ProductsTable/ProductsTable";
 import OverlaySpinner from "../../components/OverlaySpinner/OverlaySpinner";
 
-import styles from "./ProductsView.module.scss";
 import NewProductModal from "../../components/NewProductModal/NewProductModal";
 import { utils } from "../../_helpers";
 import DefaultTable from "../../components/DefaultTable/DefaultTable";

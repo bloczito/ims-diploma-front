@@ -8,3 +8,15 @@ export const orderConstants = {
     GET_ONE_FAILURE: "GET_ONE_FAILURE",
 
 }
+
+export const orderStatus = {
+    NEW: "Nowe",
+    IN_PROGRESS: "W realizacji",
+    FINISHED: "Zakończone",
+}
+
+export const orderPriority = {
+    LOW: "Niski",
+    MEDIUM: "Średni",
+    HIGH: "Wysoki",
+}

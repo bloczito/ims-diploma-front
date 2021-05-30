@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import DialogHeader from "../DialogHeader/DialogHeader";
 import { useForm } from "react-hook-form";
-import { Button, Dialog, DialogActions, DialogContent, Grid, InputAdornment, TextField } from "@material-ui/core";
+import { Dialog, DialogContent, Grid, InputAdornment, TextField } from "@material-ui/core";
 import EmailIcon from "@material-ui/icons/AlternateEmail";
 import PhoneIcon from "@material-ui/icons/Phone";
 

@@ -27,7 +27,7 @@ DefaultTableHeader.propTypes = {
 const DefaultTableBody = ({rows, route}) => (
     <TableBody>
         {rows.map(row => (
-            <TableRow component={Link} to={`${route}/${row.id}`} hover style={{textDecoration: "none"}}>
+            <TableRow key={row.id} component={Link} to={`${route}/${row.id}`} hover style={{textDecoration: "none"}}>
                 {
                     row.cells.map(cell => (
                         <TableCell key={cell}>{cell}</TableCell>
@@ -60,10 +60,10 @@ const DefaultTable = ({headerCells, rows, route}) => (
 
 DefaultTable.propTypes = {
     headerCells: PropTypes.arrayOf(PropTypes.string).isRequired,
-    rows: PropTypes.exact({
+    rows: PropTypes.arrayOf(PropTypes.exact({
         id: PropTypes.number,
         cells: PropTypes.arrayOf(PropTypes.string),
-    }).isRequired,
+    }).isRequired),
     route: PropTypes.string,
 }
 
