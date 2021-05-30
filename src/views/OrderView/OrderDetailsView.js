@@ -23,6 +23,8 @@ import { notificationActions } from "../../_actions";
 import TabPanel from "../../components/TabPanel/TabPanel";
 import InfoTab from "./InfoTab/InfoTab";
 import MerchOrdersTab from "./MerchOrdersTab/MerchOrdersTab";
+import ShipmentsTab from "./ShipmentTab/ShipmentsTab";
+import PricesTab from "./PricesTab/PricesTab";
 
 
 const OrderDetailsView = ({showSuccess}) => {
@@ -60,7 +62,11 @@ const OrderDetailsView = ({showSuccess}) => {
 
     const submitNewMerchOrder = merchOrder => {
         merchOrder.merchOrderDate = moment().toISOString();
-        formik.setFieldValue('merchOrders', [...formik.values.merchOrders, merchOrder])
+        formik.setFieldValue('merchOrders', [...formik.values.merchOrders, merchOrder]);
+    }
+
+    const submitNewShipment = shipment => {
+        formik.setFieldValue("shipments", [...formik.values.shipments, shipment]);
     }
 
     function saveOrder(order) {
@@ -149,6 +155,23 @@ const OrderDetailsView = ({showSuccess}) => {
                                 submitNewMerchOrder={submitNewMerchOrder}
                             />
                         </TabPanel>
+
+                        <TabPanel activeTab={activeTab} index={2} >
+                            <ShipmentsTab
+                                merchOrders={formik.values.merchOrders}
+                                shipments={formik.values.shipments}
+                                customerObjects={formik.values.customer?.customerObjects || []}
+                                submitNewShipment={submitNewShipment}
+                            />
+                        </TabPanel>
+
+                        <TabPanel activeTab={activeTab} index={3}>
+                            <PricesTab
+                                productPrices={formik.values.productPrices}
+                                onChange={formik.handleChange}
+                            />
+                        </TabPanel>
+
                     </CardContent>
                 </form>
             </Card>

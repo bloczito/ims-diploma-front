@@ -6,8 +6,6 @@ const initialState = {
     notificationMsg: null,
 }
 
-console.log(initialState)
-
 export function notification (state = initialState, action) {
 
     switch (action.type) {

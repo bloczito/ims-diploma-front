@@ -64,7 +64,7 @@ const NewMerchOrderForm = ({submitNewMerchOrder}) => {
         setReRender(prevState => ++prevState)
     }
 
-    const removeItem = (index) => {
+    const removeItem = index => {
         setNewOrder(prevState => {
             const newArr = [...prevState.orderElements];
             newArr.splice(index, 1);
