@@ -6,7 +6,8 @@ export const productService = {
     // getAll,
     getPaginated,
     addNewProduct,
-    getByQuery
+    getByQuery,
+    getById,
 }
 
 // function getAll() {
@@ -33,7 +34,15 @@ function getPaginated(page, size) {
 }
 
 function addNewProduct(newProduct) {
-    return axiosClient.post(BASE_PATH, newProduct);
+    return axiosClient
+        .post(BASE_PATH, newProduct)
+        .then(function (res)  {
+            console.log("ASDASDASD", res)
+            return res.data;
+        })
+        .catch(reason => console.log(reason))
+    // const response = await axiosClient.post(BASE_PATH, newProduct);
+    // return await response.data;
 }
 
 function getByQuery(query) {
@@ -41,5 +50,11 @@ function getByQuery(query) {
         .get(`${BASE_PATH}/all`, {
             params: { query }
         })
+        .then(res => res.data);
+}
+
+function getById(id) {
+    return axiosClient
+        .get(`${BASE_PATH}/${id}`)
         .then(res => res.data);
 }

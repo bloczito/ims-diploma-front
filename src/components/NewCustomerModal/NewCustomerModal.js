@@ -29,7 +29,6 @@ const countries = [
 
 const NewCustomerModal = ({isOpen, handleModalClose, handleNewCustomerSubmit}) => {
     const {register, control, handleSubmit} = useForm();
-    console.log("RENDER RENDER RENDER RENDER RENDER RENDER ")
     return (
         <Dialog
             open={isOpen}

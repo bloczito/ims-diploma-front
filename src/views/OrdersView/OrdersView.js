@@ -132,6 +132,7 @@ const OrdersView = () => {
                                     route="/orders"
                                     rows={mapOrdersToRows(orders)}
                                     headerCells={COLUMN_DEFS}
+                                    variant="link"
                                 />
                             </Grid>
                         </Grid>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { useForm } from "react-hook-form";
 import {
@@ -12,22 +12,43 @@ import {
 import styles from "./NewProductModal.module.scss"
 import DialogHeader from "../DialogHeader/DialogHeader";
 import DialogFooter from "../DialogFooter/DialogFooter";
+import { useFormik } from "formik";
+import { productService } from "../../_service";
 
 
-const NewProductModal = ({isOpen, handleNewProductSubmit, handleModalClose}) => {
+const ProductModal = ({isOpen, submitFn, closeFn, id}) => {
 
-    const {register, handleSubmit} = useForm();
+    const formik = useFormik({
+        onSubmit: values => {
+            submitFn(values);
+        },
+        enableReinitialize: true,
+        initialValues: {},
+    });
 
+    useEffect(async () => {
+        if (id) {
+            const response = await productService.getById(id);
+            console.log(response);
+            formik.setValues({...response.resource})
+        }
+    }, [id])
+
+
+    const handleCancelModal = () => {
+        formik.resetForm({});
+        closeFn();
+    }
 
     return (
         <Dialog
             open={isOpen}
             maxWidth="md"
-            onClose={handleModalClose}
+            onClose={handleCancelModal}
             fullWidth
         >
-            <form onSubmit={handleSubmit(handleNewProductSubmit)} autoComplete="off">
-                <DialogHeader closeFn={handleModalClose}>
+            <form onSubmit={formik.handleSubmit} autoComplete="off">
+                <DialogHeader closeFn={closeFn}>
                     Dodaj nowy produkt
                 </DialogHeader>
 
@@ -40,7 +61,8 @@ const NewProductModal = ({isOpen, handleNewProductSubmit, handleModalClose}) => 
                                 type="number"
                                 name="code"
                                 label="Numer artykułu"
-                                inputRef={register}
+                                value={formik.values.code}
+                                onChange={formik.handleChange}
                             />
                         </Grid>
                         <Grid item xs={4}>
@@ -48,7 +70,8 @@ const NewProductModal = ({isOpen, handleNewProductSubmit, handleModalClose}) => 
                                 fullWidth
                                 name="name"
                                 label="Nazwa"
-                                inputRef={register}
+                                value={formik.values.name}
+                                onChange={formik.handleChange}
                             />
                         </Grid>
                         <Grid item xs={4}>
@@ -61,7 +84,8 @@ const NewProductModal = ({isOpen, handleNewProductSubmit, handleModalClose}) => 
                                     step: 0.01,
                                     startAdornment: <InputAdornment position="start">€</InputAdornment>,
                                 }}
-                                inputRef={register}
+                                value={formik.values.basePrice}
+                                onChange={formik.handleChange}
                             />
                         </Grid>
                     </Grid>
@@ -78,7 +102,8 @@ const NewProductModal = ({isOpen, handleNewProductSubmit, handleModalClose}) => 
                                         step: 0.01,
                                         startAdornment: <InputAdornment position="start">cm</InputAdornment>,
                                     }}
-                                    inputRef={register}
+                                    value={formik.values.height}
+                                    onChange={formik.handleChange}
                                 />
                             </Grid>
                             <Grid item xs={4}>
@@ -91,7 +116,8 @@ const NewProductModal = ({isOpen, handleNewProductSubmit, handleModalClose}) => 
                                         step: 0.01,
                                         startAdornment: <InputAdornment position="start">cm</InputAdornment>,
                                     }}
-                                    inputRef={register}
+                                    value={formik.values.width}
+                                    onChange={formik.handleChange}
                                 />
                             </Grid>
                             <Grid item xs={4}>
@@ -104,7 +130,8 @@ const NewProductModal = ({isOpen, handleNewProductSubmit, handleModalClose}) => 
                                         step: 0.01,
                                         startAdornment: <InputAdornment position="start">cm</InputAdornment>,
                                     }}
-                                    inputRef={register}
+                                    value={formik.values.depth}
+                                    onChange={formik.handleChange}
                                 />
                             </Grid>
 
@@ -121,7 +148,8 @@ const NewProductModal = ({isOpen, handleNewProductSubmit, handleModalClose}) => 
                                         step: 0.01,
                                         startAdornment: <InputAdornment position="start">kg</InputAdornment>,
                                     }}
-                                    inputRef={register}
+                                    value={formik.values.weight}
+                                    onChange={formik.handleChange}
                                 />
                             </Grid>
                         </Grid>
@@ -132,22 +160,26 @@ const NewProductModal = ({isOpen, handleNewProductSubmit, handleModalClose}) => 
                             <TextField
                                 name="descriptionEng"
                                 label="Opis po angielsku"
-                                inputRef={register}
+                                // inputRef={register}
                                 multiline
                                 rows={10}
                                 fullWidth
                                 variant="outlined"
+                                value={formik.values.descriptionEng}
+                                onChange={formik.handleChange}
                             />
                         </Grid>
                         <Grid item xs={6}>
                             <TextField
                                 name="descriptionGer"
                                 label="Opis po niemiecku"
-                                inputRef={register}
+                                // inputRef={register}
                                 multiline
                                 rows={10}
                                 fullWidth
                                 variant="outlined"
+                                value={formik.values.descriptionGer}
+                                onChange={formik.handleChange}
                             />
                         </Grid>
                     </Grid>
@@ -155,8 +187,9 @@ const NewProductModal = ({isOpen, handleNewProductSubmit, handleModalClose}) => 
                 </DialogContent>
 
                 <DialogFooter
-                    cancelFn={handleModalClose}
-                    submitFn={handleNewProductSubmit}
+                    cancelFn={handleCancelModal}
+                    submitFn={submitFn}
+                    submitText={id ? "Zapisz" : "Dodaj"}
                 />
             </form>
         </Dialog>
@@ -166,11 +199,12 @@ const NewProductModal = ({isOpen, handleNewProductSubmit, handleModalClose}) => 
 }
 
 
-NewProductModal.propTypes = {
+ProductModal.propTypes = {
     isOpen: PropTypes.bool.isRequired,
-    handleNewProductSubmit: PropTypes.func.isRequired,
-    handleModalClose: PropTypes.func.isRequired,
+    submitFn: PropTypes.func.isRequired,
+    closeFn: PropTypes.func.isRequired,
+    id: PropTypes.number,
 }
 
 
-export default NewProductModal;
+export default ProductModal;
