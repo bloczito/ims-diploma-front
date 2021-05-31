@@ -10,14 +10,11 @@ const columnDefs = [
     "Cena",
 ];
 
-const ProductsTableBody = ({products, page, rowsPerPage}) => (
+const ProductsTableBody = ({products, onClick}) => (
     <TableBody>
         {
-            (products > 0
-                ? products.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                : products
-            ).map(product => (
-            <TableRow key={product.id} hover>
+            products.map(product => (
+            <TableRow key={product.id} hover onClick={() => onClick(product.id)}>
                 <TableCell>{product.code}</TableCell>
                 <TableCell>{product.name}</TableCell>
                 <TableCell>{`${product.width} x ${product.height} x ${product.depth} cm`}</TableCell>
@@ -37,13 +34,12 @@ ProductsTableBody.propTypes = {
         width: PropTypes.number,
         depth: PropTypes.number,
         basePrice: PropTypes.number,
-    })),
-    page: number.isRequired,
-    rowsPerPage: number.isRequired,
+    })).isRequired,
+    onClick: PropTypes.func.isRequired,
 }
 
 
-const ProductsTable = ({products, page, rowsPerPage}) => (
+const ProductsTable = ({products, onClick}) => (
     <TableContainer component={Paper}>
         <Table stickyHeader>
             <TableHead>
@@ -56,8 +52,7 @@ const ProductsTable = ({products, page, rowsPerPage}) => (
                         </TableCell>)}
                 </TableRow>
             </TableHead>
-            <ProductsTableBody products={products} page={page} rowsPerPage={rowsPerPage}/>
-
+            <ProductsTableBody products={products} onClick={onClick}/>
         </Table>
     </TableContainer>
 );
@@ -72,9 +67,8 @@ ProductsTable.propTypes = {
         width: PropTypes.number,
         depth: PropTypes.number,
         basePrice: PropTypes.number,
-    })),
-    page: number.isRequired,
-    rowsPerPage: number.isRequired,
+    })).isRequired,
+    onClick: PropTypes.func.isRequired,
 }
 
 ProductsTable.defaultProps = {

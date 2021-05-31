@@ -4,9 +4,11 @@ import { Button, Container, Grid, Typography } from "@material-ui/core";
 import TablePagination from "../../components/TablePagination/TablePagination";
 import OverlaySpinner from "../../components/OverlaySpinner/OverlaySpinner";
 
-import NewProductModal from "../../components/NewProductModal/NewProductModal";
+import ProductModal from "../../components/NewProductModal/ProductModal";
 import { utils } from "../../_helpers";
 import DefaultTable from "../../components/DefaultTable/DefaultTable";
+import { notificationActions } from "../../_actions";
+import { connect } from "react-redux";
 
 
 const COLUMN_DEFS = [
@@ -27,7 +29,7 @@ const mapProductsToRows = products =>
         ]
     }));
 
-const ProductsView = () => {
+const ProductsView = ({showSuccess, showFailure}) => {
 
     const [products, setProducts] = useState([]);
     const [page, setPage] = useState(0);
@@ -37,6 +39,7 @@ const ProductsView = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [reloadValue, setReloadValue] = useState(0);
+    const [selectedProductId, setSelectedProductId] = useState(null);
 
     const loadProductsData = async () => {
         await utils.withinGuard(setIsLoading, async () => {
@@ -67,15 +70,31 @@ const ProductsView = () => {
     const reloadProducts = () => setReloadValue(prevState => prevState + 1);
 
 
-    const handleNewProductSubmit = formData => {
-        console.log(formData);
+    const handleNewProductSubmit = async formData => {
 
-        productService.addNewProduct(formData).then(reloadProducts);
+        const response = await productService.addNewProduct(formData);
+        if (response !== undefined) {
+            if (response.success) {
+                showSuccess(selectedProductId ? "Zaktualizowano produkt" : "Dodano nowy produkt");
+                reloadProducts()
+            } else {
+                showFailure(selectedProductId ? "Nie udało się zaktualizować produktu" : "Nie udało się dodać produktu");
+            }
+        }
         setIsModalOpen(false)
-
     }
 
-    const handleModalClose = () => setIsModalOpen(false);
+    const handleOpenModal = id => {
+        if (id) {
+            setSelectedProductId(id);
+        }
+        setIsModalOpen(true);
+    }
+
+    const handleModalClose = () => {
+        setSelectedProductId(null);
+        setIsModalOpen(false);
+    }
 
     return (
         <>
@@ -111,25 +130,35 @@ const ProductsView = () => {
                 <Grid container>
                     <Grid item md>
                       <DefaultTable
-                          route="/products"
                           headerCells={COLUMN_DEFS}
                           rows={mapProductsToRows(products)}
+                          variant="clickable"
+                          onClick={handleOpenModal}
                       />
+                      {/*<ProductsTable products={products} onClick={handleOpenModal}/>*/}
                     </Grid>
                 </Grid>
 
             </Container>
 
 
-            <NewProductModal
-                handleNewProductSubmit={handleNewProductSubmit}
+            <ProductModal
+                submitFn={handleNewProductSubmit}
                 isOpen={isModalOpen}
-                handleModalClose={handleModalClose}
+                closeFn={handleModalClose}
+                id={selectedProductId}
             />
         </>
     )
 
 }
 
+const mapDispatchToProps = dispatch => ({
+    showSuccess: (message) => dispatch(notificationActions.showSuccess(message)),
+    showFailure: (message) => dispatch(notificationActions.showFailure(message)),
+})
 
-export default ProductsView;
+export default connect(
+    null,
+    mapDispatchToProps
+)(ProductsView);
