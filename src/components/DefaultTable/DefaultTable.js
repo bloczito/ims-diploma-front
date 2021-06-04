@@ -37,8 +37,8 @@ const DefaultTableBody = ({rows, route, variant, onClick}) => (
                 }}
                 onClick={onClick ? (() => onClick(id)) : null}
             >
-                {cells.map(cell => (
-                    <TableCell key={cell}>{cell}</TableCell>
+                {cells.map((cell, idx) => (
+                    <TableCell key={idx}>{cell}</TableCell>
                 ))}
             </TableRow>
         ))}

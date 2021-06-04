@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
-import { useForm } from "react-hook-form";
 import {
     Dialog,
     DialogContent,
@@ -9,7 +8,7 @@ import {
     TextField,
 } from "@material-ui/core";
 
-import styles from "./NewProductModal.module.scss"
+import styles from "./ProductModal.module.scss"
 import DialogHeader from "../DialogHeader/DialogHeader";
 import DialogFooter from "../DialogFooter/DialogFooter";
 import { useFormik } from "formik";
@@ -19,8 +18,9 @@ import { productService } from "../../_service";
 const ProductModal = ({isOpen, submitFn, closeFn, id}) => {
 
     const formik = useFormik({
-        onSubmit: values => {
+        onSubmit: (values, {resetForm}) => {
             submitFn(values);
+            resetForm();
         },
         enableReinitialize: true,
         initialValues: {},
@@ -49,7 +49,7 @@ const ProductModal = ({isOpen, submitFn, closeFn, id}) => {
         >
             <form onSubmit={formik.handleSubmit} autoComplete="off">
                 <DialogHeader closeFn={closeFn}>
-                    Dodaj nowy produkt
+                    {id ? "Edytuj produkt" : "Dodaj nowy produkt"}
                 </DialogHeader>
 
                 <DialogContent dividers className={styles.content}>

@@ -14,7 +14,7 @@ import {
 } from "@material-ui/core";
 import CancelIcon from "@material-ui/icons/Cancel";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
-import CustomSelect from "../CustomSelect/FormikSelect";
+import CustomSelect from "../CustomSelect/CustomSelect";
 import { Autocomplete } from "@material-ui/lab";
 import DeleteIcon from "@material-ui/icons/Delete";
 

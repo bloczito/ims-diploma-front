@@ -1,20 +1,67 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
 import DialogHeader from "../DialogHeader/DialogHeader";
-import { useForm } from "react-hook-form";
-import { Dialog, DialogContent, Grid, InputAdornment, TextField } from "@material-ui/core";
+import { useFormik } from "formik";
+import {
+    Checkbox,
+    Dialog,
+    DialogContent,
+    Grid,
+    InputAdornment,
+    ListItemText,
+    MenuItem,
+    TextField
+} from "@material-ui/core";
 import EmailIcon from "@material-ui/icons/AlternateEmail";
 import PhoneIcon from "@material-ui/icons/Phone";
 
-import styles from "./NewUserModal.module.scss";
+import styles from "./UserModal.module.scss";
 import DialogFooter from "../DialogFooter/DialogFooter";
+import { userService } from "../../_service";
+import CustomSelect from "../CustomSelect/CustomSelect";
+import { roleService } from "../../_service/role.service";
 
 
 
-const NewUserModal = ({isOpen, handleModalClose, handleNewUserSubmit}) => {
+const UserModal = ({isOpen, onClose, submitFn, id}) => {
 
-    const {register, handleSubmit} = useForm();
+    const [roles, setRoles] = useState([]);
+
+    const formik = useFormik({
+        onSubmit: (values, {resetForm}) => {
+            submitFn(values);
+            resetForm();
+        },
+        enableReinitialize: true,
+        initialValues: {},
+    });
+
+    useEffect(() => {
+        roleService.getAll()
+            .then(res => {
+                if (res.success) {
+                    setRoles(res.resource);
+                }
+            })
+    }, [])
+
+    useEffect( () => {
+        if (id) {
+            userService.getById(id)
+                .then(res => {
+                    if (res.success) {
+                        console.log("USER, ", res)
+                        formik.setValues({...res.resource})
+                    }
+                });
+        }
+    }, [id])
+
+    const handleModalClose = () => {
+        formik.resetForm({});
+        onClose();
+    }
 
     return (
         <Dialog
@@ -23,9 +70,9 @@ const NewUserModal = ({isOpen, handleModalClose, handleNewUserSubmit}) => {
             onClose={handleModalClose}
             fullWidth
         >
-            <form onSubmit={handleSubmit(handleNewUserSubmit)} autoComplete="off">
+            <form onSubmit={formik.handleSubmit} autoComplete="off">
                 <DialogHeader closeFn={handleModalClose}>
-                    Dodaj nowego użytkownika
+                    {id ? "Edytuj użytkownika" : "Dodaj nowego użytkownika"}
                 </DialogHeader>
 
                 <DialogContent dividers>
@@ -35,15 +82,21 @@ const NewUserModal = ({isOpen, handleModalClose, handleNewUserSubmit}) => {
                                 fullWidth
                                 name="username"
                                 label="Nazwa użytkownika"
-                                inputRef={register}
+                                onChange={formik.handleChange}
+                                value={formik.values.username}
+                                InputLabelProps={{
+                                    shrink: formik.values.username,
+                                }}
                             />
+
                         </Grid>
                         <Grid item xs={4}>
                             <TextField
                                 fullWidth
                                 name="password"
                                 label="Hasło"
-                                inputRef={register}
+                                onChange={formik.handleChange}
+                                value={formik.values.password}
                             />
                         </Grid>
                         <Grid item xs={4}>
@@ -51,7 +104,8 @@ const NewUserModal = ({isOpen, handleModalClose, handleNewUserSubmit}) => {
                                 fullWidth
                                 name="confirmPassword"
                                 label="Potwierdź hasło"
-                                inputRef={register}
+                                onChange={formik.handleChange}
+                                value={formik.values.confirmPassword}
                             />
                         </Grid>
                     </Grid>
@@ -62,7 +116,8 @@ const NewUserModal = ({isOpen, handleModalClose, handleNewUserSubmit}) => {
                                 fullWidth
                                 name="firstName"
                                 label="Imię"
-                                inputRef={register}
+                                onChange={formik.handleChange}
+                                value={formik.values.firstName}
                             />
                         </Grid>
 
@@ -71,7 +126,8 @@ const NewUserModal = ({isOpen, handleModalClose, handleNewUserSubmit}) => {
                                 fullWidth
                                 name="lastName"
                                 label="Nazwisko"
-                                inputRef={register}
+                                onChange={formik.handleChange}
+                                value={formik.values.lastName}
                             />
                         </Grid>
 
@@ -80,7 +136,8 @@ const NewUserModal = ({isOpen, handleModalClose, handleNewUserSubmit}) => {
                                 fullWidth
                                 name="shortcut"
                                 label="Skrót"
-                                inputRef={register}
+                                onChange={formik.handleChange}
+                                value={formik.values.shortcut}
                             />
                         </Grid>
                     </Grid>
@@ -98,7 +155,8 @@ const NewUserModal = ({isOpen, handleModalClose, handleNewUserSubmit}) => {
                                             <EmailIcon className={styles.icon}/>
                                         </InputAdornment>
                                 }}
-                                inputRef={register}
+                                onChange={formik.handleChange}
+                                value={formik.values.email}
                             />
                         </Grid>
 
@@ -107,7 +165,8 @@ const NewUserModal = ({isOpen, handleModalClose, handleNewUserSubmit}) => {
                                 fullWidth
                                 name="phone"
                                 label="Telefon"
-                                inputRef={register}
+                                onChange={formik.handleChange}
+                                value={formik.values.phone}
                                 InputProps={{
                                     startAdornment:
                                         <InputAdornment position="start">
@@ -122,14 +181,37 @@ const NewUserModal = ({isOpen, handleModalClose, handleNewUserSubmit}) => {
                                 fullWidth
                                 name="job"
                                 label="Stanowisko"
-                                inputRef={register}
+                                onChange={formik.handleChange}
+                                value={formik.values.job}
                             />
+                        </Grid>
+
+                        <Grid item xs={12}>
+                            <CustomSelect
+                                label="Role"
+                                name="roles"
+                                onChange={formik.handleChange}
+                                value={formik.values.roles || []}
+                                multiple
+                                renderValue={selected => selected.map(role => role.name).join(", ")}
+                            >
+                                {roles.map((role) => (
+                                    <MenuItem key={role.id} value={role}>
+                                        <Checkbox checked={
+                                            (formik.values.roles ?? [])
+                                                .map(role => role.id)
+                                                .includes(role.id)
+                                        }/>
+                                        <ListItemText primary={role.name} />
+                                    </MenuItem>
+                                ))}
+                            </CustomSelect>
                         </Grid>
                     </Grid>
                 </DialogContent>
                 <DialogFooter
                     cancelFn={handleModalClose}
-                    submitFn={handleNewUserSubmit}
+                    submitText={id ? "Zapisz" : "Dodaj"}
                 />
             </form>
         </Dialog>
@@ -139,12 +221,13 @@ const NewUserModal = ({isOpen, handleModalClose, handleNewUserSubmit}) => {
 }
 
 
-NewUserModal.propTypes = {
+UserModal.propTypes = {
     isOpen: PropTypes.bool.isRequired,
-    handleNewUserSubmit: PropTypes.func.isRequired,
-    handleModalClose: PropTypes.func.isRequired,
+    submitFn: PropTypes.func.isRequired,
+    onClose: PropTypes.func.isRequired,
+    id: PropTypes.number,
 }
 
-export default NewUserModal;
+export default UserModal;
 
 

@@ -9,5 +9,4 @@ export const companyService = {
 function getAll() {
     return axiosClient
         .get("/companies/list")
-        .then(res => res.data);
 }
