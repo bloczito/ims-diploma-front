@@ -13,9 +13,6 @@ export const orderService = {
 function getAll() {
     return axiosClient
         .get(`${rootPath}/all`)
-        .then(res => {
-            return res.data;
-        });
 }
 
 function getPaginated(page, size) {
@@ -27,9 +24,6 @@ function getPaginated(page, size) {
         .get(rootPath, {
             params: pageable
         })
-        .then(res => {
-            return res.data;
-        });
 
 }
 
@@ -40,13 +34,11 @@ function addNewOrder(newOrder) {
 function getById(id) {
     return axiosClient
         .get(`${rootPath}/${id}`)
-        .then(res => res.data);
 }
 
 function updateOrder(order) {
     return axiosClient
         .post(`${rootPath}/${order.id}`, order)
-        .then(res => res.data);
 }
 
 

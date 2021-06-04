@@ -4,7 +4,7 @@ import { Button, Container, Grid, Typography } from "@material-ui/core";
 import TablePagination from "../../components/TablePagination/TablePagination";
 import OverlaySpinner from "../../components/OverlaySpinner/OverlaySpinner";
 
-import ProductModal from "../../components/NewProductModal/ProductModal";
+import ProductModal from "../../components/ProductModal/ProductModal";
 import { utils } from "../../_helpers";
 import DefaultTable from "../../components/DefaultTable/DefaultTable";
 import { notificationActions } from "../../_actions";

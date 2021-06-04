@@ -51,6 +51,7 @@ function App({ token, isNotificationOpen, notificationMsg, notificationType, clo
                         onClose={closeNotification}
                     >
                         <Alert
+                            style={{maxWidth: "20vw"}}
                             severity={notificationType === NOTIFICATION_TYPE.SUCCESS ? "success" : "error"}
                             onClose={closeNotification}
                         >

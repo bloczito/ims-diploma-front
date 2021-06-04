@@ -10,7 +10,6 @@ export const customerService = {
 function getAll() {
     return axiosClient
         .get("/customers/list")
-        .then(res => res.data);
 }
 
 function getPaginated(page, size) {
@@ -23,9 +22,6 @@ function getPaginated(page, size) {
         .get("/customers", {
             params: pageable
         })
-        .then(res => {
-            return res.data;
-        });
 }
 
 function addNew(newCustomer) {

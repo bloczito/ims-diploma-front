@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Grid, MenuItem, TextField } from "@material-ui/core";
-import CustomSelect from "../../../components/CustomSelect/FormikSelect";
+import CustomSelect from "../../../components/CustomSelect/CustomSelect";
 import TextDivider from "../../../components/TextDivider/TextDivider";
 import { orderPriority, orderStatus } from "../../../_constants";
 

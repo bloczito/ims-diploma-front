@@ -16,7 +16,7 @@ const DialogFooter = ({submitFn, cancelFn, submitText}) => (
 
 
 DialogFooter.propTypes = {
-    submitFn: PropTypes.func.isRequired,
+    submitFn: PropTypes.func,
     cancelFn: PropTypes.func.isRequired,
     submitText: PropTypes.string,
 }

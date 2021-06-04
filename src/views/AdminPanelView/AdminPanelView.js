@@ -5,10 +5,12 @@ import { userService } from "../../_service";
 
 import styles from "./AdminPanelView.module.scss";
 
-import NewUserModal from "../../components/NewUserModal/NewUserModal";
-import NewRoleModal from "../../components/NewRoleModal/NewRoleModal";
+import UserModal from "../../components/UserModal/UserModal";
+import RoleModal from "../../components/NewRoleModal/RoleModal";
 import DefaultTable from "../../components/DefaultTable/DefaultTable";
 import TabPanel from "../../components/TabPanel/TabPanel";
+import { connect } from "react-redux";
+import { notificationActions } from "../../_actions";
 
 const rolesColumnsDefs = ["Nazwa", "Info"];
 
@@ -45,43 +47,22 @@ const mapUsersToRows = (users) =>
             user.email,
             user.phone,
             user.job,
+            user.roles.map(role => role.name).join(", ")
         ]
     }))
 
-// const TabPanel = (props) => {
-//     const { children, value, index, ...other } = props;
-//
-//     return (
-//         <div
-//             role="tabpanel"
-//             hidden={value !== index}
-//             id={`simple-tabpanel-${index}`}
-//             aria-labelledby={`simple-tab-${index}`}
-//             {...other}
-//         >
-//             {value === index && (
-//                 <Box pt={3}>
-//                     <Typography>{children}</Typography>
-//                 </Box>
-//             )}
-//         </div>
-//     );
-// }
-//
-// TabPanel.propTypes = {
-//     children: PropTypes.node,
-//     index: PropTypes.any.isRequired,
-//     value: PropTypes.any.isRequired,
-// };
 
-const AdminPanelView = () => {
+const AdminPanelView = ({showSuccess, showFailure}) => {
 
     const [users, setUsers] = useState([]);
     const [roles, setRoles] = useState([]);
     const [activeTab, setActiveTab] = useState(0);
     const [reload, setReload] = useState(0);
-    const [isNewUserModalOpen, setIsNewUserModalOpen] = useState(false);
-    const [isNewRoleModalOpen, setIsNewRoleModalOpen] = useState(false);
+    const [isUserModalOpen, setIsUserModalOpen] = useState(false);
+    const [isRoleModalOpen, setIsRoleModalOpen] = useState(false);
+    const [selectedUserId, setSelectedUserId] = useState(null);
+    const [selectedRoleId, setSelectedRoleId] = useState(null);
+
 
     const loadInitData = async () => {
         const rolesResponse = await roleService.getAll();
@@ -98,7 +79,57 @@ const AdminPanelView = () => {
 
     const reloadData = () => setReload(prevState => prevState + 1);
 
-    // const handleOpenNewUserModal = () => setIsNewUserModalOpen(true)
+    const handleOpenUserModal = id => {
+        setSelectedUserId(id);
+        setIsUserModalOpen(true);
+    }
+
+    const handleOpenRoleModal = id => {
+        setSelectedRoleId(id);
+        setIsRoleModalOpen(true);
+    }
+
+    const handleCloseUserModal = () => {
+        setSelectedUserId(null);
+        setIsUserModalOpen(false);
+    }
+
+    const handleCloseRoleModal = () => {
+        setSelectedRoleId(null);
+        setIsRoleModalOpen(false);
+    }
+
+    const handleRoleSubmit = formData => {
+        const isCreated = selectedRoleId != null;
+
+        roleService.save(formData)
+            .then(res => {
+                if (res.success) {
+                    showSuccess(isCreated ? "Zaktualizowano rolę" : "Dodano rolę");
+                    reloadData();
+                } else {
+                    showFailure(res.error);
+                }
+            })
+
+        handleCloseRoleModal();
+    }
+
+    const handleUserSubmit = formData => {
+        const isCreated = selectedUserId != null;
+        userService.save(formData)
+            .then(res => {
+                if (res.success) {
+                    showSuccess(isCreated ? "Zaktualizowano użytkownika" : "Dodano użytkownika");
+                    // showSuccess("Lorem ipsum at dolores \nLorem ipsum at dolores Lorem \n ipsum at dolores Lorem ipsum at dolores\n Lorem ipsum at dolores Lorem ipsum at dolores Lorem ipsum at dolores Lorem ipsum at dolores ");
+
+                    reloadData();
+                } else {
+                    showFailure(res.error);
+                }
+            })
+        handleCloseUserModal();
+    }
 
     return (
         <>
@@ -106,11 +137,11 @@ const AdminPanelView = () => {
                <Grid container className={styles.row}>
                    {
                        activeTab ? (
-                           <Button color="primary" variant="contained" onClick={() => setIsNewRoleModalOpen(true)}>
+                           <Button color="primary" variant="contained" onClick={() => setIsRoleModalOpen(true)}>
                                Dodaj role
                            </Button>
                        ) : (
-                           <Button color="primary" variant="contained" onClick={() => setIsNewUserModalOpen(true)}>
+                           <Button color="primary" variant="contained" onClick={() => setIsUserModalOpen(true)}>
                                Dodaj użytnownika
                            </Button>
                        )
@@ -137,6 +168,7 @@ const AdminPanelView = () => {
                         route="/users"
                         rows={mapUsersToRows(users)}
                         headerCells={usersColumnsDefs}
+                        onClick={handleOpenUserModal}
                     />
                 </TabPanel>
                 <TabPanel activeTab={activeTab} index={1}>
@@ -144,24 +176,34 @@ const AdminPanelView = () => {
                         route="/roles"
                         rows={mapRolesToRows(roles)}
                         headerCells={rolesColumnsDefs}
+                        onClick={handleOpenRoleModal}
                     />
                 </TabPanel>
             </Container>
 
-            <NewUserModal
-                isOpen={isNewUserModalOpen}
-                handleModalClose={() => setIsNewUserModalOpen(false)}
-                handleNewUserSubmit={data => console.log(data)}
+            <UserModal
+                isOpen={isUserModalOpen}
+                onClose={handleCloseUserModal}
+                submitFn={handleUserSubmit}
+                id={selectedUserId}
             />
 
-            <NewRoleModal
-                handleNewRoleSubmit={data => console.log(data)}
-                handleModalClose={() => setIsNewRoleModalOpen(false)}
-                isOpen={isNewRoleModalOpen}
+            <RoleModal
+                submitFn={handleRoleSubmit}
+                onCancel={handleCloseRoleModal}
+                isOpen={isRoleModalOpen}
+                id={selectedRoleId}
             />
         </>
     )
 }
 
+const mapDispatchToProps = dispatch => ({
+    showSuccess: (message) => dispatch(notificationActions.showSuccess(message)),
+    showFailure: (message) => dispatch(notificationActions.showFailure(message)),
+})
 
-export default AdminPanelView;
+export default connect(
+    null,
+    mapDispatchToProps
+)(AdminPanelView);

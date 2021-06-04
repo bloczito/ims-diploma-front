@@ -17,14 +17,13 @@ axiosClient.interceptors.request.use(config => {
 });
 
 
+
 axiosClient.interceptors.response.use(
-    response => response,
+    response => response.data ?? {},
     error => {
-        console.log("EJEJEJEJEJ ERROR: ", error)
         if (error.response) {
             const { status } = error.response;
             if (status === HTTP_STATUS.UNAUTHORIZED) {
-                console.log("E JEST UNAUTHORIZED")
                 store.dispatch(userActions.logout())
             }
         }

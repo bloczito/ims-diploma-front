@@ -4,17 +4,22 @@ export const userService = {
     login,
     logout,
     getAll,
+    getById,
+    // updateUser,
+    // addNewUser,
+    save,
 }
 
+const ROOT_PATH = "/users"
 
 function login(username, password) {
     return axiosClient
         .post("/authenticate", {username, password})
         .then(res => {
-                localStorage.setItem("user", JSON.stringify(res.data));
-                return res.data;
-            }
-        );
+            console.log("ZALOGOWANO ", res)
+            localStorage.setItem("user", JSON.stringify(res));
+            return res;
+        });
 }
 
 function logout() {
@@ -23,6 +28,25 @@ function logout() {
 
 function getAll() {
     return axiosClient
-        .get("/users/all")
-        .then(res => res.data)
+        .get(`${ROOT_PATH}/all`)
+}
+
+function getById(id) {
+    return axiosClient
+        .get(`${ROOT_PATH}/${id}`)
+}
+
+// function updateUser(user) {
+//     return axiosClient
+//         .post(`${ROOT_PATH}/${user.id}`)
+// }
+//
+// function addNewUser(user) {
+//     return axiosClient
+//         .post(`${ROOT_PATH}`)
+// }
+
+function save(user) {
+    return axiosClient
+        .post(`${ROOT_PATH}`, user)
 }

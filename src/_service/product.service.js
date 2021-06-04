@@ -28,18 +28,15 @@ function getPaginated(page, size) {
         .get(BASE_PATH, {
             params: pageable
         })
-        .then(res => {
-            return res.data;
-        });
 }
 
 function addNewProduct(newProduct) {
     return axiosClient
         .post(BASE_PATH, newProduct)
-        .then(function (res)  {
-            console.log("ASDASDASD", res)
-            return res.data;
-        })
+        // .then(function (res)  {
+        //     console.log("ASDASDASD", res)
+        //     return res.data;
+        // })
         .catch(reason => console.log(reason))
     // const response = await axiosClient.post(BASE_PATH, newProduct);
     // return await response.data;
@@ -50,11 +47,9 @@ function getByQuery(query) {
         .get(`${BASE_PATH}/all`, {
             params: { query }
         })
-        .then(res => res.data);
 }
 
 function getById(id) {
     return axiosClient
         .get(`${BASE_PATH}/${id}`)
-        .then(res => res.data);
 }

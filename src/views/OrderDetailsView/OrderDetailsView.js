@@ -37,7 +37,7 @@ const OrderDetailsView = ({showSuccess}) => {
 
     const formik = useFormik({
         initialValues: {...order, newProduct: null, newQuantity: null},
-        onSubmit: values => {
+        submitFn: values => {
             console.log("FORMIK: ", values)
             console.log("ORDER: ", order)
             saveOrder(values)
