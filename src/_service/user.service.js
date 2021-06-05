@@ -17,7 +17,9 @@ function login(username, password) {
         .post("/authenticate", {username, password})
         .then(res => {
             console.log("ZALOGOWANO ", res)
-            localStorage.setItem("user", JSON.stringify(res));
+            if (res) {
+                localStorage.setItem("user", JSON.stringify(res));
+            }
             return res;
         });
 }

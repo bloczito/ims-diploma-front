@@ -18,12 +18,12 @@ export function authentication(state = initialState, action) {
                 user: action.user
             };
         case userConstants.LOGIN_SUCCESS:
-            return {
+            return action.user ? {
                 loggedIn: true,
                 token: action.user.token,
                 username: action.user.username,
                 roles: action.user.roles,
-            };
+            } : state;
         case userConstants.LOGIN_FAILURE:
             return {};
         case userConstants.LOGOUT:
