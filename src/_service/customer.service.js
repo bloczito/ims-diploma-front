@@ -4,12 +4,15 @@ export const customerService = {
     getAll,
     getPaginated,
     addNew,
+    getById,
+    updateCustomer,
 }
 
+const ROOT_PATH = "/customers";
 
 function getAll() {
     return axiosClient
-        .get("/customers/list")
+        .get(`${ROOT_PATH}/list`)
 }
 
 function getPaginated(page, size) {
@@ -19,11 +22,19 @@ function getPaginated(page, size) {
     if (size) pageable.size = size;
 
     return axiosClient
-        .get("/customers", {
+        .get(ROOT_PATH, {
             params: pageable
         })
 }
 
 function addNew(newCustomer) {
-    return axiosClient.post("/customers", newCustomer);
+    return axiosClient.post(ROOT_PATH, newCustomer);
+}
+
+function getById(id) {
+    return axiosClient.get(`${ROOT_PATH}/${id}`);
+}
+
+function updateCustomer(customer) {
+    return axiosClient.post(`${ROOT_PATH}/${customer.id}`, customer);
 }

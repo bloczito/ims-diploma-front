@@ -119,6 +119,7 @@ const CustomersView = () => {
                         headerCells={COLUMN_DEFS}
                         rows={mapCustomersToRows(customers)}
                         route="/customers"
+                        variant="link"
                     />
 
                 </Grid>

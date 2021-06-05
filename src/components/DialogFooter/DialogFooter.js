@@ -5,10 +5,20 @@ import { Button, DialogActions } from "@material-ui/core";
 
 const DialogFooter = ({submitFn, cancelFn, submitText}) => (
     <DialogActions>
-        <Button variant="contained" color="primary" onClick={submitFn} type="submit">
+        <Button
+            variant="contained"
+            color="primary"
+            onClick={submitFn}
+            type="submit"
+            disableElevation
+        >
             {submitText ? submitText : "Dodaj"}
         </Button>
-        <Button variant="outlined" color="primary" onClick={cancelFn}>
+        <Button
+            variant="outlined"
+            color="primary"
+            onClick={cancelFn}
+        >
             Anuluj
         </Button>
     </DialogActions>
