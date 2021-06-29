@@ -6,7 +6,9 @@ const initialState = user ? {
     token: user.token,
     username: user.username,
     roles: user.roles,
-} : {};
+} : {
+    roles: []
+};
 
 
 export function authentication(state = initialState, action) {

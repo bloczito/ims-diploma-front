@@ -138,7 +138,7 @@ const AdminPanelView = ({showSuccess, showFailure}) => {
                    {
                        activeTab ? (
                            <Button color="primary" variant="contained" onClick={() => setIsRoleModalOpen(true)}>
-                               Dodaj role
+                               Dodaj uprawnienie
                            </Button>
                        ) : (
                            <Button color="primary" variant="contained" onClick={() => setIsUserModalOpen(true)}>
@@ -156,7 +156,7 @@ const AdminPanelView = ({showSuccess, showFailure}) => {
                             tabIndex={0}
                         />
                         <Tab
-                            label="Role"
+                            label="Uprawnienia"
                             tabIndex={1}
                         />
                     </Tabs>

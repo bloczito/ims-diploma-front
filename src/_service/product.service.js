@@ -1,4 +1,4 @@
-import {axiosClient} from "../_helpers";
+import { axiosClient } from "../_helpers";
 
 const BASE_PATH = "/products"
 
@@ -8,6 +8,7 @@ export const productService = {
     addNewProduct,
     getByQuery,
     getById,
+    deleteProduct,
 }
 
 // function getAll() {
@@ -32,24 +33,21 @@ function getPaginated(page, size) {
 
 function addNewProduct(newProduct) {
     return axiosClient
-        .post(BASE_PATH, newProduct)
-        // .then(function (res)  {
-        //     console.log("ASDASDASD", res)
-        //     return res.data;
-        // })
-        .catch(reason => console.log(reason))
-    // const response = await axiosClient.post(BASE_PATH, newProduct);
-    // return await response.data;
+        .post(BASE_PATH, newProduct);
 }
 
 function getByQuery(query) {
     return axiosClient
         .get(`${BASE_PATH}/all`, {
-            params: { query }
+            params: {query}
         })
 }
 
 function getById(id) {
     return axiosClient
         .get(`${BASE_PATH}/${id}`)
+}
+
+function deleteProduct(id) {
+    return axiosClient.post(`${BASE_PATH}/${id}/delete`)
 }

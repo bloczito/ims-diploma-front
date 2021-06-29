@@ -20,7 +20,7 @@ const ProductPriceCard = ({productPrice, onChange, priceFieldName}) => {
                                {`${productPrice.product.code} | ${productPrice.product.name}`}
                            </Typography>
                            <Typography variant="subtitle2">
-                               {`${getDimensions(productPrice.product)} | ${productPrice.product.weight} kg`}
+                               {`${getDimensions(productPrice.product)} cm | ${productPrice.product.weight} kg`}
                            </Typography>
                        </Grid>
                        <Grid item xs={4}>

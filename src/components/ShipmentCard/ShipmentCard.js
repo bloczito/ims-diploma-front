@@ -17,9 +17,13 @@ import DeleteIcon from '@material-ui/icons/Delete';
 
 import styles from "./ShipmentCard.module.scss";
 
+const isDisabled = (id, isEdited) => {
+    if (id === undefined) return false;
+    return !!isEdited;
+}
 
 
-const ShipmentCard = ({shipment}) => {
+const ShipmentCard = ({shipment, deleteShipment, isEdited, onChange, commentName}) => {
 
     const [isExpanded, setIsExpanded] = useState(false);
 
@@ -46,13 +50,20 @@ const ShipmentCard = ({shipment}) => {
                     </Grid>
                 }
                 action={
-                    <Button
-                        color="secondary"
-                        variant="outlined"
-                        startIcon={<DeleteIcon/>}
-                    >
-                        Usuń
-                    </Button>
+                    <>
+                        {isDisabled(shipment.id, isEdited) &&(
+                            <Typography variant="caption" color="secondary">Muisz zapisać aby usunąć </Typography>
+                        )}
+                        <Button
+                            color="secondary"
+                            variant="outlined"
+                            startIcon={<DeleteIcon/>}
+                            disabled={isDisabled(shipment.id, isEdited)}
+                            onClick={deleteShipment}
+                        >
+                            Usuń
+                        </Button>
+                    </>
                 }
             />
             <CardContent>
@@ -74,11 +85,13 @@ const ShipmentCard = ({shipment}) => {
                     <Grid item xs={6}>
                         <TextField
                             variant="outlined"
+                            name={commentName}
                             multiline
                             rows={5}
                             fullWidth
                             label="Komentarz"
                             value={comment}
+                            onChange={onChange}
                         />
                     </Grid>
                 </Grid>
@@ -127,6 +140,10 @@ const ShipmentCard = ({shipment}) => {
 }
 
 ShipmentCard.propTypes = {
+    isEdited: PropTypes.bool.isRequired,
+    deleteShipment: PropTypes.func.isRequired,
+    onChange: PropTypes.func.isRequired,
+    commentName: PropTypes.string.isRequired,
     shipment: PropTypes.shape({
         id: PropTypes.number,
         comment: PropTypes.string,

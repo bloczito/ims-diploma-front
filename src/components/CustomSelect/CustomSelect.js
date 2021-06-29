@@ -5,9 +5,9 @@ import { FormControl, Input, InputLabel, Select } from "@material-ui/core";
 
 
 const CustomSelect =
-    ({name, label, onChange, children, value, variant, size, multiple, renderValue, ...props}) => (
+    ({name, label, onChange, children, value, variant, size, multiple, renderValue, defaultValue, ...props}) => (
         <FormControl
-            variant={variant ? variant : "standard"}
+            variant={variant}
             fullWidth
             size={size ? size : ""}
         >
@@ -16,11 +16,13 @@ const CustomSelect =
                 name={name}
                 value={value}
                 onChange={onChange}
+                // onChange={(value, index) =>  console.log(value, "ASD", index)}
                 fullWidth
-                variant={variant ? variant : "standard"}
+                variant="outlined"
                 multiple={multiple}
                 renderValue={renderValue}
                 input={<Input/>}
+                {...props}
             >
                 {children}
             </Select>

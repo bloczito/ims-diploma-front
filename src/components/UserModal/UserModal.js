@@ -37,6 +37,8 @@ const UserModal = ({isOpen, onClose, submitFn, id}) => {
         initialValues: {},
     });
 
+    console.log("FORMIK", formik.values);
+
     useEffect(() => {
         roleService.getAll()
             .then(res => {
@@ -57,6 +59,15 @@ const UserModal = ({isOpen, onClose, submitFn, id}) => {
                 });
         }
     }, [id])
+
+
+    const handleRoleChoose = evt => {
+        const {value: selectedRolesIds} = evt.target;
+
+        const userRoles = roles.filter(role => selectedRolesIds.includes(role.id))
+
+        formik.setFieldValue("roles", userRoles);
+    }
 
     const handleModalClose = () => {
         formik.resetForm({});
@@ -188,15 +199,18 @@ const UserModal = ({isOpen, onClose, submitFn, id}) => {
 
                         <Grid item xs={12}>
                             <CustomSelect
-                                label="Role"
+                                label="Uprawnienia"
                                 name="roles"
-                                onChange={formik.handleChange}
-                                value={formik.values.roles || []}
+                                onChange={handleRoleChoose}
+                                value={formik.values?.roles?.map(r => r.id) || []}
                                 multiple
-                                renderValue={selected => selected.map(role => role.name).join(", ")}
+                                renderValue={selected => roles
+                                    .filter(role => selected.includes(role.id))
+                                    .map(role => role.name)
+                                    .join(", ")}
                             >
                                 {roles.map((role) => (
-                                    <MenuItem key={role.id} value={role}>
+                                    <MenuItem key={role.id} value={role.id}>
                                         <Checkbox checked={
                                             (formik.values.roles ?? [])
                                                 .map(role => role.id)

@@ -41,7 +41,7 @@ const NewOrderModal = ({ open, closeFn, handleNewOrderSubmit}) => {
             open={open}
             onClose={closeFn}
         >
-            <DialogTitle>Dodaj nowe zamówienie</DialogTitle>
+            <DialogTitle>Dodaj nową umowę</DialogTitle>
             <DialogContent>
                 <Grid container >
                     <form onSubmit={handleSubmit(handleNewOrderSubmit)} id="new-order-form">
@@ -51,6 +51,7 @@ const NewOrderModal = ({ open, closeFn, handleNewOrderSubmit}) => {
                                     name="orderNumber"
                                     label="Numer umowy"
                                     inputRef={register}
+                                    required
                                 />
                             </Grid>
 
@@ -82,6 +83,7 @@ const NewOrderModal = ({ open, closeFn, handleNewOrderSubmit}) => {
                                     control={control}
                                     name="customer"
                                     // value={12}
+                                    required
                                 >
                                     {customers.length &&
                                         customers.map(customer => (
@@ -95,6 +97,7 @@ const NewOrderModal = ({ open, closeFn, handleNewOrderSubmit}) => {
                                     label="Firma"
                                     control={control}
                                     name="company"
+                                    required
                                 >
                                     {companies.length &&
                                             companies.map(company => (

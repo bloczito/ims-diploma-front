@@ -6,6 +6,7 @@ import NewOrderModal from "../../components/NewOrderModal/NewOrderModal";
 import TablePagination from "../../components/TablePagination/TablePagination";
 import styles from "./OrdersView.module.scss"
 import DefaultTable from "../../components/DefaultTable/DefaultTable";
+import { orderPriority, orderStatus } from "../../_constants";
 
 
 const COLUMN_DEFS = [
@@ -15,7 +16,7 @@ const COLUMN_DEFS = [
     "Klient",
     "Priorytet",
     "Status",
-    "Firma",
+    "Spółka",
 ]
 
 const mapOrdersToRows = orders =>
@@ -26,8 +27,8 @@ const mapOrdersToRows = orders =>
             order.orderDate,
             order.deadline,
             order.customer.name,
-            order.priority,
-            order.status,
+            orderPriority[order.priority],
+            orderStatus[order.status],
             order.company.name,
         ]
     }))
@@ -105,12 +106,12 @@ const OrdersView = () => {
                                         color="primary"
                                         onClick={handleOpenModal}
                                         disableElevation>
-                                    Dodaj zamówienie
+                                    Dodaj Umowę
                                 </Button>
                             </Grid>
                             <Grid item md={4}>
                                 <Typography variant="h3" gutterBottom>
-                                    Zamówienia
+                                    Umowy
                                 </Typography>
                             </Grid>
                             <Grid item md={4} >

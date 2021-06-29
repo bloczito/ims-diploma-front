@@ -46,6 +46,7 @@ const NewCustomerModal = ({isOpen, handleModalClose, handleNewCustomerSubmit}) =
                                 name="name"
                                 label="Nazwa"
                                 inputRef={register}
+                                required
                             />
                         </Grid>
                         <Grid item xs={12} md={4}>

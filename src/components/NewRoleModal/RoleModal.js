@@ -45,7 +45,7 @@ const RoleModal = ({isOpen, onCancel, submitFn, id}) => {
         >
             <form onSubmit={formik.handleSubmit} autoComplete="off">
                 <DialogHeader closeFn={onCancel}>
-                    {id ? "Edytuj rolę" : "Dodaj nową rolę"}
+                    {id ? "Edytuj uprawnienie" : "Dodaj dodaj nowe uprawnienie"}
                 </DialogHeader>
 
                 <DialogContent dividers>
