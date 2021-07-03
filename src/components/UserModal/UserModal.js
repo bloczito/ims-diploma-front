@@ -21,6 +21,7 @@ import DialogFooter from "../DialogFooter/DialogFooter";
 import { userService } from "../../_service";
 import CustomSelect from "../CustomSelect/CustomSelect";
 import { roleService } from "../../_service/role.service";
+import Input from "../Input/Input";
 
 
 
@@ -89,8 +90,7 @@ const UserModal = ({isOpen, onClose, submitFn, id, deleteFn}) => {
                 <DialogContent dividers>
                     <Grid container spacing={2} >
                         <Grid item xs={4}>
-                            <TextField
-                                fullWidth
+                            <Input
                                 name="username"
                                 label="Nazwa użytkownika"
                                 onChange={formik.handleChange}
@@ -102,8 +102,7 @@ const UserModal = ({isOpen, onClose, submitFn, id, deleteFn}) => {
 
                         </Grid>
                         <Grid item xs={4}>
-                            <TextField
-                                fullWidth
+                            <Input
                                 name="password"
                                 label="Hasło"
                                 onChange={formik.handleChange}
@@ -111,8 +110,7 @@ const UserModal = ({isOpen, onClose, submitFn, id, deleteFn}) => {
                             />
                         </Grid>
                         <Grid item xs={4}>
-                            <TextField
-                                fullWidth
+                            <Input
                                 name="confirmPassword"
                                 label="Potwierdź hasło"
                                 onChange={formik.handleChange}
@@ -123,8 +121,7 @@ const UserModal = ({isOpen, onClose, submitFn, id, deleteFn}) => {
 
                     <Grid container spacing={2}>
                         <Grid item xs={4}>
-                            <TextField
-                                fullWidth
+                            <Input
                                 name="firstName"
                                 label="Imię"
                                 onChange={formik.handleChange}
@@ -133,8 +130,7 @@ const UserModal = ({isOpen, onClose, submitFn, id, deleteFn}) => {
                         </Grid>
 
                         <Grid item xs={4}>
-                            <TextField
-                                fullWidth
+                            <Input
                                 name="lastName"
                                 label="Nazwisko"
                                 onChange={formik.handleChange}
@@ -143,8 +139,7 @@ const UserModal = ({isOpen, onClose, submitFn, id, deleteFn}) => {
                         </Grid>
 
                         <Grid item xs={4}>
-                            <TextField
-                                fullWidth
+                            <Input
                                 name="shortcut"
                                 label="Skrót"
                                 onChange={formik.handleChange}
@@ -155,8 +150,7 @@ const UserModal = ({isOpen, onClose, submitFn, id, deleteFn}) => {
 
                     <Grid container spacing={2}>
                         <Grid item xs={4}>
-                            <TextField
-                                fullWidth
+                            <Input
                                 name="email"
                                 label="Email"
                                 type="email"
@@ -172,8 +166,7 @@ const UserModal = ({isOpen, onClose, submitFn, id, deleteFn}) => {
                         </Grid>
 
                         <Grid item xs={4}>
-                            <TextField
-                                fullWidth
+                            <Input
                                 name="phone"
                                 label="Telefon"
                                 onChange={formik.handleChange}
@@ -188,8 +181,7 @@ const UserModal = ({isOpen, onClose, submitFn, id, deleteFn}) => {
                         </Grid>
 
                         <Grid item xs={4}>
-                            <TextField
-                                fullWidth
+                            <Input
                                 name="job"
                                 label="Stanowisko"
                                 onChange={formik.handleChange}

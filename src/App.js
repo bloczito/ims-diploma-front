@@ -20,6 +20,7 @@ import { Snackbar } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import { NOTIFICATION_TYPE } from "./_constants";
 import { notificationActions } from "./_actions";
+import { Redirect } from "react-router";
 
 
 
@@ -33,6 +34,7 @@ function App({ token, isNotificationOpen, notificationMsg, notificationType, clo
                     <Router>
                         <Navbar/>
                         <Switch>
+                            <Route exact path="/">{token ? <Redirect to="/orders"/> : <LoginView/>}</Route>
                             <Route exact path="/orders"  component={OrdersView}/>
                             <Route path="/orders/:id"  component={OrderDetailsView}/>
                             <Route exact path="/products" component={ProductsView}/>

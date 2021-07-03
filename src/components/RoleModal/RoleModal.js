@@ -6,7 +6,8 @@ import { Dialog, DialogContent, Grid, TextField } from "@material-ui/core";
 import DialogHeader from "../DialogHeader/DialogHeader";
 import DialogFooter from "../DialogFooter/DialogFooter";
 import { roleService } from "../../_service/role.service";
-import styles from "./NewRoleModal.module.scss";
+import styles from "./RoleModal.module.scss";
+import Input from "../Input/Input";
 
 
 const RoleModal = ({isOpen, onCancel, submitFn, id, deleteFn}) => {
@@ -51,8 +52,7 @@ const RoleModal = ({isOpen, onCancel, submitFn, id, deleteFn}) => {
                 <DialogContent dividers>
                     <Grid container className={styles.groupContainer}>
                         <Grid item xs={12}>
-                            <TextField
-                                fullWidth
+                            <Input
                                 name="name"
                                 label="Nazwa"
                                 value={formik.values.name}
@@ -63,8 +63,7 @@ const RoleModal = ({isOpen, onCancel, submitFn, id, deleteFn}) => {
 
                     <Grid container>
                         <Grid item xs={12}>
-                            <TextField
-                                fullWidth
+                            <Input
                                 multiline
                                 name="info"
                                 rows={5}

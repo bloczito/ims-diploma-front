@@ -14,11 +14,11 @@ import {
 } from "@material-ui/core";
 import CancelIcon from "@material-ui/icons/Cancel";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
-import CustomSelect from "../CustomSelect/CustomSelect";
 import { Autocomplete } from "@material-ui/lab";
 import DeleteIcon from "@material-ui/icons/Delete";
 
 import styles from "./NewShipmentForm.module.scss";
+import Input from "../Input/Input";
 
 
 
@@ -35,9 +35,6 @@ const NewShipmentForm = ({notShippedElements, customerObjects, submitNewShipment
         shipmentObject: null,
         shipmentElements: [],
     });
-
-    console.log("HAHAH", newShipment);
-
 
     const handleQuantityChange = evt => {
         setNewProduct(prev => ({...prev, quantity: parseInt(evt.target.value)}))
@@ -124,36 +121,23 @@ const NewShipmentForm = ({notShippedElements, customerObjects, submitNewShipment
                     <CardContent  key={reRender}>
                         <Grid container spacing={2} >
                             <Grid item xs={6}>
-                                {/*<CustomSelect*/}
-                                {/*    label="Obiekt"*/}
-                                {/*    variant="outlined"*/}
-                                {/*    name=""*/}
-                                {/*    onChange={handleChooseObject}*/}
-                                {/*    size="small"*/}
-                                {/*>*/}
-                                {/*    {customerObjects.map(obj => (*/}
-                                {/*       <MenuItem key={obj.id} value={obj.id}>{obj.address.city} {obj.address.street} {obj.address.houseNumber}</MenuItem>*/}
-                                {/*    ))}*/}
-                                {/*</CustomSelect>*/}
-                                <TextField
+                                <Input
                                     label="Obiekt"
                                     select
                                     variant="outlined"
-                                    fullWidth
                                     onChange={handleChooseObject}
+                                    value={newShipment.shipmentObject}
                                     size="small"
                                 >
                                     {customerObjects.map(obj => (
                                         <MenuItem key={obj.id} value={obj.id}>{obj.address.city} {obj.address.street} {obj.address.houseNumber}</MenuItem>
                                     ))}
-                                </TextField>
+                                </Input>
                             </Grid>
                             <Grid item xs={6}>
-                                <TextField
+                                <Input
                                     label="Data"
-                                    InputLabelProps={{shrink:  true}}
                                     type="date"
-                                    fullWidth
                                     size="small"
                                     variant="outlined"
                                     onChange={evt => setNewShipment(prevState => ({...prevState, shipmentDate: evt.target.value}))}
@@ -198,19 +182,18 @@ const NewShipmentForm = ({notShippedElements, customerObjects, submitNewShipment
                                             getOptionLabel={option => `${option.code} | ${option.name}`}
                                             clearOnBlur
                                             renderInput={params => (
-                                                <TextField
+                                                <Input
                                                     {...params}
                                                     label="Nazwa lub kod produktu"
                                                     variant="outlined"
                                                     name="newProduct"
-                                                    fullWidth
                                                     size="small"
                                                 />
                                             )}
                                         />
                                     </Grid>
                                     <Grid item xs={2}>
-                                        <TextField
+                                        <Input
                                             label="Ilość"
                                             type="number"
                                             defaultValue={0}
@@ -223,7 +206,7 @@ const NewShipmentForm = ({notShippedElements, customerObjects, submitNewShipment
                                             onChange={handleQuantityChange}
                                         >
 
-                                        </TextField>
+                                        </Input>
                                     </Grid>
                                 </Grid>
                                 <Button
