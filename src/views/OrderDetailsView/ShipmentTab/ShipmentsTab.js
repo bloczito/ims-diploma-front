@@ -67,7 +67,7 @@ const getNotShippedElements = (orderedElements, shippedElements) => {
 }
 
 
-const ShipmentsTab = ({shipments, merchOrders, customerObjects, submitNewShipment}) => {
+const ShipmentsTab = ({shipments, merchOrders, customerObjects, submitNewShipment, isEdited, deleteShipment, handleChange}) => {
     const orderedElements = getOrderedElements(merchOrders);
     const shippedElements = getShippedElements(shipments);
     const notShippedElements = getNotShippedElements(orderedElements, shippedElements);
@@ -110,7 +110,14 @@ const ShipmentsTab = ({shipments, merchOrders, customerObjects, submitNewShipmen
                 <TextDivider/>
 
                 {shipments.map((shipment, index) => (
-                    <ShipmentCard shipment={shipment} />
+                    <ShipmentCard
+                        key={index}
+                        onChange={handleChange}
+                        commentName={`shipments[${index}].comment`}
+                        shipment={shipment}
+                        isEdited={isEdited}
+                        deleteShipment={() => deleteShipment(index)}
+                    />
                 ))}
             </Grid>
         </Grid>
@@ -118,6 +125,10 @@ const ShipmentsTab = ({shipments, merchOrders, customerObjects, submitNewShipmen
 }
 
 ShipmentsTab.propTypes = {
+    submitNewShipment: PropTypes.func.isRequired,
+    isEdited: PropTypes.bool.isRequired,
+    deleteShipment: PropTypes.func.isRequired,
+    handleChange: PropTypes.func.isRequired,
     merchOrders: PropTypes.arrayOf(PropTypes.shape({
         id: PropTypes.number,
         comment: PropTypes.string,
@@ -154,7 +165,7 @@ ShipmentsTab.propTypes = {
                 country: PropTypes.string,
             })
         }),
-        shipmentElements: PropTypes.arrayOf({
+        shipmentElements: PropTypes.arrayOf(PropTypes.shape({
             id: PropTypes.number,
             quantity: PropTypes.number,
             product: PropTypes.shape({
@@ -169,7 +180,7 @@ ShipmentsTab.propTypes = {
                 descriptionEng: PropTypes.string,
                 descriptionGer: PropTypes.string,
             })
-        })
+        }))
     })).isRequired,
     customerObjects: PropTypes.arrayOf(PropTypes.shape({
         id: PropTypes.number,
@@ -183,7 +194,11 @@ ShipmentsTab.propTypes = {
             country: PropTypes.string,
         })
     })).isRequired,
-    submitNewShipment: PropTypes.func,
+}
+
+ShipmentsTab.defaultProps = {
+    merchOrders: [],
+    shipments: [],
 }
 
 export default ShipmentsTab;

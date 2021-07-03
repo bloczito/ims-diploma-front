@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { productService } from "../../_service";
-import { Button, Container, Grid, Typography } from "@material-ui/core";
+import { Button, CircularProgress, Container, Grid, Typography } from "@material-ui/core";
 import TablePagination from "../../components/TablePagination/TablePagination";
-import OverlaySpinner from "../../components/OverlaySpinner/OverlaySpinner";
 
 import ProductModal from "../../components/ProductModal/ProductModal";
 import { utils } from "../../_helpers";
@@ -96,58 +95,74 @@ const ProductsView = ({showSuccess, showFailure}) => {
         setIsModalOpen(false);
     }
 
+    const handleDeleteProduct = id => {
+        productService
+            .deleteProduct(id)
+            .then(() => {
+                reloadProducts();
+                setIsModalOpen(false);
+            });
+    }
+
     return (
         <>
-            <OverlaySpinner isActive={isLoading}/>
-            <Container>
-                <Grid container alignContent="space-between" direction="row">
-                    <Grid item md={4}>
-                        <Button variant="contained"
-                                color="primary"
-                                onClick={() => setIsModalOpen(true)}
-                                disableElevation>
-                            Dodaj produkt
-                        </Button>
-                    </Grid>
-                    <Grid item md={4}>
-                        <Typography variant="h3" gutterBottom>
-                            Produkty
-                        </Typography>
-                    </Grid>
-                        <Grid item md={4}>
-                            <Grid container justify="flex-end">
-                                <TablePagination
-                                    totalElements={totalElements}
-                                    rowsPerPage={rowsPerPage}
-                                    pageNr={page}
-                                    handleChangePage={handleChangePage}
-                                    handleChangeRowsPerPage={handleChangeRowsPerPage}
-                                />
+            {/*<OverlaySpinner isActive={isLoading}/>*/}
+            {isLoading ? (
+                <CircularProgress />
+            ) : (
+                <>
+                    <Container>
+                        <Grid container alignContent="space-between" direction="row">
+                            <Grid item md={4}>
+                                <Button variant="contained"
+                                        color="primary"
+                                        onClick={() => setIsModalOpen(true)}
+                                        disableElevation>
+                                    Dodaj produkt
+                                </Button>
+                            </Grid>
+                            <Grid item md={4}>
+                                <Typography variant="h3" gutterBottom>
+                                    Produkty
+                                </Typography>
+                            </Grid>
+                            <Grid item md={4}>
+                                <Grid container justify="flex-end">
+                                    <TablePagination
+                                        totalElements={totalElements}
+                                        rowsPerPage={rowsPerPage}
+                                        pageNr={page}
+                                        handleChangePage={handleChangePage}
+                                        handleChangeRowsPerPage={handleChangeRowsPerPage}
+                                    />
+                                </Grid>
                             </Grid>
                         </Grid>
-                </Grid>
 
-                <Grid container>
-                    <Grid item md>
-                      <DefaultTable
-                          headerCells={COLUMN_DEFS}
-                          rows={mapProductsToRows(products)}
-                          variant="clickable"
-                          onClick={handleOpenModal}
-                      />
-                      {/*<ProductsTable products={products} onClick={handleOpenModal}/>*/}
-                    </Grid>
-                </Grid>
+                        <Grid container>
+                            <Grid item md>
+                                <DefaultTable
+                                    headerCells={COLUMN_DEFS}
+                                    rows={mapProductsToRows(products)}
+                                    variant="clickable"
+                                    onClick={handleOpenModal}
+                                />
+                                {/*<ProductsTable products={products} onClick={handleOpenModal}/>*/}
+                            </Grid>
+                        </Grid>
 
-            </Container>
+                    </Container>
 
 
-            <ProductModal
-                submitFn={handleNewProductSubmit}
-                isOpen={isModalOpen}
-                closeFn={handleModalClose}
-                id={selectedProductId}
-            />
+                    <ProductModal
+                        submitFn={handleNewProductSubmit}
+                        isOpen={isModalOpen}
+                        closeFn={handleModalClose}
+                        id={selectedProductId}
+                        deleteFn={handleDeleteProduct}
+                    />
+                </>
+            )}
         </>
     )
 

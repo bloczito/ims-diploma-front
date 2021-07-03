@@ -66,7 +66,7 @@ const Navbar = ({ dispatch, username }) => {
             <List>
                 <Link to="/orders" className={ styles.drawerLink }>
                     <ListItem button key={ "orders" }>
-                        <ListItemText primary={ "Zamówienia" }/>
+                        <ListItemText primary={ "Umowy" }/>
                     </ListItem>
                 </Link>
                 <Link to="/products" className={ styles.drawerLink }>
@@ -127,7 +127,7 @@ const Navbar = ({ dispatch, username }) => {
                             <>
                                 <Link to="/orders" className={ styles.navbarLink }>
                                     <Button type="button" variant={"text"} color="inherit">
-                                        Zamówienia
+                                        Umowy
                                     </Button>
                                 </Link>
                                 <Link to="/products" className={ styles.navbarLink }>

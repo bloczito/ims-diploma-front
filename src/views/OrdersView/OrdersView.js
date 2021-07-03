@@ -6,6 +6,9 @@ import NewOrderModal from "../../components/NewOrderModal/NewOrderModal";
 import TablePagination from "../../components/TablePagination/TablePagination";
 import styles from "./OrdersView.module.scss"
 import DefaultTable from "../../components/DefaultTable/DefaultTable";
+import { orderPriority, orderStatus } from "../../_constants";
+import { notificationActions } from "../../_actions";
+import { connect } from "react-redux";
 
 
 const COLUMN_DEFS = [
@@ -15,7 +18,7 @@ const COLUMN_DEFS = [
     "Klient",
     "Priorytet",
     "Status",
-    "Firma",
+    "Spółka",
 ]
 
 const mapOrdersToRows = orders =>
@@ -26,14 +29,14 @@ const mapOrdersToRows = orders =>
             order.orderDate,
             order.deadline,
             order.customer.name,
-            order.priority,
-            order.status,
+            orderPriority[order.priority],
+            orderStatus[order.status],
             order.company.name,
         ]
     }))
 
 
-const OrdersView = () => {
+const OrdersView = ({showSuccess, showFailure}) => {
 
     const [orders, setOrders] = useState([]);
     const [page, setPage] = useState(0);
@@ -85,10 +88,18 @@ const OrdersView = () => {
         console.log(formData);
         const newOrder = {
             ...formData,
-            company: {id: 6},
-            customer: {id: 7},
+            company: {id: formData.company},
+            customer: {id: formData.customer},
         }
-        // orderService.addNewOrder(newOrder);
+        orderService.addNewOrder(newOrder)
+            .then(res => {
+               if (res.success) {
+                   showSuccess("Dodano umowę");
+                   loadData();
+               } else {
+                   showFailure("Nie udało się dodać umowy. Błąd: " + res.error);
+               }
+            });
         setIsModalOpen(false);
     }
 
@@ -105,12 +116,12 @@ const OrdersView = () => {
                                         color="primary"
                                         onClick={handleOpenModal}
                                         disableElevation>
-                                    Dodaj zamówienie
+                                    Dodaj Umowę
                                 </Button>
                             </Grid>
                             <Grid item md={4}>
                                 <Typography variant="h3" gutterBottom>
-                                    Zamówienia
+                                    Umowy
                                 </Typography>
                             </Grid>
                             <Grid item md={4} >
@@ -150,5 +161,12 @@ const OrdersView = () => {
 }
 
 
-// export default connect(mapStateToProps)(OrdersView);
-export default OrdersView;
+const mapDispatchToProps = dispatch => ({
+    showSuccess: (message) => dispatch(notificationActions.showSuccess(message)),
+    showFailure: (message) => dispatch(notificationActions.showFailure(message)),
+})
+
+export default connect(
+    null,
+    mapDispatchToProps
+)(OrdersView);

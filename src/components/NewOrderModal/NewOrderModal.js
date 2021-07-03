@@ -9,17 +9,34 @@ import {
     TextField,
 } from "@material-ui/core";
 import styles from "./NewOrderModal.module.scss"
-import { useForm } from "react-hook-form";
-import DefaultSelect from "../DefaultSelect/DefaultSelect";
 import {customerService, companyService} from "../../_service";
 import DialogFooter from "../DialogFooter/DialogFooter";
+import { useFormik } from "formik";
+import * as Yup from "yup"
+
+const OrderSchema = Yup.object().shape({
+    orderNumber: Yup.string().required("To pole jest wymagane"),
+    customer: Yup.number().required("To pole jest wymagane"),
+    company: Yup.number().required("To pole jest wymagane"),
+
+});
+
 
 const NewOrderModal = ({ open, closeFn, handleNewOrderSubmit}) => {
 
     const [customers, setCustomers] = useState([]);
     const [companies, setCompanies] = useState([])
 
-    const {register, control, handleSubmit} = useForm();
+    const formik = useFormik({
+        onSubmit: (values, {resetForm}) => {
+            handleNewOrderSubmit(values);
+            resetForm();
+        },
+        validationSchema: OrderSchema,
+        initialValues: {}
+    })
+
+    const {values, errors, touched, handleChange} = formik;
 
     const downloadInitData = async () => {
         const customersResponse = await customerService.getAll();
@@ -32,25 +49,29 @@ const NewOrderModal = ({ open, closeFn, handleNewOrderSubmit}) => {
         downloadInitData();
     }, [])
 
+    const isError = name => errors[name];
 
     return (
-
         <Dialog
-            maxWidth="lg"
+            maxWidth="xl"
             className={styles.wrapper}
             open={open}
             onClose={closeFn}
         >
-            <DialogTitle>Dodaj nowe zamówienie</DialogTitle>
-            <DialogContent>
-                <Grid container >
-                    <form onSubmit={handleSubmit(handleNewOrderSubmit)} id="new-order-form">
+            <form onSubmit={formik.handleSubmit} autoComplete="off">
+                <DialogTitle>Dodaj nową umowę</DialogTitle>
+                <DialogContent>
+                    <Grid container >
                         <Grid container spacing={2}>
                             <Grid item xs={4}>
                                 <TextField
                                     name="orderNumber"
-                                    label="Numer umowy"
-                                    inputRef={register}
+                                    label="Numer umowy *"
+                                    fullWidth
+                                    onChange={handleChange}
+                                    value={values.orderNumber}
+                                    error={isError("orderNumber")}
+                                    helperText={isError("orderNumber") && errors.orderNumber}
                                 />
                             </Grid>
 
@@ -59,8 +80,10 @@ const NewOrderModal = ({ open, closeFn, handleNewOrderSubmit}) => {
                                     type="date"
                                     name="orderDate"
                                     label="Data umowy"
+                                    fullWidth
+                                    onChange={handleChange}
+                                    value={values.orderDate}
                                     InputLabelProps={{shrink: true}}
-                                    inputRef={register}
                                 />
                             </Grid>
 
@@ -69,48 +92,83 @@ const NewOrderModal = ({ open, closeFn, handleNewOrderSubmit}) => {
                                            type="date"
                                            name="deadline"
                                            label="Termin"
+                                           fullWidth
+                                           onChange={handleChange}
+                                           value={values.deadline}
                                            InputLabelProps={{shrink: true}}
-                                           inputRef={register}
                                 />
                             </Grid>
                         </Grid>
 
                         <Grid container spacing={2}>
                             <Grid item xs={4}>
-                                <DefaultSelect
-                                    label="Klient"
-                                    control={control}
+                                {/*<DefaultSelect*/}
+                                {/*    label="Klient"*/}
+                                {/*    name="customer"*/}
+                                {/*    // value={12}*/}
+                                {/*    required*/}
+                                {/*>*/}
+                                {/*    {customers.length &&*/}
+                                {/*        customers.map(customer => (*/}
+                                {/*            <MenuItem key={customer.id} value={customer.id}>{ customer.name }</MenuItem>*/}
+                                {/*        ))*/}
+                                {/*    }*/}
+                                {/*</DefaultSelect>*/}
+                                <TextField
+                                    label="Klient *"
                                     name="customer"
-                                    // value={12}
+                                    fullWidth
+                                    onChange={handleChange}
+                                    value={values.customer}
+                                    select
+                                    error={isError("customer")}
+                                    helperText={isError("customer") && errors.customer}
                                 >
                                     {customers.length &&
-                                        customers.map(customer => (
-                                            <MenuItem key={customer.id} value={customer.id}>{ customer.name }</MenuItem>
-                                        ))
+                                    customers.map(customer => (
+                                        <MenuItem key={customer.id} value={customer.id}>{ customer.name }</MenuItem>
+                                    ))
                                     }
-                                </DefaultSelect>
+                                </TextField>
+
                             </Grid>
                             <Grid item xs={4}>
-                                <DefaultSelect
-                                    label="Firma"
-                                    control={control}
+                                {/*<DefaultSelect*/}
+                                {/*    label="Firma"*/}
+                                {/*    name="company"*/}
+                                {/*    required*/}
+                                {/*>*/}
+                                {/*    {companies.length &&*/}
+                                {/*            companies.map(company => (*/}
+                                {/*                <MenuItem key={company.id} value={company.id}>{ company.name }</MenuItem>*/}
+                                {/*            ))*/}
+                                {/*    }*/}
+                                {/*</DefaultSelect>*/}
+                                <TextField
+                                    label="Firma *"
                                     name="company"
+                                    fullWidth
+                                    onChange={handleChange}
+                                    value={values.company}
+                                    select
+                                    error={isError("company")}
+                                    helperText={isError("company") && errors.company}
                                 >
                                     {companies.length &&
-                                            companies.map(company => (
-                                                <MenuItem key={company.id} value={company.id}>{ company.name }</MenuItem>
-                                            ))
+                                    companies.map(company => (
+                                        <MenuItem key={company.id} value={company.id}>{ company.name }</MenuItem>
+                                    ))
                                     }
-                                </DefaultSelect>
+                                </TextField>
                             </Grid>
                         </Grid>
-                    </form>
-                </Grid>
-            </DialogContent>
-            <DialogFooter
-                cancelFn={closeFn}
-                submitFn={handleNewOrderSubmit}
-            />
+                    </Grid>
+                </DialogContent>
+                <DialogFooter
+                    cancelFn={closeFn}
+                    // submitFn={handleNewOrderSubmit}
+                />
+            </form>
         </Dialog>
 
     )

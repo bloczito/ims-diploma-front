@@ -5,15 +5,29 @@ import { connect } from "react-redux";
 import {userActions} from "../../_actions";
 import styles from "./LoginView.module.css"
 import { useState } from "react";
+import { useFormik } from "formik";
 
-const LoginView = ({ dispatch }) => {
+const LoginView = ({ dispatch, wrongData }) => {
 
-    const {register, control, handleSubmit } = useForm();
+    const formik = useFormik({
+        onSubmit: values => {
+            console.log(values);
+            submitForm(values)
+        },
+        // validationSchema: LoginSchema,
+        enableReinitialize: true,
+        initialValues: {
+            username: null,
+            password: null,
+        }
+    });
 
-    const [username, setUsername] = useState(null);
-    const [password, setPassword] = useState(null);
+    const {values, handleChange} = formik;
 
-    const onSubmit = data => {
+    // const [username, setUsername] = useState(null);
+    // const [password, setPassword] = useState(null);
+
+    const submitForm = data => {
         const { username, password } = data;
         if (username && password) {
             dispatch(userActions.login(username, password));
@@ -29,7 +43,7 @@ const LoginView = ({ dispatch }) => {
                 </Typography>
             </Box>
 
-            <form onSubmit={ handleSubmit(onSubmit) }>
+            <form onSubmit={formik.handleSubmit} autoComplete="off">
                 <Grid
                     className={ styles.form }
                     container
@@ -42,22 +56,28 @@ const LoginView = ({ dispatch }) => {
                         name="username"
                         label="Nazwa użytkownika"
                         className={styles.formField}
-                        inputRef={register}
-                        value={username}
-                        onChange={e => setUsername(e.target.value)}
+                        value={values.username}
+                        onChange={handleChange}
+                        inputProps={{minLength: 4, maxLength: 16}}
+                        required
                     />
 
                     <PasswordInput
                         name="password"
-                        control={control}
                         label="Hasło"
                         classes={ styles.formField }
-                        value={password}
-                        onChange={e => setPassword(e.target.value)}
+                        value={values.password}
+                        onChange={handleChange}
                     />
 
+                    {wrongData &&
+                        <Typography style={{color: "#ce2727", marginBottom: 15}}>
+                            Nieprawidłowa nazwa użytkownika lub hasło
+                        </Typography>
+                    }
+
                     <Button
-                        type={ "submit" }
+                        type="submit"
                         variant="contained"
                         color="primary">
                         Zaloguj
@@ -70,7 +90,10 @@ const LoginView = ({ dispatch }) => {
 };
 
 function mapStateToProps(state) {
-    return {};
+    const {wrongData} = state.authentication;
+    return {
+        wrongData
+    };
 }
 
 export default connect(mapStateToProps)(LoginView);

@@ -8,6 +8,7 @@ export const userService = {
     // updateUser,
     // addNewUser,
     save,
+    deleteById,
 }
 
 const ROOT_PATH = "/users"
@@ -51,4 +52,8 @@ function getById(id) {
 function save(user) {
     return axiosClient
         .post(`${ROOT_PATH}`, user)
+}
+
+function deleteById(id) {
+    return axiosClient.post(`${ROOT_PATH}/${id}/delete`);
 }

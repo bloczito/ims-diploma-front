@@ -6,7 +6,10 @@ const initialState = user ? {
     token: user.token,
     username: user.username,
     roles: user.roles,
-} : {};
+    wrongData: false
+} : {
+    roles: []
+};
 
 
 export function authentication(state = initialState, action) {
@@ -25,7 +28,10 @@ export function authentication(state = initialState, action) {
                 roles: action.user.roles,
             } : state;
         case userConstants.LOGIN_FAILURE:
-            return {};
+            return {
+                ...state,
+                wrongData: true,
+            };
         case userConstants.LOGOUT:
             return {};
         default:

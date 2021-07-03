@@ -6,6 +6,7 @@ export const customerService = {
     addNew,
     getById,
     updateCustomer,
+    deleteById,
 }
 
 const ROOT_PATH = "/customers";
@@ -37,4 +38,8 @@ function getById(id) {
 
 function updateCustomer(customer) {
     return axiosClient.post(`${ROOT_PATH}/${customer.id}`, customer);
+}
+
+function deleteById(id) {
+    return axiosClient.post(`${ROOT_PATH}/${id}/delete`)
 }

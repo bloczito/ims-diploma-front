@@ -8,5 +8,7 @@ export const userConstants = {
 
 export const userRoles = {
     ROLE_ADMIN: "ROLE_ADMIN",
+    ROLE_TRADER_SUPERVISOR: "ROLE_TRADER_SUPERVISOR",
+    ROLE_TRADER: "ROLE_TRADER",
     ROLE_USER: "ROLE_USER",
 }

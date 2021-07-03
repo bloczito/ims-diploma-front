@@ -111,7 +111,6 @@ const AdminPanelView = ({showSuccess, showFailure}) => {
                     showFailure(res.error);
                 }
             })
-
         handleCloseRoleModal();
     }
 
@@ -131,6 +130,32 @@ const AdminPanelView = ({showSuccess, showFailure}) => {
         handleCloseUserModal();
     }
 
+    const handleDeleteUser = id => {
+        userService.deleteById(id)
+            .then(res => {
+                if (res?.success) {
+                    loadInitData();
+                    showSuccess("Usunięto użytkownika");
+                } else {
+                    showFailure("Nie udało się usunąć użytkownika. Błąd: " + res?.error)
+                }
+            });
+        handleCloseUserModal();
+    }
+
+    const handleDeleteRole = id => {
+        roleService.deleteById(id)
+            .then(res => {
+                if (res?.success) {
+                    loadInitData();
+                    showSuccess("Usunięto uprawnienie");
+                } else {
+                    showFailure("Nie udało się usunąć uprawnienia. Błąd: " + res?.error)
+                }
+            });
+        handleCloseRoleModal();
+    }
+
     return (
         <>
             <Container>
@@ -138,7 +163,7 @@ const AdminPanelView = ({showSuccess, showFailure}) => {
                    {
                        activeTab ? (
                            <Button color="primary" variant="contained" onClick={() => setIsRoleModalOpen(true)}>
-                               Dodaj role
+                               Dodaj uprawnienie
                            </Button>
                        ) : (
                            <Button color="primary" variant="contained" onClick={() => setIsUserModalOpen(true)}>
@@ -156,7 +181,7 @@ const AdminPanelView = ({showSuccess, showFailure}) => {
                             tabIndex={0}
                         />
                         <Tab
-                            label="Role"
+                            label="Uprawnienia"
                             tabIndex={1}
                         />
                     </Tabs>
@@ -186,6 +211,7 @@ const AdminPanelView = ({showSuccess, showFailure}) => {
                 onClose={handleCloseUserModal}
                 submitFn={handleUserSubmit}
                 id={selectedUserId}
+                deleteFn={handleDeleteUser}
             />
 
             <RoleModal
@@ -193,6 +219,7 @@ const AdminPanelView = ({showSuccess, showFailure}) => {
                 onCancel={handleCloseRoleModal}
                 isOpen={isRoleModalOpen}
                 id={selectedRoleId}
+                deleteFn={handleDeleteRole}
             />
         </>
     )

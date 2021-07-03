@@ -8,7 +8,7 @@ import NewMerchOrderForm from "../../../components/NewMerchOrderForm/NewMerchOrd
 
 
 
-const MerchOrdersTab = ({ merchOrders, handleChange, submitNewMerchOrder}) => (
+const MerchOrdersTab = ({ merchOrders, handleChange, submitNewMerchOrder, isEdited, deleteMerchOrder}) => (
     <>
         <Grid container>
             <NewMerchOrderForm submitNewMerchOrder={submitNewMerchOrder} />
@@ -18,9 +18,12 @@ const MerchOrdersTab = ({ merchOrders, handleChange, submitNewMerchOrder}) => (
         <Grid container>
             {merchOrders.map((merchOrder, index) => (
                 <MerchOrderCard
+                    key={index}
                     onChange={handleChange}
                     merchOrder={merchOrder}
                     commentName={`merchOrders[${index}].comment`}
+                    isEdited={isEdited}
+                    deleteMerchOrder={() => deleteMerchOrder(index)}
                 />
             ))}
         </Grid>
@@ -50,8 +53,10 @@ MerchOrdersTab.propTypes = {
             })
         }))
     })).isRequired,
-    handleChange: PropTypes.func,
-    submitNewMerchOrder: PropTypes.func.isRequired
+    handleChange: PropTypes.func.isRequired,
+    isEdited: PropTypes.bool.isRequired,
+    submitNewMerchOrder: PropTypes.func.isRequired,
+    deleteMerchOrder: PropTypes.func.isRequired,
 }
 
 MerchOrdersTab.defaultProps = {

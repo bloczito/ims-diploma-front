@@ -9,16 +9,22 @@ import {
     TableBody,
     TableCell,
     TableRow,
-    TextField,
+    TextField, Tooltip,
     Typography,
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import moment from "moment";
 
 import styles from "./MerchOrderCard.module.scss";
+import { connect } from "react-redux";
+import { userRoles } from "../../_constants";
 
+const isDisabled = (id, isEdited) => {
+    if (id === undefined) return false;
+    return !!isEdited;
+}
 
-const MerchOrderCard = ({merchOrder, commentName, onChange}) => (
+const MerchOrderCard = ({merchOrder, commentName, onChange, isEdited, deleteMerchOrder, roles}) => (
     <Card className={styles.wrapper} variant="outlined">
         <CardHeader
             title={
@@ -38,15 +44,23 @@ const MerchOrderCard = ({merchOrder, commentName, onChange}) => (
                 </Grid>
             }
             action={
-                <Button
-                    color="secondary"
-                    variant="outlined"
-                    startIcon={<DeleteIcon/>}
-                    disableElevation
-                >
-                    Usuń
-                </Button>
-            }
+                (roles.includes(userRoles.ROLE_TRADER) || roles.includes(userRoles.ROLE_TRADER_SUPERVISOR)) && (
+                    <>
+                        {isDisabled(merchOrder.id, isEdited) &&(
+                            <Typography variant="caption" color="secondary">Muisz zapisać aby usunąć </Typography>
+                        )}
+                        <Button
+                            color="secondary"
+                            variant="outlined"
+                            startIcon={<DeleteIcon/>}
+                            disableElevation
+                            disabled={isDisabled(merchOrder.id, isEdited)}
+                            onClick={deleteMerchOrder}
+                        >
+                            Usuń
+                        </Button>
+                    </>
+                )}
         />
         <CardContent>
             <Grid container spacing={2}>
@@ -105,8 +119,21 @@ MerchOrderCard.propTypes = {
             })
         }))
     }).isRequired,
+    deleteMerchOrder: PropTypes.func.isRequired,
+    isEdited: PropTypes.bool.isRequired,
     commentName: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
 }
 
-export default MerchOrderCard;
+const mapStateToProps = state => {
+    const {roles} = state.authentication;
+    return {
+        roles,
+    }
+}
+
+
+export default connect(
+ mapStateToProps,
+ null,
+)(MerchOrderCard);

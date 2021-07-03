@@ -34,7 +34,9 @@ const NewShipmentForm = ({notShippedElements, customerObjects, submitNewShipment
         shipmentDate: null,
         shipmentObject: null,
         shipmentElements: [],
-    })
+    });
+
+    console.log("HAHAH", newShipment);
 
 
     const handleQuantityChange = evt => {
@@ -82,6 +84,7 @@ const NewShipmentForm = ({notShippedElements, customerObjects, submitNewShipment
     }
 
     const handleChooseObject = evt => {
+        console.log(evt.target)
         setNewShipment(prevState => ({
             ...prevState,
             shipmentObject: customerObjects.find(obj => obj.id === evt.target.value),
@@ -113,7 +116,7 @@ const NewShipmentForm = ({notShippedElements, customerObjects, submitNewShipment
                 startIcon={isAdding ? <CancelIcon/> : <AddCircleIcon/>}
             >
                 <Typography variant="button">
-                    {isAdding ? "Anuluj" : "Nowe zamówienie"}
+                    {isAdding ? "Anuluj" : "Nowa wysyłka"}
                 </Typography>
             </Button>
             <Collapse in={isAdding} className={styles.formWrapper}>
@@ -121,17 +124,29 @@ const NewShipmentForm = ({notShippedElements, customerObjects, submitNewShipment
                     <CardContent  key={reRender}>
                         <Grid container spacing={2} >
                             <Grid item xs={6}>
-                                <CustomSelect
+                                {/*<CustomSelect*/}
+                                {/*    label="Obiekt"*/}
+                                {/*    variant="outlined"*/}
+                                {/*    name=""*/}
+                                {/*    onChange={handleChooseObject}*/}
+                                {/*    size="small"*/}
+                                {/*>*/}
+                                {/*    {customerObjects.map(obj => (*/}
+                                {/*       <MenuItem key={obj.id} value={obj.id}>{obj.address.city} {obj.address.street} {obj.address.houseNumber}</MenuItem>*/}
+                                {/*    ))}*/}
+                                {/*</CustomSelect>*/}
+                                <TextField
                                     label="Obiekt"
+                                    select
                                     variant="outlined"
-                                    name=""
+                                    fullWidth
                                     onChange={handleChooseObject}
                                     size="small"
                                 >
                                     {customerObjects.map(obj => (
-                                       <MenuItem key={obj.id} value={obj.id}>{obj.address.city} {obj.address.street} {obj.address.houseNumber}</MenuItem>
+                                        <MenuItem key={obj.id} value={obj.id}>{obj.address.city} {obj.address.street} {obj.address.houseNumber}</MenuItem>
                                     ))}
-                                </CustomSelect>
+                                </TextField>
                             </Grid>
                             <Grid item xs={6}>
                                 <TextField
@@ -243,10 +258,10 @@ const NewShipmentForm = ({notShippedElements, customerObjects, submitNewShipment
                             disableElevation
                             fullWidth
                             startIcon={<AddCircleIcon/>}
-                            disabled={!(newShipment.shipmentElements.length && newShipment.shipmentObject != null && newShipment.shipmentDate != null && newShipment.shipmentDate != "")}
+                            disabled={!(newShipment.shipmentElements.length && newShipment.shipmentObject != null && newShipment.shipmentDate != null && newShipment.shipmentDate)}
                             onClick={handleSubmitNewShipment}
                         >
-                            Dodaj zamówienie
+                            Dodaj wysyłkę
                         </Button>
                     </CardActions>
                 </Card>

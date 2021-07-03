@@ -6,6 +6,7 @@ export const roleService = {
     // addNewRole,
     // updateRole,
     save,
+    deleteById,
 }
 
 const ROOT_PATH = "/roles"
@@ -25,7 +26,6 @@ function save(role) {
         .post(`${ROOT_PATH}`, role)
 }
 
-// function updateRole(role) {
-//     return axiosClient
-//         .post(`${ROOT_PATH}/${role.id}`, role)
-// }
+function deleteById(id) {
+    return axiosClient.post(`${ROOT_PATH}/${id}/delete`)
+}

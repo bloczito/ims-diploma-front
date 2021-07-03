@@ -6,7 +6,7 @@ import TextDivider from "../../../components/TextDivider/TextDivider";
 import { orderPriority, orderStatus } from "../../../_constants";
 
 
-const InfoTab = ({formik, priorities, statuses}) => {
+const InfoTab = ({values, handleChange, priorities, statuses, defaultValues}) => {
 
     return (
         <Grid container>
@@ -15,10 +15,10 @@ const InfoTab = ({formik, priorities, statuses}) => {
                     <TextField
                         label="Numer umowy"
                         name="orderNumber"
-                        value={formik.values.orderNumber}
+                        value={values.orderNumber}
                         fullWidth
                         InputLabelProps={{shrink: true}}
-                        onChange={formik.handleChange}
+                        onChange={handleChange}
                     />
                 </Grid>
                 <Grid item xs={3}>
@@ -27,8 +27,8 @@ const InfoTab = ({formik, priorities, statuses}) => {
                         label="Data"
                         name="orderDate"
                         InputLabelProps={{shrink: true}}
-                        value={formik.values.orderDate}
-                        onChange={formik.handleChange}
+                        value={values.orderDate}
+                        onChange={handleChange}
                         fullWidth
                     />
                 </Grid>
@@ -37,42 +37,80 @@ const InfoTab = ({formik, priorities, statuses}) => {
                         type="date"
                         label="Termin"
                         name="deadline"
-                        value={formik.values.deadline}
+                        value={values.deadline}
                         InputLabelProps={{shrink: true}}
-                        onChange={formik.handleChange}
+                        onChange={handleChange}
                         fullWidth
                     />
                 </Grid>
             </Grid>
 
-
             <Grid container spacing={2}>
                 <Grid item xs={3}>
-                    <CustomSelect
+                    {/*<CustomSelect*/}
+                    {/*    label="Priorytet"*/}
+                    {/*    name="priority"*/}
+                    {/*    onChange={handleChange}*/}
+                    {/*    value={values.priority}*/}
+                    {/*    defaultValue="LOW"*/}
+                    {/*>*/}
+                    {/*    {priorities.map(el => (*/}
+                    {/*        <MenuItem key={el} value={el}>{orderPriority[el]}</MenuItem>*/}
+                    {/*    ))}*/}
+
+                    {/*</CustomSelect>*/}
+                    <TextField
                         label="Priorytet"
                         name="priority"
-                        onChange={formik.handleChange}
-                        value={formik.values?.priority}
+                        onChange={handleChange}
+                        value={values.priority}
+                        defaultValue="LOW"
+                        select
+                        fullWidth
                     >
                         {priorities.map(el => (
                             <MenuItem key={el} value={el}>{orderPriority[el]}</MenuItem>
-                        ))
+                        ))}
+                    </TextField>
 
-                        }
-
-                    </CustomSelect>
+                    {console.log(values.priority)}
+                    {/*<TextField*/}
+                    {/*    label="Priorytet"*/}
+                    {/*    name="priority"*/}
+                    {/*    select*/}
+                    {/*    fullWidth*/}
+                    {/*    defaultValue={values.priority}*/}
+                    {/*    value={values.priority}*/}
+                    {/*>*/}
+                    {/*    {priorities.map(el => (*/}
+                    {/*        <MenuItem key={el} value={el}>{orderPriority[el]}</MenuItem>*/}
+                    {/*    ))}*/}
+                    {/*</TextField>*/}
                 </Grid>
                 <Grid item xs={3}>
-                    <CustomSelect
+                    {/*<CustomSelect*/}
+                    {/*    label="Status"*/}
+                    {/*    name="status"*/}
+                    {/*    onChange={handleChange}*/}
+                    {/*    value={values?.status}*/}
+                    {/*>*/}
+                    {/*    {statuses.map(el => (*/}
+                    {/*      <MenuItem key={el} value={el}>{orderStatus[el]}</MenuItem>*/}
+                    {/*    ))}*/}
+                    {/*</CustomSelect>*/}
+                    <TextField
                         label="Status"
                         name="status"
-                        onChange={formik.handleChange}
-                        value={formik.values?.status}
+                        onChange={handleChange}
+                        value={values.status}
+                        defaultValue="NEW"
+                        fullWidth
+                        select
                     >
                         {statuses.map(el => (
-                          <MenuItem key={el} value={el}>{orderStatus[el]}</MenuItem>
+                            <MenuItem key={el} value={el}>{orderStatus[el]}</MenuItem>
                         ))}
-                    </CustomSelect>
+                    </TextField>
                 </Grid>
             </Grid>
 
@@ -82,30 +120,30 @@ const InfoTab = ({formik, priorities, statuses}) => {
                 <Grid item xs={3}>
                     <TextField
                         label="Nazwa"
-                        value={formik.values?.customer?.name}
+                        value={values?.customer?.name}
                         disabled
                         fullWidth
-                        InputLabelProps={{shrink: formik.values?.customer?.name}}
+                        InputLabelProps={{shrink: values?.customer?.name}}
                     />
                 </Grid>
 
                 <Grid item xs={3}>
                     <TextField
                         label="Email"
-                        value={formik.values?.customer?.email}
+                        value={values?.customer?.email}
                         disabled
                         fullWidth
-                        InputLabelProps={{shrink: formik.values?.customer?.email}}
+                        InputLabelProps={{shrink: values?.customer?.email}}
                     />
                 </Grid>
 
                 <Grid item xs={3}>
                     <TextField
                         label="Telefon"
-                        value={formik.values?.customer?.phone}
+                        value={values?.customer?.phone}
                         disabled
                         fullWidth
-                        InputLabelProps={{shrink: formik.values?.customer?.phone}}
+                        InputLabelProps={{shrink: values?.customer?.phone}}
                     />
                 </Grid>
             </Grid>
@@ -115,10 +153,8 @@ const InfoTab = ({formik, priorities, statuses}) => {
 }
 
 InfoTab.propTypes = {
-    formik: PropTypes.shape({
-        handleChange: PropTypes.func,
-        values: PropTypes.object,
-    }).isRequired,
+    handleChange: PropTypes.func,
+    values: PropTypes.object,
     statuses: PropTypes.arrayOf(PropTypes.string).isRequired,
     priorities: PropTypes.arrayOf(PropTypes.string).isRequired,
 }
