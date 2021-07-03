@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { AppBar, Box, Button, Container, Grid, Paper, Tab, Tabs, Typography } from "@material-ui/core";
+import { AppBar, Button, Container, Grid, Paper, Tab, Tabs } from "@material-ui/core";
 import { roleService } from "../../_service/role.service";
 import { userService } from "../../_service";
 
 import styles from "./AdminPanelView.module.scss";
 
 import UserModal from "../../components/UserModal/UserModal";
-import RoleModal from "../../components/NewRoleModal/RoleModal";
+import RoleModal from "../../components/RoleModal/RoleModal";
 import DefaultTable from "../../components/DefaultTable/DefaultTable";
 import TabPanel from "../../components/TabPanel/TabPanel";
 import { connect } from "react-redux";

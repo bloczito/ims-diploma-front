@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
 import { useHistory, useParams } from "react-router";
 import { connect } from "react-redux";
 import {
@@ -26,7 +25,7 @@ import InfoTab from "./InfoTab/InfoTab";
 import MerchOrdersTab from "./MerchOrdersTab/MerchOrdersTab";
 import ShipmentsTab from "./ShipmentTab/ShipmentsTab";
 import PricesTab from "./PricesTab/PricesTab";
-import { orderPriority, orderStatus, userRoles } from "../../_constants";
+import { userRoles } from "../../_constants";
 
 
 const OrderDetailsView = ({showSuccess, showFailure, roles}) => {

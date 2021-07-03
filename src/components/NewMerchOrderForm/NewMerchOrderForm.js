@@ -17,6 +17,7 @@ import AddCircleIcon from "@material-ui/icons/AddCircle";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { Autocomplete } from "@material-ui/lab";
 import { productService } from "../../_service";
+import Input from "../Input/Input";
 
 const NewMerchOrderForm = ({submitNewMerchOrder}) => {
 
@@ -145,7 +146,7 @@ const NewMerchOrderForm = ({submitNewMerchOrder}) => {
                                             getOptionLabel={option => `${option.code} | ${option.name}`}
                                             clearOnBlur
                                             renderInput={params => (
-                                                <TextField
+                                                <Input
                                                     {...params}
                                                     label="Nazwa lub kod produktu"
                                                     variant="outlined"
@@ -157,7 +158,7 @@ const NewMerchOrderForm = ({submitNewMerchOrder}) => {
                                         />
                                     </Grid>
                                     <Grid item xs={2}>
-                                        <TextField
+                                        <Input
                                             label="Ilość"
                                             type="number"
                                             defaultValue={0}
@@ -188,7 +189,7 @@ const NewMerchOrderForm = ({submitNewMerchOrder}) => {
                                 </Grid>
                             </Grid>
                             <Grid item xs={4}>
-                                <TextField
+                                <Input
                                     name="comment"
                                     variant="outlined"
                                     multiline

@@ -1,10 +1,8 @@
 import { Grid, Button, Typography, TextField, Box } from "@material-ui/core";
-import { useForm } from "react-hook-form";
 import { PasswordInput } from "../../components";
 import { connect } from "react-redux";
 import {userActions} from "../../_actions";
 import styles from "./LoginView.module.css"
-import { useState } from "react";
 import { useFormik } from "formik";
 
 const LoginView = ({ dispatch, wrongData }) => {

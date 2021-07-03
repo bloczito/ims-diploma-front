@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { Card, CardContent, CardHeader, Grid, InputAdornment, TextField, Typography } from "@material-ui/core";
 
 import EuroIcon from '@material-ui/icons/Euro';
+import Input from "../Input/Input";
 
 const getDimensions = product =>
     `${product.width} x ${product.height} x ${product.depth}`
@@ -24,7 +25,7 @@ const ProductPriceCard = ({productPrice, onChange, priceFieldName}) => {
                            </Typography>
                        </Grid>
                        <Grid item xs={4}>
-                           <TextField
+                           <Input
                                label="Cena"
                                variant="standard"
                                name={priceFieldName}

@@ -20,6 +20,7 @@ import { useFormik } from "formik";
 import TextDivider from "../../components/TextDivider/TextDivider";
 import NewObjectForm from "../../components/NewObjectForm/NewObjectForm";
 import EditObjectModal from "../../components/EditObjectModal/EditObjectModal";
+import Input from "../../components/Input/Input";
 
 
 const CustomerDetailsView = ({showSuccess, showFailure}) => {
@@ -181,33 +182,30 @@ const CustomerDetailsView = ({showSuccess, showFailure}) => {
 
                             <Grid container spacing={2}>
                                 <Grid item xs={4}>
-                                    <TextField
+                                    <Input
                                         label="Email"
                                         value={values.email}
                                         name="email"
                                         type="email"
                                         onChange={formik.handleChange}
-                                        fullWidth
                                     />
                                 </Grid>
 
                                 <Grid item xs={4}>
-                                    <TextField
+                                    <Input
                                         label="Nip"
                                         value={values.nip}
                                         name="nip"
                                         onChange={formik.handleChange}
-                                        fullWidth
                                     />
                                 </Grid>
 
                                 <Grid item xs={4}>
-                                    <TextField
+                                    <Input
                                         label="Telefon"
                                         value={values.phone}
                                         name="phone"
                                         onChange={formik.handleChange}
-                                        fullWidth
                                     />
                                 </Grid>
                             </Grid>
@@ -216,72 +214,65 @@ const CustomerDetailsView = ({showSuccess, showFailure}) => {
 
                             <Grid container spacing={2}>
                                 <Grid item xs={4}>
-                                    <TextField
+                                    <Input
                                         label="Ulica"
                                         value={values?.address?.street}
                                         name="address.street"
                                         onChange={formik.handleChange}
-                                        fullWidth
                                     />
                                 </Grid>
 
                                 <Grid item xs={2}>
-                                    <TextField
+                                    <Input
                                         label="Nr domu"
                                         value={values?.address?.houseNumber}
                                         name="address.houseNumber"
                                         onChange={formik.handleChange}
-                                        fullWidth
                                     />
                                 </Grid>
 
                                 <Grid item xs={2}>
-                                    <TextField
+                                    <Input
                                         label="Nr miesz."
                                         value={values?.address?.apartmentNumber}
                                         name="address.apartmentNumber"
                                         onChange={formik.handleChange}
-                                        fullWidth
                                     />
                                 </Grid>
 
                                 <Grid item xs={4}>
-                                    <TextField
+                                    <Input
                                         label="Miasto"
                                         value={values?.address?.city}
                                         name="address.city"
                                         onChange={formik.handleChange}
-                                        fullWidth
                                     />
                                 </Grid>
 
                                 <Grid item xs={4}>
-                                    <TextField
+                                    <Input
                                         label="Kod pocztowy"
                                         value={values?.address?.postcode}
                                         name="address.postcode"
                                         onChange={formik.handleChange}
-                                        fullWidth
                                     />
                                 </Grid>
 
                                 <Grid item xs={4}>
-                                    <TextField
+                                    <Input
                                         label="Województwo"
                                         value={values?.address?.voivodeship}
                                         name="address.voivodeship"
                                         onChange={formik.handleChange}
-                                        fullWidth
                                     />
                                 </Grid>
 
                                 <Grid item xs={4}>
-                                    <TextField
+                                    <Input
                                         label="Kraj"
                                         value={values?.address?.country}
                                         name="address.country"
                                         onChange={formik.handleChange}
-                                        fullWidth
                                     />
                                 </Grid>
                             </Grid>

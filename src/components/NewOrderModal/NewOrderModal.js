@@ -13,6 +13,7 @@ import {customerService, companyService} from "../../_service";
 import DialogFooter from "../DialogFooter/DialogFooter";
 import { useFormik } from "formik";
 import * as Yup from "yup"
+import Input from "../Input/Input";
 
 const OrderSchema = Yup.object().shape({
     orderNumber: Yup.string().required("To pole jest wymagane"),
@@ -64,10 +65,9 @@ const NewOrderModal = ({ open, closeFn, handleNewOrderSubmit}) => {
                     <Grid container >
                         <Grid container spacing={2}>
                             <Grid item xs={4}>
-                                <TextField
+                                <Input
                                     name="orderNumber"
                                     label="Numer umowy *"
-                                    fullWidth
                                     onChange={handleChange}
                                     value={values.orderNumber}
                                     error={isError("orderNumber")}
@@ -76,7 +76,7 @@ const NewOrderModal = ({ open, closeFn, handleNewOrderSubmit}) => {
                             </Grid>
 
                             <Grid item xs={4} >
-                                <TextField
+                                <Input
                                     type="date"
                                     name="orderDate"
                                     label="Data umowy"
@@ -88,36 +88,23 @@ const NewOrderModal = ({ open, closeFn, handleNewOrderSubmit}) => {
                             </Grid>
 
                             <Grid item xs={4}>
-                                <TextField className={styles.date}
-                                           type="date"
-                                           name="deadline"
-                                           label="Termin"
-                                           fullWidth
-                                           onChange={handleChange}
-                                           value={values.deadline}
-                                           InputLabelProps={{shrink: true}}
+                                <Input
+                                    className={styles.date}
+                                    type="date"
+                                    name="deadline"
+                                    label="Termin"
+                                    onChange={handleChange}
+                                    value={values.deadline}
+                                    InputLabelProps={{shrink: true}}
                                 />
                             </Grid>
                         </Grid>
 
                         <Grid container spacing={2}>
                             <Grid item xs={4}>
-                                {/*<DefaultSelect*/}
-                                {/*    label="Klient"*/}
-                                {/*    name="customer"*/}
-                                {/*    // value={12}*/}
-                                {/*    required*/}
-                                {/*>*/}
-                                {/*    {customers.length &&*/}
-                                {/*        customers.map(customer => (*/}
-                                {/*            <MenuItem key={customer.id} value={customer.id}>{ customer.name }</MenuItem>*/}
-                                {/*        ))*/}
-                                {/*    }*/}
-                                {/*</DefaultSelect>*/}
-                                <TextField
+                                <Input
                                     label="Klient *"
                                     name="customer"
-                                    fullWidth
                                     onChange={handleChange}
                                     value={values.customer}
                                     select
@@ -129,25 +116,13 @@ const NewOrderModal = ({ open, closeFn, handleNewOrderSubmit}) => {
                                         <MenuItem key={customer.id} value={customer.id}>{ customer.name }</MenuItem>
                                     ))
                                     }
-                                </TextField>
+                                </Input>
 
                             </Grid>
                             <Grid item xs={4}>
-                                {/*<DefaultSelect*/}
-                                {/*    label="Firma"*/}
-                                {/*    name="company"*/}
-                                {/*    required*/}
-                                {/*>*/}
-                                {/*    {companies.length &&*/}
-                                {/*            companies.map(company => (*/}
-                                {/*                <MenuItem key={company.id} value={company.id}>{ company.name }</MenuItem>*/}
-                                {/*            ))*/}
-                                {/*    }*/}
-                                {/*</DefaultSelect>*/}
-                                <TextField
+                                <Input
                                     label="Firma *"
                                     name="company"
-                                    fullWidth
                                     onChange={handleChange}
                                     value={values.company}
                                     select
@@ -155,11 +130,11 @@ const NewOrderModal = ({ open, closeFn, handleNewOrderSubmit}) => {
                                     helperText={isError("company") && errors.company}
                                 >
                                     {companies.length &&
-                                    companies.map(company => (
-                                        <MenuItem key={company.id} value={company.id}>{ company.name }</MenuItem>
-                                    ))
+                                        companies.map(company => (
+                                            <MenuItem key={company.id} value={company.id}>{ company.name }</MenuItem>
+                                        ))
                                     }
-                                </TextField>
+                                </Input>
                             </Grid>
                         </Grid>
                     </Grid>

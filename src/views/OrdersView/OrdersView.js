@@ -47,17 +47,6 @@ const OrdersView = ({showSuccess, showFailure}) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const loadData = async () => {
-       // await utils.withinGuard(setIsLoading, async () => {
-       //     const initialData = await orderService.getPaginated(page, rowsPerPage);
-       //
-       //     console.log(initialData)
-       //
-       //     setRowsPerPage(initialData.size)
-       //     setTotalElements(initialData.totalElements)
-       //     setTotalPages(initialData.totalPages)
-       //     setOrders(initialData.content);
-       // });
-
         const initialData = await orderService.getPaginated(page, rowsPerPage);
 
         console.log(initialData)

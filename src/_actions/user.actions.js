@@ -17,7 +17,7 @@ function login(username, password) {
                     if (user) {
                         console.log("HAHAHAHAHHA", user)
                         dispatch(success(user));
-                        history.push("/orders")
+                        // history.push("/orders")
                     } else {
                         dispatch(failure())
                     }

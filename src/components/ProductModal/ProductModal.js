@@ -14,6 +14,7 @@ import DialogHeader from "../DialogHeader/DialogHeader";
 import DialogFooter from "../DialogFooter/DialogFooter";
 import { useFormik } from "formik";
 import { productService } from "../../_service";
+import Input from "../Input/Input";
 
 const ProductSchema = Yup.object().shape({
     code: Yup.number()
@@ -72,8 +73,7 @@ const ProductModal = ({isOpen, submitFn, closeFn, id, deleteFn}) => {
 
                     <Grid container spacing={2} className={styles.groupContainer}>
                         <Grid item xs={4}>
-                            <TextField
-                                fullWidth
+                            <Input
                                 type="number"
                                 name="code"
                                 label="Numer artykułu *"
@@ -84,8 +84,7 @@ const ProductModal = ({isOpen, submitFn, closeFn, id, deleteFn}) => {
                             />
                         </Grid>
                         <Grid item xs={4}>
-                            <TextField
-                                fullWidth
+                            <Input
                                 name="name"
                                 label="Nazwa *"
                                 value={values.name}
@@ -95,8 +94,7 @@ const ProductModal = ({isOpen, submitFn, closeFn, id, deleteFn}) => {
                             />
                         </Grid>
                         <Grid item xs={4}>
-                            <TextField
-                                fullWidth
+                            <Input
                                 name="basePrice"
                                 label="Cena podstawowa *"
                                 type="number"
@@ -115,8 +113,7 @@ const ProductModal = ({isOpen, submitFn, closeFn, id, deleteFn}) => {
                     <Grid container className={styles.groupContainer}>
                         <Grid container spacing={2} className={styles.row}>
                             <Grid item xs={4} >
-                                <TextField
-                                    fullWidth
+                                <Input
                                     name="height"
                                     label="Wysokość"
                                     type="number"
@@ -129,8 +126,7 @@ const ProductModal = ({isOpen, submitFn, closeFn, id, deleteFn}) => {
                                 />
                             </Grid>
                             <Grid item xs={4}>
-                                <TextField
-                                    fullWidth
+                                <Input
                                     name="width"
                                     label="Szerokość"
                                     type="number"
@@ -143,8 +139,7 @@ const ProductModal = ({isOpen, submitFn, closeFn, id, deleteFn}) => {
                                 />
                             </Grid>
                             <Grid item xs={4}>
-                                <TextField
-                                    fullWidth
+                                <Input
                                     name="depth"
                                     label="Głębokość"
                                     type="number"
@@ -161,8 +156,7 @@ const ProductModal = ({isOpen, submitFn, closeFn, id, deleteFn}) => {
 
                         <Grid container spacing={2} className={styles.row}>
                             <Grid item xs={4}>
-                                <TextField
-                                    fullWidth
+                                <Input
                                     name="weight"
                                     label="Waga"
                                     type="number"
@@ -179,26 +173,24 @@ const ProductModal = ({isOpen, submitFn, closeFn, id, deleteFn}) => {
 
                     <Grid container spacing={6}>
                         <Grid item xs={6}>
-                            <TextField
+                            <Input
                                 name="descriptionEng"
                                 label="Opis po angielsku"
                                 // inputRef={register}
                                 multiline
                                 rows={10}
-                                fullWidth
                                 variant="outlined"
                                 value={values.descriptionEng}
                                 onChange={formik.handleChange}
                             />
                         </Grid>
                         <Grid item xs={6}>
-                            <TextField
+                            <Input
                                 name="descriptionGer"
                                 label="Opis po niemiecku"
                                 // inputRef={register}
                                 multiline
                                 rows={10}
-                                fullWidth
                                 variant="outlined"
                                 value={values.descriptionGer}
                                 onChange={formik.handleChange}
