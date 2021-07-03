@@ -9,7 +9,7 @@ import { roleService } from "../../_service/role.service";
 import styles from "./NewRoleModal.module.scss";
 
 
-const RoleModal = ({isOpen, onCancel, submitFn, id}) => {
+const RoleModal = ({isOpen, onCancel, submitFn, id, deleteFn}) => {
 
     const formik = useFormik({
         initialValues: {},
@@ -80,6 +80,7 @@ const RoleModal = ({isOpen, onCancel, submitFn, id}) => {
                 <DialogFooter
                     cancelFn={handleCancelModal}
                     submitText={id ? "Zapisz" : "Dodaj"}
+                    deleteFn={id && (() => deleteFn(id))}
                 />
             </form>
         </Dialog>
@@ -91,6 +92,7 @@ RoleModal.propTypes = {
     isOpen: PropTypes.bool.isRequired,
     submitFn: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
+    deleteFn: PropTypes.func,
     id: PropTypes.number,
 }
 

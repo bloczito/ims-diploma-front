@@ -14,10 +14,16 @@ function login(username, password) {
         userService.login(username, password)
             .then(
                 user => {
-                    dispatch(success(user));
-                    history.push("/orders")
+                    if (user) {
+                        console.log("HAHAHAHAHHA", user)
+                        dispatch(success(user));
+                        history.push("/orders")
+                    } else {
+                        dispatch(failure())
+                    }
                 },
                 error => {
+                    console.log("EQEQEQEQEQEQE")
                     dispatch(failure(error));
                     console.log("Error: ", error);
                 }

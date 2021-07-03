@@ -5,3 +5,4 @@ export * from "./company.service";
 export * from "./product.service";
 export * from "./shipment.service";
 export * from "./merchOrder.service";
+export * from "./customerObject.service"

@@ -6,7 +6,7 @@ import TextDivider from "../../../components/TextDivider/TextDivider";
 import { orderPriority, orderStatus } from "../../../_constants";
 
 
-const InfoTab = ({values, handleChange, priorities, statuses}) => {
+const InfoTab = ({values, handleChange, priorities, statuses, defaultValues}) => {
 
     return (
         <Grid container>
@@ -47,17 +47,32 @@ const InfoTab = ({values, handleChange, priorities, statuses}) => {
 
             <Grid container spacing={2}>
                 <Grid item xs={3}>
-                    <CustomSelect
+                    {/*<CustomSelect*/}
+                    {/*    label="Priorytet"*/}
+                    {/*    name="priority"*/}
+                    {/*    onChange={handleChange}*/}
+                    {/*    value={values.priority}*/}
+                    {/*    defaultValue="LOW"*/}
+                    {/*>*/}
+                    {/*    {priorities.map(el => (*/}
+                    {/*        <MenuItem key={el} value={el}>{orderPriority[el]}</MenuItem>*/}
+                    {/*    ))}*/}
+
+                    {/*</CustomSelect>*/}
+                    <TextField
                         label="Priorytet"
                         name="priority"
                         onChange={handleChange}
                         value={values.priority}
+                        defaultValue="LOW"
+                        select
+                        fullWidth
                     >
                         {priorities.map(el => (
                             <MenuItem key={el} value={el}>{orderPriority[el]}</MenuItem>
                         ))}
+                    </TextField>
 
-                    </CustomSelect>
                     {console.log(values.priority)}
                     {/*<TextField*/}
                     {/*    label="Priorytet"*/}
@@ -73,16 +88,29 @@ const InfoTab = ({values, handleChange, priorities, statuses}) => {
                     {/*</TextField>*/}
                 </Grid>
                 <Grid item xs={3}>
-                    <CustomSelect
+                    {/*<CustomSelect*/}
+                    {/*    label="Status"*/}
+                    {/*    name="status"*/}
+                    {/*    onChange={handleChange}*/}
+                    {/*    value={values?.status}*/}
+                    {/*>*/}
+                    {/*    {statuses.map(el => (*/}
+                    {/*      <MenuItem key={el} value={el}>{orderStatus[el]}</MenuItem>*/}
+                    {/*    ))}*/}
+                    {/*</CustomSelect>*/}
+                    <TextField
                         label="Status"
                         name="status"
                         onChange={handleChange}
-                        value={values?.status}
+                        value={values.status}
+                        defaultValue="NEW"
+                        fullWidth
+                        select
                     >
                         {statuses.map(el => (
-                          <MenuItem key={el} value={el}>{orderStatus[el]}</MenuItem>
+                            <MenuItem key={el} value={el}>{orderStatus[el]}</MenuItem>
                         ))}
-                    </CustomSelect>
+                    </TextField>
                 </Grid>
             </Grid>
 

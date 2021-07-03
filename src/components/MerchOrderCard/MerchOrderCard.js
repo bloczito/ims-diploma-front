@@ -44,7 +44,7 @@ const MerchOrderCard = ({merchOrder, commentName, onChange, isEdited, deleteMerc
                 </Grid>
             }
             action={
-                roles.includes(userRoles.ROLE_TRADER) && (
+                (roles.includes(userRoles.ROLE_TRADER) || roles.includes(userRoles.ROLE_TRADER_SUPERVISOR)) && (
                     <>
                         {isDisabled(merchOrder.id, isEdited) &&(
                             <Typography variant="caption" color="secondary">Muisz zapisać aby usunąć </Typography>

@@ -223,8 +223,8 @@ const OrderDetailsView = ({showSuccess, showFailure, roles}) => {
 
                         <TabPanel activeTab={activeTab} index={0}>
                             <InfoTab
-                                // formik={formik}
                                 values={values}
+                                defaultValues={order}
                                 handleChange={handleFormChange}
                                 priorities={priorities}
                                 statuses={statuses}

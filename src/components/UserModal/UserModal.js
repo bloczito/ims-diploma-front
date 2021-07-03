@@ -24,7 +24,7 @@ import { roleService } from "../../_service/role.service";
 
 
 
-const UserModal = ({isOpen, onClose, submitFn, id}) => {
+const UserModal = ({isOpen, onClose, submitFn, id, deleteFn}) => {
 
     const [roles, setRoles] = useState([]);
 
@@ -226,6 +226,7 @@ const UserModal = ({isOpen, onClose, submitFn, id}) => {
                 <DialogFooter
                     cancelFn={handleModalClose}
                     submitText={id ? "Zapisz" : "Dodaj"}
+                    deleteFn={id && (() => deleteFn(id))}
                 />
             </form>
         </Dialog>
@@ -239,6 +240,7 @@ UserModal.propTypes = {
     isOpen: PropTypes.bool.isRequired,
     submitFn: PropTypes.func.isRequired,
     onClose: PropTypes.func.isRequired,
+    deleteFn: PropTypes.func,
     id: PropTypes.number,
 }
 

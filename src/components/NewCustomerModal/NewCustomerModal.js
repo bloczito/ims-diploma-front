@@ -1,20 +1,19 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {useForm} from "react-hook-form";
 import {
     Dialog,
     DialogContent,
     Grid,
-    InputAdornment,
-    MenuItem,
+    InputAdornment, MenuItem,
     TextField
 } from "@material-ui/core";
 import DialogHeader from "../DialogHeader/DialogHeader";
 import styles from "./NewCustomerModal.scss";
 import PhoneIcon from "@material-ui/icons/Phone";
 import EmailIcon from '@material-ui/icons/AlternateEmail';
-import DefaultSelect from "../DefaultSelect/DefaultSelect";
 import DialogFooter from "../DialogFooter/DialogFooter";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
 
 const countries = [
@@ -27,14 +26,35 @@ const countries = [
     "Szwecja",
 ];
 
+const newCustomerSchema = Yup.object().shape({
+    name: Yup.string()
+        .min(2, "Podaj przynajmniej 2 znaki")
+        .max(24, "Maksymalna ilość znaków to 24")
+        .required("To pole jest wymagane")
+})
+
 const NewCustomerModal = ({isOpen, handleModalClose, handleNewCustomerSubmit}) => {
-    const {register, control, handleSubmit} = useForm();
+
+    const formik = useFormik({
+        enableReinitialize: true,
+        initialValues: {},
+        validationSchema: newCustomerSchema,
+        onSubmit: (values, {resetForm}) => {
+            handleNewCustomerSubmit(values);
+            resetForm();
+        }
+    });
+
+    const {values, handleChange, errors, touched} = formik;
+
+    const isError = name => errors[name];
+
     return (
         <Dialog
             open={isOpen}
             onClose={handleModalClose}
         >
-            <form onSubmit={handleSubmit(handleNewCustomerSubmit)} autoComplete="off">
+            <form onSubmit={formik.handleSubmit} autoComplete="off">
                 <DialogHeader closeFn={handleModalClose}>
                     Dodaj klienta
                 </DialogHeader>
@@ -44,9 +64,11 @@ const NewCustomerModal = ({isOpen, handleModalClose, handleNewCustomerSubmit}) =
                             <TextField
                                 fullWidth
                                 name="name"
-                                label="Nazwa"
-                                inputRef={register}
-                                required
+                                label="Nazwa *"
+                                value={values.name}
+                                onChange={handleChange}
+                                error={isError("name")}
+                                helperText={isError("name") && errors.name}
                             />
                         </Grid>
                         <Grid item xs={12} md={4}>
@@ -55,7 +77,8 @@ const NewCustomerModal = ({isOpen, handleModalClose, handleNewCustomerSubmit}) =
                                 name="phone"
                                 type="tel"
                                 label="Telefon"
-                                inputRef={register}
+                                value={values.phone}
+                                onChange={handleChange}
                                 InputProps={{
                                     startAdornment:
                                         <InputAdornment position="start">
@@ -69,7 +92,8 @@ const NewCustomerModal = ({isOpen, handleModalClose, handleNewCustomerSubmit}) =
                                 fullWidth
                                 name="email"
                                 label="Email"
-                                inputRef={register}
+                                value={values.email}
+                                onChange={handleChange}
                                 InputProps={{
                                     startAdornment:
                                         <InputAdornment position="start">
@@ -83,7 +107,8 @@ const NewCustomerModal = ({isOpen, handleModalClose, handleNewCustomerSubmit}) =
                                 fullWidth
                                 name="nip"
                                 label="Nip"
-                                inputRef={register}
+                                value={values.nip}
+                                onChange={handleChange}
                             />
                         </Grid>
                     </Grid>
@@ -94,7 +119,8 @@ const NewCustomerModal = ({isOpen, handleModalClose, handleNewCustomerSubmit}) =
                                 fullWidth
                                 name="address.city"
                                 label="Miasto"
-                                inputRef={register}
+                                value={values.address?.city}
+                                onChange={handleChange}
                             />
                         </Grid>
                         <Grid item xs={12} md={4}>
@@ -102,7 +128,8 @@ const NewCustomerModal = ({isOpen, handleModalClose, handleNewCustomerSubmit}) =
                                 fullWidth
                                 name="address.street"
                                 label="Ulica"
-                                inputRef={register}
+                                value={values.address?.street}
+                                onChange={handleChange}
                             />
                         </Grid>
                         <Grid item xs={6} md={2}>
@@ -110,7 +137,8 @@ const NewCustomerModal = ({isOpen, handleModalClose, handleNewCustomerSubmit}) =
                                 fullWidth
                                 name="address.houseNumber"
                                 label="Nr domu"
-                                inputRef={register}
+                                value={values.address?.houseNumber}
+                                onChange={handleChange}
                             />
                         </Grid>
                         <Grid item xs={6} md={2}>
@@ -118,7 +146,8 @@ const NewCustomerModal = ({isOpen, handleModalClose, handleNewCustomerSubmit}) =
                                 fullWidth
                                 name="address.apartmentNumber"
                                 label="Nr miesz."
-                                inputRef={register}
+                                value={values.address?.apartmentNumber}
+                                onChange={handleChange}
                             />
                         </Grid>
                         <Grid item xs={12} md={4}>
@@ -126,27 +155,38 @@ const NewCustomerModal = ({isOpen, handleModalClose, handleNewCustomerSubmit}) =
                                 fullWidth
                                 name="address.voivodeship"
                                 label="Województwo"
-                                inputRef={register}
+                                value={values.address?.voivodeship}
+                                onChange={handleChange}
                             />
                         </Grid>
                         <Grid item xs={12} md={4}>
-                            <DefaultSelect
+                            <TextField
                                 label="Kraj"
-                                control={control}
                                 name="address.country"
+                                fullWidth
+                                select
+                                value={values.address?.country}
+                                onChange={handleChange}
                             >
                                 {countries.length && countries.map(country =>
-                                        <MenuItem key={country} value={country}>{country}</MenuItem>
-                                    )
-                                }
-                            </DefaultSelect>
+                                    <MenuItem key={country} value={country}>{country}</MenuItem>
+                                )}
+                            </TextField>
+                            {/*<DefaultSelect*/}
+                            {/*    label="Kraj"*/}
+                            {/*    name="address.country"*/}
+                            {/*>*/}
+                            {/*    {countries.length && countries.map(country =>*/}
+                            {/*            <MenuItem key={country} value={country}>{country}</MenuItem>*/}
+                            {/*        )*/}
+                            {/*    }*/}
+                            {/*</DefaultSelect>*/}
                         </Grid>
                     </Grid>
 
                 </DialogContent>
                 <DialogFooter
                     cancelFn={handleModalClose}
-                    submitFn={handleNewCustomerSubmit}
                 />
             </form>
         </Dialog>

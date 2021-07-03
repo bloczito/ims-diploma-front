@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useHistory, useParams } from "react-router";
 import { connect } from "react-redux";
 import {
     Button,
@@ -15,7 +15,7 @@ import {
 import EditIcon from '@material-ui/icons/Edit';
 
 import { notificationActions } from "../../_actions";
-import { customerService } from "../../_service";
+import { customerObjectService, customerService } from "../../_service";
 import { useFormik } from "formik";
 import TextDivider from "../../components/TextDivider/TextDivider";
 import NewObjectForm from "../../components/NewObjectForm/NewObjectForm";
@@ -28,18 +28,18 @@ const CustomerDetailsView = ({showSuccess, showFailure}) => {
     const [isEditingName, setIsEditingName] = useState(false);
     const [editingObjectIdx, setEditingObjectIdx] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const history = useHistory();
 
     const formik = useFormik({
         initialValues: {},
         enableReinitialize: true,
-        onSubmit: (values, {setSubmitting}) => {
+        onSubmit: values => {
             console.log("SUBMIT FORMIK", values);
             saveCustomer(values)
             // setSubmitting(false);
         }
     });
     const {values, isSubmitting} = formik;
-    console.log("FORMIK: ", values);
 
     useEffect(() => {
         loadCustomer();
@@ -94,6 +94,30 @@ const CustomerDetailsView = ({showSuccess, showFailure}) => {
         )
     }
 
+    const handleDeleteCustomer = () => {
+        customerService.deleteById(customerId)
+            .then(res => {
+                if (res?.success) {
+                    history.push("/customers");
+                    showSuccess("Usunięto klienta");
+                } else {
+                    showFailure("Nie udało się usunąć. Błąd: " + res?.error)
+                }
+            })
+    }
+
+    const handleDeleteObject = id => {
+        customerObjectService.deleteCustomerObject(id)
+            .then(res => {
+                if (res?.success) {
+                    showSuccess("Usunięto obiekt");
+                    loadCustomer();
+                } else {
+                    showFailure("Nie udało się usunąć obiektu. Błąd: " + res?.error)
+                }
+            })
+    }
+
     const EditButton = () => (
         <IconButton onClick={() => setIsEditingName(prevState => !prevState)}>
             <EditIcon/>
@@ -126,15 +150,30 @@ const CustomerDetailsView = ({showSuccess, showFailure}) => {
                                 )}
 
                             action={
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    disableElevation
-                                    disabled={isSubmitting}
-                                    onClick={formik.submitForm}
-                                >
-                                    Zapisz
-                                </Button>
+                                <Grid container spacing={1}>
+                                    <Grid item>
+                                        <Button
+                                            variant="outlined"
+                                            color="secondary"
+                                            disableElevation
+                                            disabled={isSubmitting}
+                                            onClick={handleDeleteCustomer}
+                                        >
+                                            Usuń
+                                        </Button>
+                                    </Grid>
+                                    <Grid item>
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                            disableElevation
+                                            disabled={isSubmitting}
+                                            onClick={formik.submitForm}
+                                        >
+                                            Zapisz
+                                        </Button>
+                                    </Grid>
+                                </Grid>
                             }
                         />
                         <CardContent>
@@ -253,12 +292,13 @@ const CustomerDetailsView = ({showSuccess, showFailure}) => {
 
                             <Grid container spacing={2} style={{marginTop: 20}}>
                                 {(values.customerObjects || []).map(({
+                                                                        id,
                                                                          contactTitle,
                                                                          contactName,
                                                                          contactSurname,
                                                                          address
                                                                      }, index) => (
-                                    <Grid item xs={4}>
+                                    <Grid item xs={4} key={id}>
                                         <Card variant="outlined" style={{width: "100%"}}>
                                             <CardContent>
                                                 <Typography style={{fontWeight: "bold"}}>
@@ -289,6 +329,7 @@ const CustomerDetailsView = ({showSuccess, showFailure}) => {
                                                     variant="outlined"
                                                     color="secondary"
                                                     size="small"
+                                                    onClick={() => handleDeleteObject(id)}
                                                 >
                                                     Usuń
                                                 </Button>

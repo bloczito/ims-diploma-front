@@ -111,7 +111,6 @@ const AdminPanelView = ({showSuccess, showFailure}) => {
                     showFailure(res.error);
                 }
             })
-
         handleCloseRoleModal();
     }
 
@@ -129,6 +128,32 @@ const AdminPanelView = ({showSuccess, showFailure}) => {
                 }
             })
         handleCloseUserModal();
+    }
+
+    const handleDeleteUser = id => {
+        userService.deleteById(id)
+            .then(res => {
+                if (res?.success) {
+                    loadInitData();
+                    showSuccess("Usunięto użytkownika");
+                } else {
+                    showFailure("Nie udało się usunąć użytkownika. Błąd: " + res?.error)
+                }
+            });
+        handleCloseUserModal();
+    }
+
+    const handleDeleteRole = id => {
+        roleService.deleteById(id)
+            .then(res => {
+                if (res?.success) {
+                    loadInitData();
+                    showSuccess("Usunięto uprawnienie");
+                } else {
+                    showFailure("Nie udało się usunąć uprawnienia. Błąd: " + res?.error)
+                }
+            });
+        handleCloseRoleModal();
     }
 
     return (
@@ -186,6 +211,7 @@ const AdminPanelView = ({showSuccess, showFailure}) => {
                 onClose={handleCloseUserModal}
                 submitFn={handleUserSubmit}
                 id={selectedUserId}
+                deleteFn={handleDeleteUser}
             />
 
             <RoleModal
@@ -193,6 +219,7 @@ const AdminPanelView = ({showSuccess, showFailure}) => {
                 onCancel={handleCloseRoleModal}
                 isOpen={isRoleModalOpen}
                 id={selectedRoleId}
+                deleteFn={handleDeleteRole}
             />
         </>
     )

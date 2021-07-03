@@ -16,6 +16,8 @@ import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import DeleteIcon from '@material-ui/icons/Delete';
 
 import styles from "./ShipmentCard.module.scss";
+import { connect } from "react-redux";
+import { userRoles } from "../../_constants";
 
 const isDisabled = (id, isEdited) => {
     if (id === undefined) return false;
@@ -23,7 +25,7 @@ const isDisabled = (id, isEdited) => {
 }
 
 
-const ShipmentCard = ({shipment, deleteShipment, isEdited, onChange, commentName}) => {
+const ShipmentCard = ({shipment, deleteShipment, isEdited, onChange, commentName, roles}) => {
 
     const [isExpanded, setIsExpanded] = useState(false);
 
@@ -50,6 +52,7 @@ const ShipmentCard = ({shipment, deleteShipment, isEdited, onChange, commentName
                     </Grid>
                 }
                 action={
+                    (roles.includes(userRoles.ROLE_TRADER) || roles.includes(userRoles.ROLE_TRADER_SUPERVISOR)) &&
                     <>
                         {isDisabled(shipment.id, isEdited) &&(
                             <Typography variant="caption" color="secondary">Muisz zapisać aby usunąć </Typography>
@@ -178,5 +181,15 @@ ShipmentCard.propTypes = {
     }).isRequired,
 }
 
-export default ShipmentCard;
+const mapStateToProps = state => {
+    const {roles} = state.authentication;
+    return {
+        roles,
+    }
+}
+
+export default connect(
+    mapStateToProps,
+    null
+)(ShipmentCard);
 
