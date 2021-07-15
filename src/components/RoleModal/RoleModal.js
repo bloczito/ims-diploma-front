@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { useFormik } from "formik";
 import { Dialog, DialogContent, Grid, TextField } from "@material-ui/core";
+import * as Yup from "yup";
 
 import DialogHeader from "../DialogHeader/DialogHeader";
 import DialogFooter from "../DialogFooter/DialogFooter";
@@ -9,6 +10,9 @@ import { roleService } from "../../_service/role.service";
 import styles from "./RoleModal.module.scss";
 import Input from "../Input/Input";
 
+const roleSchema = Yup.object().shape({
+    name: Yup.string().required("To pole jest wymagane")
+})
 
 const RoleModal = ({isOpen, onCancel, submitFn, id, deleteFn}) => {
 
@@ -18,8 +22,12 @@ const RoleModal = ({isOpen, onCancel, submitFn, id, deleteFn}) => {
         onSubmit: (values, {resetForm}) => {
             submitFn(values);
             resetForm();
-        }
+        },
+        validationSchema: roleSchema,
+        validateOnChange: false
     });
+
+    const {errors} = formik;
 
     useEffect(() => {
         if (id) {
@@ -57,9 +65,12 @@ const RoleModal = ({isOpen, onCancel, submitFn, id, deleteFn}) => {
                                 label="Nazwa"
                                 value={formik.values.name}
                                 onChange={formik.handleChange}
+                                error={errors.name}
+                                helperText={errors.name && errors.name}
                             />
                         </Grid>
                     </Grid>
+
 
                     <Grid container>
                         <Grid item xs={12}>

@@ -34,7 +34,8 @@ const NewOrderModal = ({ open, closeFn, handleNewOrderSubmit}) => {
             resetForm();
         },
         validationSchema: OrderSchema,
-        initialValues: {}
+        initialValues: {},
+        validateOnChange: false
     })
 
     const {values, errors, touched, handleChange} = formik;
@@ -54,7 +55,8 @@ const NewOrderModal = ({ open, closeFn, handleNewOrderSubmit}) => {
 
     return (
         <Dialog
-            maxWidth="xl"
+            maxWidth="md"
+            fullWidth
             className={styles.wrapper}
             open={open}
             onClose={closeFn}

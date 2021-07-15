@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
+import * as Yup from "yup";
 
 import DialogHeader from "../DialogHeader/DialogHeader";
 import { useFormik } from "formik";
@@ -29,6 +30,24 @@ const UserModal = ({isOpen, onClose, submitFn, id, deleteFn}) => {
 
     const [roles, setRoles] = useState([]);
 
+    const registerSchema = Yup.object().shape({
+        username: Yup.string().required("To pole jest wymagane"),
+        password: Yup.string().min(8, "Podaj przynajmniej 8 znaków").max(24, "Podaj maksymalnie 24 znaki").required("To pole jest wymagane"),
+        confirmPassword: Yup.string().oneOf([Yup.ref("password"), null], "Hasła muszą być identyczne").required("To pole jest wymagane")
+
+    });
+
+    const loginSchema = Yup.object().shape({
+        username: Yup.string().required("To pole jest wymagane"),
+    }).when(((value, schema) => {
+        if (value.password) {
+            return schema.shape({
+                password: Yup.string().min(8, "Podaj przynajmniej 8 znaków").max(24, "Podaj maksymalnie 24 znaki"),
+                confirmPassword: Yup.string().oneOf([Yup.ref("password"), null], "Hasła muszą być identyczne").required("To pole jest wymagane")
+            })
+        }
+    }))
+
     const formik = useFormik({
         onSubmit: (values, {resetForm}) => {
             submitFn(values);
@@ -36,9 +55,11 @@ const UserModal = ({isOpen, onClose, submitFn, id, deleteFn}) => {
         },
         enableReinitialize: true,
         initialValues: {},
+        validationSchema: id ? loginSchema : registerSchema,
+        validateOnChange: false,
     });
 
-    console.log("FORMIK", formik.values);
+    const {values, errors} = formik;
 
     useEffect(() => {
         roleService.getAll()
@@ -75,6 +96,8 @@ const UserModal = ({isOpen, onClose, submitFn, id, deleteFn}) => {
         onClose();
     }
 
+    const isError = name => errors[name];
+
     return (
         <Dialog
             open={isOpen}
@@ -92,29 +115,35 @@ const UserModal = ({isOpen, onClose, submitFn, id, deleteFn}) => {
                         <Grid item xs={4}>
                             <Input
                                 name="username"
-                                label="Nazwa użytkownika"
+                                label="Nazwa użytkownika *"
                                 onChange={formik.handleChange}
                                 value={formik.values.username}
                                 InputLabelProps={{
                                     shrink: formik.values.username,
                                 }}
+                                error={isError("username")}
+                                helperText={isError("username") && errors["username"]}
                             />
 
                         </Grid>
                         <Grid item xs={4}>
                             <Input
                                 name="password"
-                                label="Hasło"
+                                label={id ? "Hasło" : "Hasło *"}
                                 onChange={formik.handleChange}
                                 value={formik.values.password}
+                                error={isError("password")}
+                                helperText={isError("password") && errors["password"]}
                             />
                         </Grid>
                         <Grid item xs={4}>
                             <Input
                                 name="confirmPassword"
-                                label="Potwierdź hasło"
+                                label={id ? "Potwierdź hasło" : "Potwierdź hasło *"}
                                 onChange={formik.handleChange}
                                 value={formik.values.confirmPassword}
+                                error={isError("confirmPassword")}
+                                helperText={isError("confirmPassword") && errors["confirmPassword"]}
                             />
                         </Grid>
                     </Grid>

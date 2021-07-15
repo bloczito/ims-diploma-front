@@ -24,11 +24,11 @@ axiosClient.interceptors.request.use(config => {
 axiosClient.interceptors.response.use(
     response => response.data ?? {},
     error => {
-        if (error.response) {
-            const { status } = error.response;
-            if (status === HTTP_STATUS.UNAUTHORIZED) {
-                store.dispatch(userActions.logout())
-            }
+        console.log("AXIOS: ", error.response);
+        const { status } = error.response;
+        if (status === HTTP_STATUS.UNAUTHORIZED) {
+            store.dispatch(userActions.logout())
+        return Promise.reject("Wylogowano")
         }
     }
 );

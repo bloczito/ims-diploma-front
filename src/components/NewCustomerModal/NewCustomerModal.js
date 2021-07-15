@@ -53,6 +53,8 @@ const NewCustomerModal = ({isOpen, handleModalClose, handleNewCustomerSubmit}) =
         <Dialog
             open={isOpen}
             onClose={handleModalClose}
+            maxWidth="md"
+            fullWidth
         >
             <form onSubmit={formik.handleSubmit} autoComplete="off">
                 <DialogHeader closeFn={handleModalClose}>
