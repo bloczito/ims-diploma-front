@@ -134,15 +134,28 @@ const CustomerDetailsView = ({showSuccess, showFailure}) => {
                             title={
                                 isEditingName ? (
                                     <>
-                                        <TextField
-                                            variant="outlined"
-                                            label="Nazwa"
-                                            name="name"
-                                            value={values.name}
-                                            onChange={formik.handleChange}
-                                            size="small"
-                                        />
-                                        <EditButton/>
+                                        <Grid container spacing={2}>
+                                            <Grid item>
+                                                <TextField
+                                                    variant="outlined"
+                                                    label="Nazwa"
+                                                    name="name"
+                                                    value={values.name}
+                                                    onChange={formik.handleChange}
+                                                    size="small"
+                                                />
+                                            </Grid>
+                                            <Grid item>
+                                                <Button
+                                                    variant="outlined"
+                                                    color="primary"
+                                                    disabled={!values.name.length}
+                                                    onClick={() => setIsEditingName(prevState => !prevState)}
+                                                >
+                                                    Zapisz
+                                                </Button>
+                                            </Grid>
+                                        </Grid>
                                     </>
                                 ) : (
                                     <Typography variant="h4" style={{fontWeight: "bold"}}>

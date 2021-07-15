@@ -48,7 +48,7 @@ function App({ token, isNotificationOpen, notificationMsg, notificationType, clo
                     <Snackbar
                         open={isNotificationOpen}
                         anchorOrigin={{horizontal: "left", vertical: "bottom"}}
-                        autoHideDuration={6000}
+                        autoHideDuration={notificationType === NOTIFICATION_TYPE.SUCCESS && 6000}
                         onClose={closeNotification}
                     >
                         <Alert

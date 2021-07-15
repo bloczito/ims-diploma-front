@@ -1,20 +1,30 @@
 import React from "react";
 import PropTypes from "prop-types";
+import * as Yup from "yup";
 import { Dialog, DialogContent, Grid, TextField } from "@material-ui/core";
 import DialogHeader from "../DialogHeader/DialogHeader";
 import DialogFooter from "../DialogFooter/DialogFooter";
 import { useFormik } from "formik";
+
+const objectSchema = Yup.object().shape({
+    "address.street": Yup.string().required("To pole jest wymagane")
+})
 
 const EditObjectModal = ({isOpen, submitFn, onClose, objectIndex, obj}) => {
 
     const formik = useFormik({
         initialValues: {...obj},
         enableReinitialize: true,
+        validationSchema: objectSchema,
         onSubmit: values => {
             submitFn(objectIndex, values);
             onClose();
         }
     })
+
+    const {values, touched, errors} = formik;
+
+    const isError = name => errors[name];
 
     return (
         <Dialog
@@ -24,11 +34,11 @@ const EditObjectModal = ({isOpen, submitFn, onClose, objectIndex, obj}) => {
             fullWidth
             onClose={onClose}
         >
-            <DialogHeader closeFn={onClose}>
-                Edycja obiektu klienta
-            </DialogHeader>
-            <DialogContent dividers>
-                <form onSubmit={formik.handleSubmit}>
+            <form onSubmit={formik.handleSubmit}>
+                <DialogHeader closeFn={onClose}>
+                    Edycja obiektu klienta
+                </DialogHeader>
+                <DialogContent dividers>
                     <Grid container>
                         <Grid container spacing={2}>
                             <Grid item xs={4}>
@@ -63,22 +73,24 @@ const EditObjectModal = ({isOpen, submitFn, onClose, objectIndex, obj}) => {
 
                             <Grid item xs={4}>
                                 <TextField
-                                    label="Ulica"
+                                    label="Ulica *"
                                     value={formik.values.address?.street}
                                     name={"address.street"}
                                     onChange={formik.handleChange}
-                                    required
                                     fullWidth
+                                    error={isError("address.street")}
+                                    helperText={isError("address.street") && errors["address.street"]}
                                 />
                             </Grid>
                             <Grid item xs={2}>
                                 <TextField
-                                    label="Nr domu"
+                                    label="Nr domu *"
                                     value={formik.values.address?.houseNumber}
                                     name={"address.houseNumber"}
                                     onChange={formik.handleChange}
-                                    required
                                     fullWidth
+                                    error={isError("address.houseNumber")}
+                                    helperText={isError("address.houseNumber") && errors["address.houseNumber"]}
                                 />
                             </Grid>
                             <Grid item xs={2}>
@@ -101,12 +113,13 @@ const EditObjectModal = ({isOpen, submitFn, onClose, objectIndex, obj}) => {
                             </Grid>
                             <Grid item xs={4}>
                                 <TextField
-                                    label="Miasto"
+                                    label="Miasto *"
                                     value={formik.values.address?.city}
                                     name={"address.city"}
                                     onChange={formik.handleChange}
-                                    required
                                     fullWidth
+                                    error={isError("address.city")}
+                                    helperText={isError("address.city") && errors["address.city"]}
                                 />
                             </Grid>
                             <Grid item xs={4}>
@@ -129,13 +142,13 @@ const EditObjectModal = ({isOpen, submitFn, onClose, objectIndex, obj}) => {
                             </Grid>
                         </Grid>
                     </Grid>
-                </form>
-            </DialogContent>
-            <DialogFooter
-                cancelFn={onClose}
-                submitFn={formik.submitForm}
-                submitText="Zapisz"
-            />
+                </DialogContent>
+                <DialogFooter
+                    cancelFn={onClose}
+                    // submitFn={formik.submitForm}
+                    submitText="Zapisz"
+                />
+            </form>
         </Dialog>
     )
 }

@@ -35,6 +35,7 @@ const ProductModal = ({isOpen, submitFn, closeFn, id, deleteFn}) => {
         enableReinitialize: true,
         initialValues: {},
         validationSchema: ProductSchema,
+        validateOnChange: false,
     });
 
     const {errors, values, touched} = formik;
