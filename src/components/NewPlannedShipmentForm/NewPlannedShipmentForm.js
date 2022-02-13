@@ -1,28 +1,40 @@
 import React, { useState } from "react";
-import PropTypes from "prop-types";
 import {
     Button,
     Card, CardActions,
     CardContent,
     Collapse,
-    Grid, IconButton, MenuItem,
+    Grid, IconButton,
+    MenuItem,
     Table,
-    TableBody,
-    TableCell,
-    TableRow, TextField,
+    TableBody, TableCell, TableRow,
+    TextField,
     Typography
 } from "@material-ui/core";
 import CancelIcon from "@material-ui/icons/Cancel";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
+import Input from "../Input/Input";
 import { Autocomplete } from "@material-ui/lab";
+import moment from "moment";
+import PropTypes from "prop-types";
 import DeleteIcon from "@material-ui/icons/Delete";
 
-import styles from "./NewShipmentForm.module.scss";
-import Input from "../Input/Input";
+
+const getYearsOptions = () => {
+    const currentYear = moment().year();
+
+    const years = [];
+
+    for (let i = 0; i < 6; ++i) {
+        years.push(currentYear + i)
+    }
+
+    return years
+}
 
 
+const NewPlannedShipmentForm = ({notShippedElements, submitNewShipment}) => {
 
-const NewShipmentForm = ({notShippedElements, customerObjects, submitNewShipment}) => {
     const [isAdding, setIsAdding] = useState(false);
     const [reRender, setReRender] = useState(0);
     const [newProduct, setNewProduct] = useState({
@@ -30,15 +42,11 @@ const NewShipmentForm = ({notShippedElements, customerObjects, submitNewShipment
         quantity: 0
     });
     const [newShipment, setNewShipment] = useState({
-        comment: null,
-        shipmentDate: null,
-        shipmentObject: null,
+        shipmentWeek: moment().isoWeek().toString(),
+        shipmentYear: moment().year().toString(),
         shipmentElements: [],
-    });
+    })
 
-    const handleQuantityChange = evt => {
-        setNewProduct(prev => ({...prev, quantity: parseInt(evt.target.value)}))
-    }
 
     const getMaxAvailableQuantity = () => {
         if (newProduct.product == null) return 0;
@@ -46,6 +54,24 @@ const NewShipmentForm = ({notShippedElements, customerObjects, submitNewShipment
             const shippedQuantity = newShipment.shipmentElements.find(el => el.product === newProduct.product)?.quantity || 0;
             return notShippedElements.find(el => el.product === newProduct.product).quantity - shippedQuantity;
         }
+    }
+
+    const handleQuantityChange = evt => {
+        setNewProduct(prev => ({...prev, quantity: parseInt(evt.target.value)}))
+    }
+
+    const handleSubmitNewShipment = evt => {
+        evt.preventDefault();
+        submitNewShipment(newShipment);
+
+        setNewShipment({
+            shipmentElements: [],
+            shipmentWeek: moment().isoWeek().toString(),
+            shipmentYear: moment().year().toString()
+        });
+
+        setReRender(prevState => ++prevState);
+        setIsAdding(false);
     }
 
     const handleAddElement = () => {
@@ -62,11 +88,11 @@ const NewShipmentForm = ({notShippedElements, customerObjects, submitNewShipment
                         return el;
                     })
                 ]
-            }))
+            }));
         } else {
             setNewShipment(prevState => ({
                 ...prevState,
-                shipmentElements: [...prevState.shipmentElements, newProduct],
+                shipmentElements: [...prevState.shipmentElements, newProduct]
             }));
         }
 
@@ -78,27 +104,6 @@ const NewShipmentForm = ({notShippedElements, customerObjects, submitNewShipment
             ...prevState,
             shipmentElements: prevState.shipmentElements.filter((e, idx) => idx !== index)
         }));
-    }
-
-    const handleChooseObject = evt => {
-        console.log(evt.target)
-        setNewShipment(prevState => ({
-            ...prevState,
-            shipmentObject: customerObjects.find(obj => obj.id === evt.target.value),
-        }));
-    }
-
-    const handleSubmitNewShipment = evt => {
-        evt.preventDefault();
-        submitNewShipment(newShipment);
-        setNewShipment({
-            shipmentElements: [],
-            comment: null,
-            shipmentObject: null,
-            shipmentDate: null,
-        });
-        setReRender(prevState => ++prevState);
-        setIsAdding(false);
     }
 
     return (
@@ -113,39 +118,19 @@ const NewShipmentForm = ({notShippedElements, customerObjects, submitNewShipment
                 startIcon={isAdding ? <CancelIcon/> : <AddCircleIcon/>}
             >
                 <Typography variant="button">
-                    {isAdding ? "Anuluj" : "Nowa wysyłka"}
+                    {isAdding ? "Anuluj" : "Nowa planowana wysyłka"}
                 </Typography>
             </Button>
-            <Collapse in={isAdding} className={styles.formWrapper}>
+
+            <Collapse
+                in={isAdding}
+                style={{width: "100%", marginTop: 10}}
+                timeout="auto"
+            >
                 <Card variant="outlined">
-                    <CardContent  key={reRender}>
-                        <Grid container spacing={2} >
-                            <Grid item xs={6}>
-                                <Input
-                                    label="Obiekt"
-                                    select
-                                    variant="outlined"
-                                    onChange={handleChooseObject}
-                                    value={newShipment.shipmentObject?.id}
-                                    size="small"
-                                >
-                                    {customerObjects.map(obj => (
-                                        <MenuItem key={obj.id} value={obj.id}>{obj.address.city} {obj.address.street} {obj.address.houseNumber}</MenuItem>
-                                    ))}
-                                </Input>
-                            </Grid>
-                            <Grid item xs={6}>
-                                <Input
-                                    label="Data"
-                                    type="date"
-                                    size="small"
-                                    variant="outlined"
-                                    onChange={evt => setNewShipment(prevState => ({...prevState, shipmentDate: evt.target.value}))}
-                                />
-                            </Grid>
-                        </Grid>
-                        <Grid container spacing={2} style={{marginTop: 10}}>
-                            <Grid item xs={8}>
+                    <CardContent>
+                        <Grid container spacing={2}>
+                            <Grid item xs={9}>
                                 <Grid container>
                                     <Table size="small">
                                         <TableBody>
@@ -169,16 +154,15 @@ const NewShipmentForm = ({notShippedElements, customerObjects, submitNewShipment
                                     </Table>
                                 </Grid>
 
-                                <Grid container spacing={1} className={styles.productInputWrapper}>
-                                    <Grid item xs={10} >
+                                <Grid container spacing={2} style={{marginTop: 10, marginBottom: 5}} key={reRender}>
+                                    <Grid item xs={10}>
                                         <Autocomplete
-                                            onChange={(event, value) => setNewProduct(prevState => ({
-                                                    quantity: 0,
-                                                    product: value,
-                                                }
-                                            ))}
+                                            onChange={(event, value) => setNewProduct({
+                                                quantity: 0,
+                                                product: value
+                                            })}
                                             value={newProduct.product}
-                                            options={notShippedElements.map(el => el.product)}
+                                            options={notShippedElements.map(({product}) => product)}
                                             getOptionLabel={option => `${option.code} | ${option.name}`}
                                             clearOnBlur
                                             renderInput={params => (
@@ -209,28 +193,62 @@ const NewShipmentForm = ({notShippedElements, customerObjects, submitNewShipment
                                         </Input>
                                     </Grid>
                                 </Grid>
-                                <Button
-                                    variant="outlined"
-                                    color="primary"
-                                    fullWidth
-                                    startIcon={<AddCircleIcon/>}
-                                    disabled={!(newProduct.product && newProduct.quantity)}
-                                    onClick={handleAddElement}
-                                >
-                                    Dodaj element
-                                </Button>
+                                <Grid container>
+                                    <Grid item xs={12}>
+                                        <Button
+                                            variant="outlined"
+                                            color="primary"
+                                            fullWidth
+                                            startIcon={<AddCircleIcon/>}
+                                            disabled={!(newProduct.product && newProduct.quantity)}
+                                            onClick={handleAddElement}
+                                        >
+                                            Dodaj element
+                                        </Button>
+                                    </Grid>
+                                </Grid>
                             </Grid>
 
-                            <Grid item xs={4}>
-                                <TextField
-                                    name="comment"
-                                    variant="outlined"
-                                    multiline
-                                    rows={6}
-                                    fullWidth
-                                    label="Komentarz"
-                                    onChange={evt => setNewShipment(prevState => ({...prevState, comment: evt.target.value}))}
-                                />
+                            <Grid item xs={3} style={{marginTop: 10, marginBottom: 5}}>
+                                <Grid container spacing={2}>
+                                    <Grid item xs={12}>
+                                        <Autocomplete
+                                            select
+                                            label="Tydzień"
+                                            defaultValue={newShipment.shipmentWeek}
+                                            options={[...Array(52).keys()].map(val => (val + 1).toString())}
+                                            fullWidth
+                                            style={{maxHeight: 400}}
+                                            renderInput={params => (
+                                                <TextField
+                                                    {...params}
+                                                    label="Tydzień"
+                                                    variant="outlined"
+                                                    size="small"
+                                                />
+                                            )}
+                                        />
+                                    </Grid>
+
+                                    <Grid item xs={12}>
+                                        <Autocomplete
+                                            select
+                                            label="Rok"
+                                            options={getYearsOptions().map(v => v.toString())}
+                                            fullWidth
+                                            defaultValue={newShipment.shipmentYear}
+                                            style={{maxHeight: 400}}
+                                            renderInput={params => (
+                                                <TextField
+                                                    {...params}
+                                                    label="Rok"
+                                                    variant="outlined"
+                                                    size="small"
+                                                />
+                                            )}
+                                        />
+                                    </Grid>
+                                </Grid>
                             </Grid>
                         </Grid>
                     </CardContent>
@@ -241,7 +259,7 @@ const NewShipmentForm = ({notShippedElements, customerObjects, submitNewShipment
                             disableElevation
                             fullWidth
                             startIcon={<AddCircleIcon/>}
-                            disabled={!(newShipment.shipmentElements.length && newShipment.shipmentObject != null && newShipment.shipmentDate != null && newShipment.shipmentDate)}
+                            disabled={!newShipment.shipmentElements.length && newShipment.shipmentWeek && newShipment.shipmentYear}
                             onClick={handleSubmitNewShipment}
                         >
                             Dodaj wysyłkę
@@ -253,7 +271,7 @@ const NewShipmentForm = ({notShippedElements, customerObjects, submitNewShipment
     )
 }
 
-NewShipmentForm.propTypes = {
+NewPlannedShipmentForm.propTypes = {
     notShippedElements: PropTypes.arrayOf(PropTypes.shape({
         quantity: PropTypes.number,
         product: PropTypes.shape({
@@ -262,19 +280,11 @@ NewShipmentForm.propTypes = {
             name: PropTypes.string,
         })
     })).isRequired,
-    customerObjects: PropTypes.arrayOf(PropTypes.shape({
-        id: PropTypes.number,
-        address: PropTypes.shape({
-            city: PropTypes.string,
-            street: PropTypes.string,
-            postcode: PropTypes.string,
-            houseNumber: PropTypes.string,
-            apartmentNumber: PropTypes.string,
-            voivodeship: PropTypes.string,
-            country: PropTypes.string,
-    })})).isRequired,
     submitNewShipment: PropTypes.func,
 }
 
+NewPlannedShipmentForm.defaultProps = {
+    notShippedElements: [],
+}
 
-export default NewShipmentForm;
+export default NewPlannedShipmentForm;

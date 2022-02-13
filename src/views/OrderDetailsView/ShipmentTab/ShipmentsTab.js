@@ -12,59 +12,8 @@ import {
 import ShipmentCard from "../../../components/ShipmentCard/ShipmentCard";
 import NewShipmentForm from "../../../components/NewShipmentForm/NewShipmentForm";
 import TextDivider from "../../../components/TextDivider/TextDivider";
+import { getNotShippedElements, getOrderedElements, getShippedElements } from "../../../_helpers/shipmentUtils";
 
-const reduceElements = elements => {
-    const map = elements
-        .reduce((prev, curr) => {
-            const prevVal = prev.get(curr.product.id) || {
-                quantity: 0,
-                product: curr.product
-            };
-            prev.set(curr.product.id, {
-                quantity: curr.quantity + prevVal.quantity,
-                product: curr.product
-            });
-            return prev
-        }, new Map());
-
-    return [...map].map(([k, v]) =>({
-        product: v.product,
-        quantity: v.quantity
-    }))
-}
-
-const getOrderedElements = merchOrders => {
-    const elements = [...merchOrders]
-        .filter(ord => ord.id)
-        .map(ord => ord.orderElements)
-        .flat()
-        .map(el => ({
-            quantity: el.quantity,
-            product: el.product,
-        }));
-
-    return reduceElements(elements);
-}
-
-const getShippedElements = shipments => {
-    const elements = [...shipments]
-        .filter(shipment => shipment.id)
-        .map(shipment => shipment.shipmentElements)
-        .flat()
-        .map(el => ({
-            product: el.product,
-            quantity: el.quantity,
-        }));
-
-    return reduceElements(elements);
-}
-
-const getNotShippedElements = (orderedElements, shippedElements) => {
-    const newShippedElements = shippedElements.map(e => ({...e}));
-    newShippedElements.forEach(shippedEl => shippedEl.quantity *= -1);
-
-    return reduceElements([...orderedElements, ...newShippedElements]);
-}
 
 
 const ShipmentsTab = ({shipments, merchOrders, customerObjects, submitNewShipment, isEdited, deleteShipment, handleChange}) => {
@@ -85,7 +34,7 @@ const ShipmentsTab = ({shipments, merchOrders, customerObjects, submitNewShipmen
                                 <TableCell style={{fontWeight: "bold"}}>Ilość(szt.)</TableCell>
                             </TableHead>
                             <TableBody>
-                                {notShippedElements.map(({product, quantity}) => (
+                                {notShippedElements.filter(({quantity}) => quantity > 0).map(({product, quantity}) => (
                                     <TableRow key={product.id}>
                                         <TableCell>{product.code}</TableCell>
                                         <TableCell>{product.name}</TableCell>

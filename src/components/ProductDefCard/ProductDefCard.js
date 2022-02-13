@@ -9,7 +9,7 @@ const getDimensions = product =>
     `${product.width} x ${product.height} x ${product.depth}`
 
 
-const ProductPriceCard = ({productPrice, onChange, priceFieldName}) => {
+const ProductDefCard = ({productPrice, onChange, priceFieldName}) => {
 
     return (
        <Grid item md={4} sm={6} xs={12}>
@@ -52,10 +52,12 @@ const ProductPriceCard = ({productPrice, onChange, priceFieldName}) => {
 
 
 
-ProductPriceCard.propTypes = {
+ProductDefCard.propTypes = {
     productPrice:  PropTypes.shape({
         id: PropTypes.number,
         price: PropTypes.number,
+        code: PropTypes.number,
+        name: PropTypes.string,
         product: PropTypes.shape({
             id: PropTypes.number,
             name: PropTypes.string,
@@ -71,4 +73,4 @@ ProductPriceCard.propTypes = {
 }
 
 
-export default ProductPriceCard;
+export default ProductDefCard;

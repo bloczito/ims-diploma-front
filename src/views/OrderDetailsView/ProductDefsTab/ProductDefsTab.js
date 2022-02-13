@@ -1,15 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
-import ProductPriceCard from "../../../components/ProductPriceCard/ProductPriceCard";
+import ProductDefCard from "../../../components/ProductDefCard/ProductDefCard";
 import { Grid } from "@material-ui/core";
 
-const PricesTab = ({productPrices, onChange}) => {
+const ProductDefsTab = ({productDefs, onChange}) => {
 
     return (
         <Grid container spacing={2}>
-            {productPrices.map((price, index) => (
-                <ProductPriceCard
-                    productPrice={price}
+            {productDefs.map((def, index) => (
+                <ProductDefCard
+                    productPrice={def}
                     onChange={onChange}
                     priceFieldName={`productPrices[${index}].price`}
                 />
@@ -18,10 +18,12 @@ const PricesTab = ({productPrices, onChange}) => {
     );
 }
 
-PricesTab.propTypes = {
-    productPrices: PropTypes.arrayOf(PropTypes.shape({
+ProductDefsTab.propTypes = {
+    productDefs: PropTypes.arrayOf(PropTypes.shape({
         id: PropTypes.number,
         price: PropTypes.number,
+        code: PropTypes.number,
+        name: PropTypes.string,
         product: PropTypes.shape({
             id: PropTypes.number,
             name: PropTypes.string,
@@ -35,8 +37,8 @@ PricesTab.propTypes = {
     onChange: PropTypes.func.isRequired,
 }
 
-PricesTab.defaultProps = {
+ProductDefsTab.defaultProps = {
     productPrices: [],
 }
 
-export default PricesTab;
+export default ProductDefsTab;

@@ -1,5 +1,6 @@
 import './App.scss';
-import { StylesProvider } from "@material-ui/core/styles"
+import { StylesProvider, ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
+import { CssBaseline } from "@material-ui/core";
 import LoginView from "./views/LoginView/LoginView";
 import OrdersView from "./views/OrdersView/OrdersView"
 import ProductsView from "./views/ProductsView/ProductsView";
@@ -27,42 +28,51 @@ import { Redirect } from "react-router";
 
 function App({ token, isNotificationOpen, notificationMsg, notificationType, closeNotification}) {
 
+    const theme = createMuiTheme({
+        palette: {
+            type: "light"
+        }
+    })
+
     return (
-        <StylesProvider injectFirst>
-            { !token ? <LoginView/> :
-                <>
-                    <Router>
-                        <Navbar/>
-                        <Switch>
-                            <Route exact path="/">{token ? <Redirect to="/orders"/> : <LoginView/>}</Route>
-                            <Route exact path="/orders"  component={OrdersView}/>
-                            <Route path="/orders/:id"  component={OrderDetailsView}/>
-                            <Route exact path="/products" component={ProductsView}/>
-                            {/*<Route path="/products/:id" render={NewCustomerModal}/>*/}
-                            <Route exact path="/customers" component={CustomersView}/>
-                            <Route path="/customers/:id" component={CustomerDetailsView}/>
-                            <Route path="/admin_panel" component={AdminPanelView}/>
-                            <Route path="/test" component={TestView}/>
-                        </Switch>
-                    </Router>
-                    <Snackbar
-                        open={isNotificationOpen}
-                        anchorOrigin={{horizontal: "left", vertical: "bottom"}}
-                        autoHideDuration={notificationType === NOTIFICATION_TYPE.SUCCESS && 6000}
-                        onClose={closeNotification}
-                    >
-                        <Alert
-                            style={{maxWidth: "20vw"}}
-                            severity={notificationType === NOTIFICATION_TYPE.SUCCESS ? "success" : "error"}
+        <ThemeProvider theme={theme}>
+            <CssBaseline/>
+            <StylesProvider injectFirst>
+                { !token ? <LoginView/> :
+                    <>
+                        <Router>
+                            <Navbar/>
+                            <Switch>
+                                <Route exact path="/">{token ? <Redirect to="/orders"/> : <LoginView/>}</Route>
+                                <Route exact path="/orders"  component={OrdersView}/>
+                                <Route path="/orders/:id"  component={OrderDetailsView}/>
+                                <Route exact path="/products" component={ProductsView}/>
+                                {/*<Route path="/products/:id" render={NewCustomerModal}/>*/}
+                                <Route exact path="/customers" component={CustomersView}/>
+                                <Route path="/customers/:id" component={CustomerDetailsView}/>
+                                <Route path="/admin_panel" component={AdminPanelView}/>
+                                <Route path="/test" component={TestView}/>
+                            </Switch>
+                        </Router>
+                        <Snackbar
+                            open={isNotificationOpen}
+                            anchorOrigin={{horizontal: "left", vertical: "bottom"}}
+                            autoHideDuration={notificationType === NOTIFICATION_TYPE.SUCCESS && 6000}
                             onClose={closeNotification}
                         >
-                            {notificationMsg}
-                        </Alert>
-                    </Snackbar>
-                </>
+                            <Alert
+                                style={{maxWidth: "20vw"}}
+                                severity={notificationType === NOTIFICATION_TYPE.SUCCESS ? "success" : "error"}
+                                onClose={closeNotification}
+                            >
+                                {notificationMsg}
+                            </Alert>
+                        </Snackbar>
+                    </>
 
-            }
-        </StylesProvider>
+                }
+            </StylesProvider>
+        </ThemeProvider>
     );
 }
 

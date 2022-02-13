@@ -24,8 +24,9 @@ import TabPanel from "../../components/TabPanel/TabPanel";
 import InfoTab from "./InfoTab/InfoTab";
 import MerchOrdersTab from "./MerchOrdersTab/MerchOrdersTab";
 import ShipmentsTab from "./ShipmentTab/ShipmentsTab";
-import PricesTab from "./PricesTab/PricesTab";
+import ProductDefsTab from "./ProductDefsTab/ProductDefsTab";
 import { userRoles } from "../../_constants";
+import PlannedShipmentTab from "./PlannedShipmentTab/PlannedShipmentTab";
 
 
 const OrderDetailsView = ({showSuccess, showFailure, roles}) => {
@@ -68,6 +69,7 @@ const OrderDetailsView = ({showSuccess, showFailure, roles}) => {
         orderService.getById(orderId)
             .then(response => {
                 if (response.success) {
+                    console.log(response.resource.order);
                     setOrder(response.resource.order);
                     setStatuses(response.resource.statuses);
                     setPriorities(response.resource.priorities);
@@ -217,6 +219,10 @@ const OrderDetailsView = ({showSuccess, showFailure, roles}) => {
                                     label="Ceny"
                                     tabIndex={3}
                                 />
+                                <Tab
+                                    label="Planowane wysyłki"
+                                    tabIndex={4}
+                                />
                             </Tabs>
                         </AppBar>
 
@@ -253,9 +259,17 @@ const OrderDetailsView = ({showSuccess, showFailure, roles}) => {
                         </TabPanel>
 
                         <TabPanel activeTab={activeTab} index={3}>
-                            <PricesTab
-                                productPrices={values.productPrices}
+                            <ProductDefsTab
+                                productDefs={values.productPrices}
                                 onChange={handleFormChange}
+                            />
+                        </TabPanel>
+
+                        <TabPanel activeTab={activeTab} index={4}>
+                            <PlannedShipmentTab
+                                merchOrders={values.merchOrders}
+                                plannedShipments={values.plannedShipments}
+                                isEdited={isEdited}
                             />
                         </TabPanel>
 

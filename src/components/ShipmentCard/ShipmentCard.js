@@ -133,9 +133,7 @@ const ShipmentCard = ({shipment, deleteShipment, isEdited, onChange, commentName
                             ))}
                         </TableBody>
                     </Table>
-
                 </Collapse>
-
             </CardContent>
         </Card>
     );

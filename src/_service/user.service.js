@@ -1,4 +1,4 @@
-import { axiosClient } from "../_helpers";
+import { axiosClient, history } from "../_helpers";
 
 export const userService = {
     login,
@@ -26,6 +26,7 @@ function login(username, password) {
 }
 
 function logout() {
+    history.push("/");
     localStorage.removeItem("user");
 }
 
